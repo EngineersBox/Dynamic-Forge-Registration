@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "expandedfusion:block/nobium_titanium_coil"
+  }
+}
