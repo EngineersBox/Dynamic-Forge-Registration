@@ -1,2 +1,7 @@
 build
 build/*
+
+run
+run/*
+
+*.DS_Store
