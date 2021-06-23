@@ -1,0 +1,10 @@
+{
+    "mod_name": "expandedfusion",
+    "resources_dir": "src/main/resources",
+    "registry_files": {
+        "block": "src/main/java/com/engineersbox/expandedfusion/common/register/Blocks.java",
+        "item": "src/main/java/com/engineersbox/expandedfusion/common/register/Items.java",
+        "tile_entity": "src/main/java/com/engineersbox/expandedfusion/common/register/TileEntity.java",
+        "fluid": "src/main/java/com/engineersbox/expandedfusion/common/register/Fluids.java"
+    }
+}
