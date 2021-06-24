@@ -26,10 +26,22 @@ public class Fluids {
     public static final RegistryObject<FlowingFluid> SUPERCRITICAL_HELIUM = FLUIDS.register("supercritical_helium", () -> new ForgeFlowingFluid.Source(makeProperties()));
     public static final RegistryObject<FlowingFluid> SUPERCRITICAL_HELIUM_FLOWING = FLUIDS.register("supercritical_helium_flowing", () -> new ForgeFlowingFluid.Flowing(makeProperties()));
     public static RegistryObject<FlowingFluidBlock> SUPERCRITICAL_HELIUM_BLOCK = Blocks.BLOCKS.register("supercritical_helium_block", () ->
-            new FlowingFluidBlock(SUPERCRITICAL_HELIUM, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops())
+            new FlowingFluidBlock(
+                SUPERCRITICAL_HELIUM,
+                Block.Properties.create(Material.WATER)
+                    .doesNotBlockMovement()
+                    .hardnessAndResistance(100.0F)
+                    .noDrops()
+            )
     );
     public static RegistryObject<Item> SUPERCRITICAL_HELIUM_BUCKET = Items.ITEMS.register("supercritical_helium_bucket", () ->
-            new BucketItem(SUPERCRITICAL_HELIUM, new Item.Properties().containerItem(net.minecraft.item.Items.BUCKET).maxStackSize(1).group(ItemGroup.MISC))
+            new BucketItem(
+                SUPERCRITICAL_HELIUM,
+                new Item.Properties()
+                    .containerItem(net.minecraft.item.Items.BUCKET)
+                    .maxStackSize(1)
+                    .group(ItemGroup.MISC)
+            )
     );
 
     private static ForgeFlowingFluid.Properties makeProperties() {

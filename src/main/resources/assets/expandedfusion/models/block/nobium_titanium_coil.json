@@ -1,6 +1,23 @@
+
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube",
   "textures": {
+    "particle": "expandedfusion:block/nobium_titanium_coil_top",
     "all": "expandedfusion:block/nobium_titanium_coil"
-  }
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#particle", "cullface": "down" },
+        "up":    { "texture": "#particle", "cullface": "up" },
+        "north": { "texture": "#all", "cullface": "north" },
+        "south": { "texture": "#all", "cullface": "south" },
+        "west":  { "texture": "#all", "cullface": "west" },
+        "east":  { "texture": "#all", "cullface": "east" }
+      }
+    }
+  ]
 }
+	

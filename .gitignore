@@ -1,7 +1,4 @@
-build
-build/*
-
-run
-run/*
-
 *.DS_Store
+/build/
+/.idea/
+/run/

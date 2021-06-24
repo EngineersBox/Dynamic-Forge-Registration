@@ -18,7 +18,6 @@ public class ExpandedFusion {
     private static final Logger LOGGER = LogManager.getLogger(MODID);
 
     public ExpandedFusion() {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         registerElements();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

@@ -23,7 +23,7 @@ public final class ModEventSubscriber {
     public static void onRegisterItems(final RegistryEvent.Register<Item> event) {
         final IForgeRegistry<Item> registry = event.getRegistry();
         final Item.Properties properties = new Item.Properties()
-                .group(ModItemGroups.MOD_ITEM_GROUP);
+                .group(ModItemGroups.CREATIVE_TAB_ITEM_GROUP);
         // Automatically register BlockItems for all our Blocks
         Blocks.BLOCKS.getEntries().stream()
             .map(RegistryObject::get)
