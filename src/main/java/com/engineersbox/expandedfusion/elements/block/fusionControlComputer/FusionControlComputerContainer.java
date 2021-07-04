@@ -44,14 +44,11 @@ public class FusionControlComputerContainer extends AbstractMachineContainer<Fus
             if (!this.mergeItemStack(itemstack1, inventorySize, playerHotbarEnd, true)) {
                 return ItemStack.EMPTY;
             }
-
             slot.onSlotChange(itemstack1, itemstack);
         } else if (index != 0) {
-            if (this.isSmeltingIngredient(itemstack1) && !this.mergeItemStack(itemstack1, 0, 1, false)) {
-                return ItemStack.EMPTY;
-            } else if (index < playerInventoryEnd && !this.mergeItemStack(itemstack1, playerInventoryEnd, playerHotbarEnd, false)) {
-                    return ItemStack.EMPTY;
-            }  else if (index < playerHotbarEnd && !this.mergeItemStack(itemstack1, inventorySize, playerInventoryEnd, false)) {
+            if ((this.isSmeltingIngredient(itemstack1) && !this.mergeItemStack(itemstack1, 0, 1, false))
+                || (index < playerInventoryEnd && !this.mergeItemStack(itemstack1, playerInventoryEnd, playerHotbarEnd, false))
+                || (index < playerHotbarEnd && !this.mergeItemStack(itemstack1, inventorySize, playerInventoryEnd, false))) {
                 return ItemStack.EMPTY;
             }
         } else if (!this.mergeItemStack(itemstack1, inventorySize, playerHotbarEnd, false)) {
