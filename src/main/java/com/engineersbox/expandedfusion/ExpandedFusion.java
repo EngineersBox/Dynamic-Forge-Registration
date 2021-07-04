@@ -1,32 +1,27 @@
 package com.engineersbox.expandedfusion;
 
-import com.engineersbox.expandedfusion.common.register.Blocks;
-import com.engineersbox.expandedfusion.common.register.Fluids;
-import com.engineersbox.expandedfusion.common.register.Items;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(ExpandedFusion.MODID)
+@Mod(ExpandedFusion.MOD_ID)
 public class ExpandedFusion {
-    public static final String MODID = "expandedfusion";
+    public static final String MOD_ID = "expandedfusion";
 
-    private static final Logger LOGGER = LogManager.getLogger(MODID);
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+
+    public static ExpandedFusion INSTANCE;
+    public static IProxy PROXY;
 
     public ExpandedFusion() {
-        registerElements();
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+        INSTANCE = this;
+        PROXY = DistExecutor.safeRunForDist(() -> SideProxy.Client::new, () -> SideProxy.Server::new);
     }
 
-    private void registerElements() {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        Blocks.BLOCKS.register(modEventBus);
-        Items.ITEMS.register(modEventBus);
-        Fluids.FLUIDS.register(modEventBus);
+    public static ResourceLocation getId(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }

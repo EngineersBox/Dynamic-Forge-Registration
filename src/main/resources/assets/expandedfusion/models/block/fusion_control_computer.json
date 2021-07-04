@@ -1,0 +1,26 @@
+
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "expandedfusion:block/fusion_control_computer/top",
+    "side": "expandedfusion:block/fusion_control_computer/side",
+    "back": "expandedfusion:block/fusion_control_computer/back",
+    "front": "expandedfusion:block/fusion_control_computer/front",
+    "bottom": "expandedfusion:block/fusion_control_computer/bottom"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#bottom", "cullface": "down" },
+        "up":    { "texture": "#particle", "cullface": "up" },
+        "north": { "texture": "#front", "cullface": "north" },
+        "south": { "texture": "#back", "cullface": "south" },
+        "west":  { "texture": "#side", "cullface": "west" },
+        "east":  { "texture": "#side", "cullface": "east" }
+      }
+    }
+  ]
+}
+	
