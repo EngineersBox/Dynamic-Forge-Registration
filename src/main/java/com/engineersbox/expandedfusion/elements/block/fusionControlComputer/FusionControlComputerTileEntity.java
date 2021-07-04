@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.elements.block;
+package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineTileEntity;

@@ -1,8 +1,8 @@
 package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.elements.block.FusionControlComputerContainer;
-import com.engineersbox.expandedfusion.elements.block.FusionControlComputerScreen;
+import com.engineersbox.expandedfusion.elements.block.fusionControlComputer.FusionControlComputerContainer;
+import com.engineersbox.expandedfusion.elements.block.fusionControlComputer.FusionControlComputerScreen;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
