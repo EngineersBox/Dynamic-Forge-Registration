@@ -1,5 +1,7 @@
 package com.engineersbox.expandedfusion;
 
+import com.engineersbox.expandedfusion.network.IProxy;
+import com.engineersbox.expandedfusion.network.NetworkTargetProxy;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -18,7 +20,7 @@ public class ExpandedFusion {
 
     public ExpandedFusion() {
         INSTANCE = this;
-        PROXY = DistExecutor.safeRunForDist(() -> SideProxy.Client::new, () -> SideProxy.Server::new);
+        PROXY = DistExecutor.safeRunForDist(() -> NetworkTargetProxy.Client::new, () -> NetworkTargetProxy.Server::new);
     }
 
     public static ResourceLocation getId(String path) {

@@ -44,21 +44,22 @@ public class FusionControlComputer extends AbstractMachineBlock {
                             final BlockPos pos,
                             final Random rand) {
         // TODO: Unique sound and particles? Copied from BlastFurnaceBlock.
-        if (stateIn.get(LIT)) {
-            final double d0 = (double) pos.getX() + 0.5D;
-            final double d1 = pos.getY();
-            final double d2 = (double) pos.getZ() + 0.5D;
-            if (rand.nextDouble() < 0.1D) {
-                worldIn.playSound(d0, d1, d2, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-            }
-
-            final Direction direction = stateIn.get(FACING);
-            final Direction.Axis direction$axis = direction.getAxis();
-            final double d4 = rand.nextDouble() * 0.6D - 0.3D;
-            final double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
-            final double d6 = rand.nextDouble() * 9.0D / 16.0D;
-            final double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
-            worldIn.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+        if (!stateIn.get(LIT)) {
+            return;
         }
+        final double d0 = (double) pos.getX() + 0.5D;
+        final double d1 = pos.getY();
+        final double d2 = (double) pos.getZ() + 0.5D;
+        if (rand.nextDouble() < 0.1D) {
+            worldIn.playSound(d0, d1, d2, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+        }
+
+        final Direction direction = stateIn.get(FACING);
+        final Direction.Axis direction$axis = direction.getAxis();
+        final double d4 = rand.nextDouble() * 0.6D - 0.3D;
+        final double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
+        final double d6 = rand.nextDouble() * 9.0D / 16.0D;
+        final double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
+        worldIn.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
     }
 }

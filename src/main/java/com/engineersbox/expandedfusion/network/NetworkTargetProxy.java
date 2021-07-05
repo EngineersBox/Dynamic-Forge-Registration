@@ -1,31 +1,25 @@
-package com.engineersbox.expandedfusion;
+package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.register.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagRegistryManager;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import javax.annotation.Nullable;
-
-class SideProxy implements IProxy {
+public class NetworkTargetProxy implements IProxy {
     private MinecraftServer server = null;
 
-    SideProxy() {
+    NetworkTargetProxy() {
         Registration.register();
 
         // Add listeners for common events
@@ -59,8 +53,8 @@ class SideProxy implements IProxy {
         return server;
     }
 
-    static class Client extends SideProxy {
-        Client() {
+    public static class Client extends NetworkTargetProxy {
+        public Client() {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ModItems::registerItemColors);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
@@ -94,8 +88,8 @@ class SideProxy implements IProxy {
         }
     }
 
-    static class Server extends SideProxy {
-        Server() {
+    public static class Server extends NetworkTargetProxy {
+        public Server() {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
         }
 

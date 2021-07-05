@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion;
+package com.engineersbox.expandedfusion.network;
 
 import net.minecraft.server.MinecraftServer;
 
