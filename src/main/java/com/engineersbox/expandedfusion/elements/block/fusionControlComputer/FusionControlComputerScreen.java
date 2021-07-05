@@ -9,7 +9,9 @@ import net.minecraft.util.text.ITextComponent;
 public class FusionControlComputerScreen extends AbstractMachineScreen<FusionControlComputerContainer> {
     public static final ResourceLocation TEXTURE = ExpandedFusion.getId("textures/gui/fusion_control_computer.png");
 
-    public FusionControlComputerScreen(FusionControlComputerContainer containerIn, PlayerInventory playerInventory, ITextComponent titleIn) {
+    public FusionControlComputerScreen(final FusionControlComputerContainer containerIn,
+                                       final PlayerInventory playerInventory,
+                                       final ITextComponent titleIn) {
         super(containerIn, playerInventory, titleIn);
     }
 
@@ -19,12 +21,12 @@ public class FusionControlComputerScreen extends AbstractMachineScreen<FusionCon
     }
 
     @Override
-    protected int getProgressArrowPosX(int guiPosX) {
+    protected int getProgressArrowPosX(final int guiPosX) {
         return guiPosX + 79;
     }
 
     @Override
-    protected int getProgressArrowPosY(int guiPosY) {
+    protected int getProgressArrowPosY(final int guiPosY) {
         return guiPosY + 35;
     }
 }

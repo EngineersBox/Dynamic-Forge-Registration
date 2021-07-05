@@ -17,7 +17,7 @@ public final class ModFluids {
 
     private ModFluids() {}
 
-    public static void registerFluids(RegistryEvent.Register<Fluid> event) {
+    public static void registerFluids(final RegistryEvent.Register<Fluid> event) {
 //        ForgeFlowingFluid.Properties oilProps = properties("oil", () -> OIL, () -> FLOWING_OIL)
 //                .block(() -> ModBlocks.OIL.get())
 //                .bucket(() -> ModItems.OIL_BUCKET.get());
@@ -25,19 +25,19 @@ public final class ModFluids {
 //        OIL = register("oil", new ForgeFlowingFluid.Source(oilProps));
     }
 
-    private static <T extends Fluid> T register(String name, T fluid) {
+    private static <T extends Fluid> T register(final String name, final T fluid) {
         ResourceLocation id = ExpandedFusion.getId(name);
         fluid.setRegistryName(id);
         ForgeRegistries.FLUIDS.register(fluid);
         return fluid;
     }
 
-    private static ForgeFlowingFluid.Properties properties(String name, Supplier<Fluid> still, Supplier<Fluid> flowing) {
+    private static ForgeFlowingFluid.Properties properties(final String name, final Supplier<Fluid> still, final Supplier<Fluid> flowing) {
         String tex = "block/" + name;
         return new ForgeFlowingFluid.Properties(still, flowing, FluidAttributes.builder(ExpandedFusion.getId(tex + "_still"), ExpandedFusion.getId(tex + "_flowing")));
     }
 
-    private static ForgeFlowingFluid.Properties propertiesGas(String name, Supplier<Fluid> still) {
+    private static ForgeFlowingFluid.Properties propertiesGas(final String name, final Supplier<Fluid> still) {
         String tex = "block/" + name;
         //noinspection ReturnOfNull -- null-returning Supplier for flowing fluid
         return new ForgeFlowingFluid.Properties(still, () -> null, FluidAttributes.builder(ExpandedFusion.getId(tex), ExpandedFusion.getId(tex)).gaseous());

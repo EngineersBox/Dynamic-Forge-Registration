@@ -17,7 +17,10 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
     private final EnumMap<Direction, LazyOptional<Connection>> connections = new EnumMap<>(Direction.class);
     private final TileEntity tileEntity;
 
-    public EnergyStorageImpl(int capacity, int maxReceive, int maxExtract, TileEntity tileEntity) {
+    public EnergyStorageImpl(final int capacity,
+                             final int maxReceive,
+                             final int maxExtract,
+                             final TileEntity tileEntity) {
         super(capacity, maxReceive, maxExtract);
         this.tileEntity = tileEntity;
         Arrays.stream(Direction.values()).forEach(d -> connections.put(d, LazyOptional.of(Connection::new)));
@@ -25,7 +28,8 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
 
     @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap,
+                                             @Nullable final Direction side) {
         if (side == null) return super.getCapability(cap, null);
         return CapabilityEnergy.ENERGY.orEmpty(cap, connections.get(side).cast());
     }
@@ -42,7 +46,7 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
      *
      * @param amount The amount of energy
      */
-    public void createEnergy(int amount) {
+    public void createEnergy(final int amount) {
         this.energy = Math.min(this.energy + amount, getMaxEnergyStored());
     }
 
@@ -52,7 +56,7 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
      *
      * @param amount The amount of energy to remove
      */
-    public void consumeEnergy(int amount) {
+    public void consumeEnergy(final int amount) {
         this.energy = Math.max(this.energy - amount, 0);
     }
 
@@ -61,11 +65,11 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
      *
      * @param amount The new amount of stored energy
      */
-    public void setEnergyDirectly(int amount) {
+    public void setEnergyDirectly(final int amount) {
         this.energy = amount;
     }
 
-    public void setMaxEnergyDirectly(int amount) {
+    public void setMaxEnergyDirectly(final int amount) {
         this.capacity = amount;
     }
 
@@ -76,7 +80,7 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
         private long lastReceiveTick;
 
         @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
+        public int receiveEnergy(final int maxReceive, final boolean simulate) {
             World world = EnergyStorageImpl.this.tileEntity.getWorld();
             if (world == null) return 0;
 
@@ -87,7 +91,7 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
         }
 
         @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {
+        public int extractEnergy(final int maxExtract, final boolean simulate) {
             World world = EnergyStorageImpl.this.tileEntity.getWorld();
             if (world == null) return 0;
 

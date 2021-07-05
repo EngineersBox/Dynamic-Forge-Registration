@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 public interface IEnergyHandler {
     EnergyStorageImpl getEnergyImpl();
 
-    default LazyOptional<IEnergyStorage> getEnergy(@Nullable Direction side) {
+    default LazyOptional<IEnergyStorage> getEnergy(@Nullable final Direction side) {
         return getEnergyImpl().getCapability(CapabilityEnergy.ENERGY, side);
     }
 
@@ -27,7 +27,7 @@ public interface IEnergyHandler {
         return energy.getMaxEnergyStored();
     }
 
-    default void setEnergyStoredDirectly(int value) {
+    default void setEnergyStoredDirectly(final int value) {
         getEnergy(null).ifPresent(e -> {
             if (e instanceof EnergyStorageImpl) {
                 ((EnergyStorageImpl) e).setEnergyDirectly(value);
@@ -35,7 +35,7 @@ public interface IEnergyHandler {
         });
     }
 
-    default void setMaxEnergyStoredDirectly(int value) {
+    default void setMaxEnergyStoredDirectly(final int value) {
         getEnergy(null).ifPresent(e -> {
             if (e instanceof EnergyStorageImpl) {
                 ((EnergyStorageImpl) e).setMaxEnergyDirectly(value);
@@ -43,11 +43,11 @@ public interface IEnergyHandler {
         });
     }
 
-    default void readEnergy(CompoundNBT tags) {
+    default void readEnergy(final CompoundNBT tags) {
         setEnergyStoredDirectly(tags.getInt("Energy"));
     }
 
-    default void writeEnergy(CompoundNBT tags) {
+    default void writeEnergy(final CompoundNBT tags) {
         tags.putInt("Energy", getEnergyStored());
     }
 }

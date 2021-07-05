@@ -17,20 +17,20 @@ public class ModTileEntities {
 
     private ModTileEntities() {}
 
-    public static void registerAll(RegistryEvent.Register<TileEntityType<?>> event) {
+    public static void registerAll(final RegistryEvent.Register<TileEntityType<?>> event) {
         FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputerTileEntity::new, ModBlocks.FUSION_CONTROL_COMPUTER);
     }
 
-    private static <T extends TileEntity> TileEntityType<T> register(String name, Supplier<T> tileFactory, IBlockProvider block) {
+    private static <T extends TileEntity> TileEntityType<T> register(final String name, final Supplier<T> tileFactory, final IBlockProvider block) {
         return register(name, tileFactory, block.asBlock());
     }
 
-    private static <T extends TileEntity> TileEntityType<T> register(String name, Supplier<T> tileFactory, Block... blocks) {
+    private static <T extends TileEntity> TileEntityType<T> register(final String name, final Supplier<T> tileFactory, final Block... blocks) {
         TileEntityType<T> type = TileEntityType.Builder.create(tileFactory, blocks).build(null);
         return register(name, type);
     }
 
-    private static <T extends TileEntity> TileEntityType<T> register(String name, TileEntityType<T> type) {
+    private static <T extends TileEntity> TileEntityType<T> register(final String name, final TileEntityType<T> type) {
         if (type.getRegistryName() == null) {
             type.setRegistryName(ExpandedFusion.getId(name));
         }

@@ -6,13 +6,16 @@ import net.minecraftforge.energy.EnergyStorage;
 public class EnergyStorageItemImpl extends EnergyStorage {
     private final ItemStack stack;
 
-    public EnergyStorageItemImpl(ItemStack stack, int capacity, int maxReceive, int maxExtract) {
+    public EnergyStorageItemImpl(final ItemStack stack,
+                                 final int capacity,
+                                 final int maxReceive,
+                                 final int maxExtract) {
         super(capacity, maxReceive, maxExtract);
         this.stack = stack;
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
+    public int receiveEnergy(final int maxReceive, final boolean simulate) {
         if (!canReceive())
             return 0;
 
@@ -24,7 +27,7 @@ public class EnergyStorageItemImpl extends EnergyStorage {
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
+    public int extractEnergy(final int maxExtract,final  boolean simulate) {
         if (!canExtract())
             return 0;
 
@@ -40,7 +43,7 @@ public class EnergyStorageItemImpl extends EnergyStorage {
         return stack.getOrCreateTag().getInt("Energy");
     }
 
-    private void setEnergyStored(int amount) {
+    private void setEnergyStored(final int amount) {
         stack.getOrCreateTag().putInt("Energy", amount);
     }
 }

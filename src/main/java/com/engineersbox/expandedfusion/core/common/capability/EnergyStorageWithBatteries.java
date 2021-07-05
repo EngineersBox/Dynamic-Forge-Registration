@@ -21,7 +21,10 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     protected int maxReceive;
     protected int maxExtract;
 
-    public EnergyStorageWithBatteries(T tileEntity, int capacity, int maxReceive, int maxExtract) {
+    public EnergyStorageWithBatteries(final T tileEntity,
+                                      final int capacity,
+                                      final int maxReceive,
+                                      final int maxExtract) {
         super(capacity, maxReceive, maxExtract, tileEntity);
         this.inventory = tileEntity;
         this.capacityInternal = capacity;
@@ -35,7 +38,7 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     }
 
     @SuppressWarnings("TypeMayBeWeakened")
-    private static boolean isBattery(ItemStack stack) {
+    private static boolean isBattery(final ItemStack stack) {
         return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
     }
 
@@ -50,7 +53,7 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
+    public int receiveEnergy(final int maxReceive, final boolean simulate) {
         if (!canReceive()) return 0;
 
         int batteryCount = getBatteryCount();
@@ -75,7 +78,7 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
+    public int extractEnergy(final int maxExtract, final boolean simulate) {
         if (!canExtract()) return 0;
 
         int internalExtract = Math.min(energyInternal, Math.min(this.maxExtract, maxExtract));
@@ -102,7 +105,7 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
         return extracted;
     }
 
-    public int extractInternalEnergy(int maxExtract, boolean simulate) {
+    public int extractInternalEnergy(final int maxExtract, final boolean simulate) {
         if (!canExtract()) return 0;
 
         int internalExtract = Math.min(energyInternal, Math.min(this.maxExtract, maxExtract));
@@ -140,7 +143,7 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     }
 
     @Override
-    public void setEnergyDirectly(int amount) {
+    public void setEnergyDirectly(final int amount) {
         this.energyInternal = amount;
     }
 
@@ -156,7 +159,7 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
 
     @Nonnull
     @Override
-    public <S> LazyOptional<S> getCapability(@Nonnull Capability<S> cap, @Nullable Direction side) {
+    public <S> LazyOptional<S> getCapability(@Nonnull final Capability<S> cap, @Nullable final Direction side) {
         return CapabilityEnergy.ENERGY.orEmpty(cap, lazy.cast());
     }
 }

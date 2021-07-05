@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.common.tileentity;
 
+import com.engineersbox.expandedfusion.core.common.DataField;
 import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
 import com.engineersbox.expandedfusion.core.common.energy.IEnergyHandler;
 import com.engineersbox.expandedfusion.core.util.EnergyUtils;
@@ -24,19 +25,19 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
 
     private final IIntArray fields = new IIntArray() {
         @Override
-        public int get(int index) {
-            switch (index) {
+        public int get(final int index) {
+            switch (DataField.fromInt(index)) {
                 //Minecraft actually sends fields as shorts, so we need to split energy into 2 fields
-                case 0:
+                case ENERGY_STORED_LOWER:
                     // Energy lower bytes
                     return AbstractEnergyInventoryTileEntity.this.getEnergyStored() & 0xFFFF;
-                case 1:
+                case ENERGY_STORED_HIGHER:
                     // Energy upper bytes
                     return (AbstractEnergyInventoryTileEntity.this.getEnergyStored() >> 16) & 0xFFFF;
-                case 2:
+                case MAX_ENERGY_STORED_LOWER:
                     // Max energy lower bytes
                     return AbstractEnergyInventoryTileEntity.this.getMaxEnergyStored() & 0xFFFF;
-                case 3:
+                case MAX_ENERGY_STORED_HIGHER:
                     // Max energy upper bytes
                     return (AbstractEnergyInventoryTileEntity.this.getMaxEnergyStored() >> 16) & 0xFFFF;
                 default:
@@ -45,7 +46,7 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
         }
 
         @Override
-        public void set(int index, int value) {
+        public void set(final int index, final int value) {
             getEnergyImpl().setEnergyDirectly(value);
         }
 
@@ -55,7 +56,11 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
         }
     };
 
-    protected AbstractEnergyInventoryTileEntity(TileEntityType<?> typeIn, int inventorySize, int maxEnergy, int maxReceive, int maxExtract) {
+    protected AbstractEnergyInventoryTileEntity(final TileEntityType<?> typeIn,
+                                                final int inventorySize,
+                                                final int maxEnergy,
+                                                final int maxReceive,
+                                                final int maxExtract) {
         super(typeIn, inventorySize);
         this.energy = new EnergyStorageImpl(maxEnergy, maxReceive, maxExtract, this);
         this.maxExtract = maxExtract;
@@ -80,14 +85,14 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tags) {
+    public void read(final BlockState state, final CompoundNBT tags) {
         super.read(state, tags);
         SyncVariable.Helper.readSyncVars(this, tags);
         readEnergy(tags);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tags) {
+    public CompoundNBT write(final CompoundNBT tags) {
         super.write(tags);
         SyncVariable.Helper.writeSyncVars(this, tags, SyncVariable.Type.WRITE);
         writeEnergy(tags);
@@ -95,7 +100,7 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+    public void onDataPacket(final NetworkManager net, final SUpdateTileEntityPacket packet) {
         super.onDataPacket(net, packet);
         SyncVariable.Helper.readSyncVars(this, packet.getNbtCompound());
         readEnergy(packet.getNbtCompound());
@@ -110,7 +115,7 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap, @Nullable final Direction side) {
         if (!this.removed && cap == CapabilityEnergy.ENERGY) {
             return getEnergy(side).cast();
         }

@@ -6,17 +6,17 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
 public class EmptyCanisterItem extends CanisterItem {
-    public EmptyCanisterItem(Properties properties) {
+    public EmptyCanisterItem(final Properties properties) {
         super(properties);
     }
 
     @Override
-    public FluidStack getFluid(ItemStack stack) {
+    public FluidStack getFluid(final ItemStack stack) {
         return FluidStack.EMPTY;
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemGroup(final ItemGroup group, final NonNullList<ItemStack> items) {
         if (isInGroup(group)) {
             items.add(new ItemStack(this));
         }

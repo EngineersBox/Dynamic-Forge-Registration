@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class RegistryObjectWrapper<T extends IForgeRegistryEntry<? super T>> implements Supplier<T> {
     protected final RegistryObject<T> registryObject;
 
-    public RegistryObjectWrapper(RegistryObject<T> registryObject) {
+    public RegistryObjectWrapper(final RegistryObject<T> registryObject) {
         this.registryObject = registryObject;
     }
 
@@ -40,39 +40,39 @@ public class RegistryObjectWrapper<T extends IForgeRegistryEntry<? super T>> imp
         return registryObject.isPresent();
     }
 
-    public void ifPresent(Consumer<? super T> consumer) {
+    public void ifPresent(final Consumer<? super T> consumer) {
         registryObject.ifPresent(consumer);
     }
 
-    public RegistryObject<T> filter(Predicate<? super T> predicate) {
+    public RegistryObject<T> filter(final Predicate<? super T> predicate) {
         return registryObject.filter(predicate);
     }
 
-    public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
+    public <U> Optional<U> map(final Function<? super T, ? extends U> mapper) {
         return registryObject.map(mapper);
     }
 
-    public <U> Optional<U> flatMap(Function<? super T, Optional<U>> mapper) {
+    public <U> Optional<U> flatMap(final Function<? super T, Optional<U>> mapper) {
         return registryObject.flatMap(mapper);
     }
 
-    public<U> Supplier<U> lazyMap(Function<? super T, ? extends U> mapper) {
+    public<U> Supplier<U> lazyMap(final Function<? super T, ? extends U> mapper) {
         return registryObject.lazyMap(mapper);
     }
 
-    public T orElse(T other) {
+    public T orElse(final T other) {
         return registryObject.orElse(other);
     }
 
-    public T orElseGet(Supplier<? extends T> other) {
+    public T orElseGet(final Supplier<? extends T> other) {
         return registryObject.orElseGet(other);
     }
 
-    public <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+    public <X extends Throwable> T orElseThrow(final Supplier<? extends X> exceptionSupplier) throws X {
         return registryObject.orElseThrow(exceptionSupplier);
     }
 
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj instanceof RegistryObjectWrapper) {
             return Objects.equals(((RegistryObjectWrapper<?>)obj).getId(), getId());

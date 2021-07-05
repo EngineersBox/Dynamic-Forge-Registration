@@ -19,16 +19,16 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class CanisterItem extends Item implements IFluidContainer {
-    public CanisterItem(Properties properties) {
+    public CanisterItem(final Properties properties) {
         super(properties);
         //addPropertyOverride(SilentMechanisms.getId("fluid_level"), (stack, world, entity) -> getFluid(stack).getAmount());
     }
 
-    public static ItemStack getStack(@Nullable Fluid fluid) {
+    public static ItemStack getStack(@Nullable final Fluid fluid) {
         return getStack(fluid, 1);
     }
 
-    public static ItemStack getStack(@Nullable Fluid fluid, int count) {
+    public static ItemStack getStack(@Nullable final Fluid fluid, final int count) {
         IItemProvider item = fluid != null ? ModItems.CANISTER : ModItems.EMPTY_CANISTER;
         ItemStack result = new ItemStack(item, count);
         if (fluid != null) {
@@ -44,12 +44,12 @@ public class CanisterItem extends Item implements IFluidContainer {
         return new FluidCanisterWrapper(stack);
     }*/
 
-    public static String getFluidKey(ItemStack stack) {
+    public static String getFluidKey(final ItemStack stack) {
         return stack.hasTag() ? stack.getOrCreateTag().getString("CanisterFluid") : "";
     }
 
     @Override
-    public FluidStack getFluid(ItemStack stack) {
+    public FluidStack getFluid(final ItemStack stack) {
         if (!(stack.getItem() instanceof CanisterItem)) {
             return FluidStack.EMPTY;
         }
@@ -65,29 +65,29 @@ public class CanisterItem extends Item implements IFluidContainer {
     }
 
     @Override
-    public ItemStack fillWithFluid(ItemStack empty, FluidStack fluid) {
+    public ItemStack fillWithFluid(final ItemStack empty, final FluidStack fluid) {
         return getStack(fluid.getFluid());
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
+    public ITextComponent getDisplayName(final ItemStack stack) {
         FluidStack fluid = getFluid(stack);
         ITextComponent fluidText = fluid.isEmpty() ? TextUtil.translate("misc", "empty") : fluid.getDisplayName();
         return new TranslationTextComponent(this.getTranslationKey(), fluidText);
     }
 
     @Override
-    public boolean hasContainerItem(ItemStack stack) {
+    public boolean hasContainerItem(final ItemStack stack) {
         return true;
     }
 
     @Override
-    public ItemStack getContainerItem(ItemStack itemStack) {
+    public ItemStack getContainerItem(final ItemStack itemStack) {
         return new ItemStack(ModItems.EMPTY_CANISTER);
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemGroup(final ItemGroup group, final NonNullList<ItemStack> items) {
         if (isInGroup(group)) {
             items.add(getStack(null));
             ForgeRegistries.FLUIDS.getValues().stream()

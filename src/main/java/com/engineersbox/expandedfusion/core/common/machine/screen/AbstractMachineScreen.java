@@ -6,23 +6,31 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 
 public abstract class AbstractMachineScreen<C extends AbstractMachineContainer<?>> extends AbstractMachineBaseScreen<C> {
-    public AbstractMachineScreen(C containerIn, PlayerInventory playerInventoryIn, ITextComponent titleIn) {
+    public AbstractMachineScreen(final C containerIn,
+                                 final PlayerInventory playerInventoryIn,
+                                 final ITextComponent titleIn) {
         super(containerIn, playerInventoryIn, titleIn);
     }
 
-    protected abstract int getProgressArrowPosX(int guiPosX);
+    protected abstract int getProgressArrowPosX(final int guiPosX);
 
-    protected abstract int getProgressArrowPosY(int guiPosY);
+    protected abstract int getProgressArrowPosY(final int guiPosY);
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(final MatrixStack matrixStack,
+                       final int mouseX,
+                       final int mouseY,
+                       final float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void drawGuiContainerBackgroundLayer(final MatrixStack matrixStack,
+                                                   final float partialTicks,
+                                                   final int x,
+                                                   final int y) {
         super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
 
         int xPos = (this.width - this.xSize) / 2;

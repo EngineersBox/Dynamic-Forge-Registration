@@ -59,28 +59,28 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
     }
 
     @Override
-    protected int getProcessTime(AbstractCookingRecipe recipe) {
+    protected int getProcessTime(final AbstractCookingRecipe recipe) {
         return recipe.getCookTime();
     }
 
     @Override
-    protected Collection<ItemStack> getProcessResults(AbstractCookingRecipe recipe) {
+    protected Collection<ItemStack> getProcessResults(final AbstractCookingRecipe recipe) {
         return Collections.singleton(recipe.getCraftingResult(this));
     }
 
     @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
     @Override
-    public int[] getSlotsForFace(Direction side) {
+    public int[] getSlotsForFace(final Direction side) {
         return SLOTS_ALL;
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+    public boolean canInsertItem(final int index, final ItemStack itemStackIn, @Nullable final Direction direction) {
         return index == 0;
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+    public boolean canExtractItem(final int index, final ItemStack stack, final Direction direction) {
         return index == 1;
     }
 
@@ -90,7 +90,7 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
     }
 
     @Override
-    protected Container createMenu(int id, PlayerInventory playerInventory) {
+    protected Container createMenu(final int id, final PlayerInventory playerInventory) {
         return new FusionControlComputerContainer(id, playerInventory, this, this.fields);
     }
 

@@ -48,7 +48,7 @@ public class Registration {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Block> Collection<T> getBlocks(Class<T> clazz) {
+    public static <T extends Block> Collection<T> getBlocks(final Class<T> clazz) {
         return BLOCKS.getEntries().stream()
                 .map(RegistryObject::get)
                 .filter(clazz::isInstance)
@@ -57,7 +57,7 @@ public class Registration {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Item> Collection<T> getItems(Class<T> clazz) {
+    public static <T extends Item> Collection<T> getItems(final Class<T> clazz) {
         return ITEMS.getEntries().stream()
                 .map(RegistryObject::get)
                 .filter(clazz::isInstance)
@@ -65,14 +65,14 @@ public class Registration {
                 .collect(Collectors.toList());
     }
 
-    public static Collection<Item> getItems(Predicate<Item> predicate) {
+    public static Collection<Item> getItems(final Predicate<Item> predicate) {
         return ITEMS.getEntries().stream()
                 .map(RegistryObject::get)
                 .filter(predicate)
                 .collect(Collectors.toList());
     }
 
-    private static <T extends IForgeRegistryEntry<T>> DeferredRegister<T> create(IForgeRegistry<T> registry) {
+    private static <T extends IForgeRegistryEntry<T>> DeferredRegister<T> create(final IForgeRegistry<T> registry) {
         return DeferredRegister.create(registry, ExpandedFusion.MOD_ID);
     }
 }

@@ -17,21 +17,21 @@ public class ModContainers {
 
     private ModContainers() {}
 
-    public static void registerAll(RegistryEvent.Register<ContainerType<?>> event) {
+    public static void registerAll(final RegistryEvent.Register<ContainerType<?>> event) {
         FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputerContainer::new);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void registerScreens(FMLClientSetupEvent event) {
+    public static void registerScreens(final FMLClientSetupEvent event) {
         ScreenManager.registerFactory(FUSION_CONTROL_COMPUTER, FusionControlComputerScreen::new);
     }
 
-    private static <C extends Container> ContainerType<C> register(String name, ContainerType.IFactory<C> containerFactory) {
+    private static <C extends Container> ContainerType<C> register(final String name, final ContainerType.IFactory<C> containerFactory) {
         ContainerType<C> type = new ContainerType<>(containerFactory);
         return register(name, type);
     }
 
-    private static <C extends Container> ContainerType<C> register(String name, ContainerType<C> containerType) {
+    private static <C extends Container> ContainerType<C> register(final String name, final ContainerType<C> containerType) {
         containerType.setRegistryName(ExpandedFusion.getId(name));
         ForgeRegistries.CONTAINERS.register(containerType);
         return containerType;

@@ -14,7 +14,7 @@ public final class NameUtils {
 
     private NameUtils() { throw new IllegalAccessError("Utility class"); }
 
-    public static boolean isValid(CharSequence name) {
+    public static boolean isValid(final CharSequence name) {
         return PATTERN.matcher(name).matches();
     }
 
@@ -25,7 +25,7 @@ public final class NameUtils {
      * @return name
      * @throws NullPointerException if name is null
      */
-    public static ResourceLocation checkNotNull(@Nullable ResourceLocation name) {
+    public static ResourceLocation checkNotNull(@Nullable final ResourceLocation name) {
         Preconditions.checkNotNull(name, "Name is null, make sure the object has been registered correctly");
         return name;
     }
@@ -37,7 +37,7 @@ public final class NameUtils {
      * @return A new ResourceLocation
      * @throws net.minecraft.util.ResourceLocationException if path is invalid
      */
-    public static ResourceLocation forgeId(String path) {
+    public static ResourceLocation forgeId(final String path) {
         return new ResourceLocation("forge", path);
     }
 
@@ -48,7 +48,7 @@ public final class NameUtils {
      * @return The registry name
      * @throws NullPointerException if registry name is null
      */
-    public static ResourceLocation from(IForgeRegistryEntry<?> entry) {
+    public static ResourceLocation from(final IForgeRegistryEntry<?> entry) {
         return checkNotNull(entry.getRegistryName());
     }
 
@@ -59,7 +59,7 @@ public final class NameUtils {
      * @return The registry name
      * @throws NullPointerException if registry name is null
      */
-    public static ResourceLocation fromItem(IItemProvider item) {
+    public static ResourceLocation fromItem(final IItemProvider item) {
         Preconditions.checkNotNull(item.asItem(), "asItem() is null, has object not been fully constructed?");
         return checkNotNull(item.asItem().getRegistryName());
     }
@@ -71,7 +71,7 @@ public final class NameUtils {
      * @return The registry name
      * @throws NullPointerException if registry name is null
      */
-    public static ResourceLocation fromItem(ItemStack stack) {
+    public static ResourceLocation fromItem(final ItemStack stack) {
         return checkNotNull(stack.getItem().getRegistryName());
     }
 }

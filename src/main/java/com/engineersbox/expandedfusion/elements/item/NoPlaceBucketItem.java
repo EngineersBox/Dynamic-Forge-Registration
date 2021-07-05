@@ -19,17 +19,20 @@ import java.util.function.Supplier;
  * A bucket with right-click functionality removed. Used for fluids without blocks.
  */
 public class NoPlaceBucketItem extends BucketItem {
-    public NoPlaceBucketItem(Supplier<? extends Fluid> supplier, Properties builder) {
+    public NoPlaceBucketItem(final Supplier<? extends Fluid> supplier,
+                             final Properties builder) {
         super(supplier, builder);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(final World worldIn,
+                                                    final PlayerEntity playerIn,
+                                                    final Hand handIn) {
         return new ActionResult<>(ActionResultType.PASS, playerIn.getHeldItem(handIn));
     }
 
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(final ItemStack stack, @Nullable final CompoundNBT nbt) {
         return new FluidBucketWrapper(stack);
     }
 }

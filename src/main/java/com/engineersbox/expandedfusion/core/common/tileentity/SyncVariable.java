@@ -75,7 +75,7 @@ public @interface SyncVariable {
 
         private Helper() {}
 
-        public static <T> void registerSerializer(Class<T> clazz, Function<CompoundNBT, T> reader, BiConsumer<CompoundNBT, T> writer) {
+        public static <T> void registerSerializer(final Class<T> clazz, final Function<CompoundNBT, T> reader, BiConsumer<CompoundNBT, T> writer) {
             SERIALIZERS.put(clazz, new NBTSerializer<T>() {
                 @Override
                 public T read(CompoundNBT tags) {
@@ -96,7 +96,7 @@ public @interface SyncVariable {
          * @param obj  The object with SyncVariable fields.
          * @param tags The NBT to read values from.
          */
-        public static void readSyncVars(Object obj, CompoundNBT tags) {
+        public static void readSyncVars(final Object obj, final CompoundNBT tags) {
             // Try to read from NBT for fields marked with SyncVariable.
             for (Field field : obj.getClass().getDeclaredFields()) {
                 for (Annotation annotation : field.getDeclaredAnnotations()) {
@@ -150,7 +150,7 @@ public @interface SyncVariable {
          * @return The modified tags.
          */
         @SuppressWarnings("unchecked") // from serializer
-        public static CompoundNBT writeSyncVars(Object obj, CompoundNBT tags, Type syncType) {
+        public static CompoundNBT writeSyncVars(final Object obj, final CompoundNBT tags, final Type syncType) {
 
             // Try to write to NBT for fields marked with SyncVariable.
             for (Field field : obj.getClass().getDeclaredFields()) {

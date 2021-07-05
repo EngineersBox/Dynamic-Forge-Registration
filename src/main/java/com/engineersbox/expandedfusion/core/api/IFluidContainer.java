@@ -16,7 +16,7 @@ public interface IFluidContainer {
      * @param stack The fluid container
      * @return The stored fluid
      */
-    FluidStack getFluid(ItemStack stack);
+    FluidStack getFluid(final ItemStack stack);
 
     /**
      * Creates a fluid container filled with the given fluid. Should not modify the empty
@@ -26,7 +26,7 @@ public interface IFluidContainer {
      * @param fluid The fluid to store
      * @return A new filled container
      */
-    ItemStack fillWithFluid(ItemStack empty, FluidStack fluid);
+    ItemStack fillWithFluid(final ItemStack empty, final FluidStack fluid);
 
     /**
      * Convenience method to get the fluid of either a bucket or {@code IFluidContainer}.
@@ -35,7 +35,7 @@ public interface IFluidContainer {
      * @return The stored fluid, or {@link FluidStack#EMPTY} if the container is empty or not a
      * valid fluid container
      */
-    static FluidStack getBucketOrContainerFluid(ItemStack stack) {
+    static FluidStack getBucketOrContainerFluid(final ItemStack stack) {
         Item item = stack.getItem();
         //noinspection ChainOfInstanceofChecks
         if (item instanceof BucketItem) {
@@ -56,7 +56,7 @@ public interface IFluidContainer {
      * @return A filled fluid container, or {@link ItemStack#EMPTY} if the container is not a valid
      * fluid container
      */
-    static ItemStack fillBucketOrFluidContainer(ItemStack empty, FluidStack fluid) {
+    static ItemStack fillBucketOrFluidContainer(final ItemStack empty, final FluidStack fluid) {
         Item item = empty.getItem();
         //noinspection ChainOfInstanceofChecks
         if (item instanceof BucketItem) {

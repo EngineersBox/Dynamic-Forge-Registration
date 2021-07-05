@@ -11,7 +11,9 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 
 public abstract class AbstractMachineBaseScreen<C extends AbstractMachineBaseContainer<?>> extends ContainerScreen<C> {
-    public AbstractMachineBaseScreen(C screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public AbstractMachineBaseScreen(final C screenContainer,
+                                     final PlayerInventory inv,
+                                     final ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
     }
 
@@ -23,7 +25,9 @@ public abstract class AbstractMachineBaseScreen<C extends AbstractMachineBaseCon
     }
 
     @Override
-    protected void renderHoveredTooltip(MatrixStack matrixStack, int x, int y) {
+    protected void renderHoveredTooltip(final MatrixStack matrixStack,
+                                        final int x,
+                                        final int y) {
         if (isPointInRegion(153, 17, 13, 51, x, y)) {
             IFormattableTextComponent text = TextUtil.energyWithMax(container.getEnergyStored(), container.getMaxEnergyStored());
             renderTooltip(matrixStack, text, x, y);
@@ -32,7 +36,10 @@ public abstract class AbstractMachineBaseScreen<C extends AbstractMachineBaseCon
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+    protected void drawGuiContainerBackgroundLayer(final MatrixStack matrixStack,
+                                                   final float partialTicks,
+                                                   final int x,
+                                                   final int y) {
         if (minecraft == null) return;
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.getTextureManager().bindTexture(getGuiTexture());
@@ -42,7 +49,7 @@ public abstract class AbstractMachineBaseScreen<C extends AbstractMachineBaseCon
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
+    protected void drawGuiContainerForegroundLayer(final MatrixStack matrixStack, final int x, final int y) {
         this.font.drawString(matrixStack, this.title.getString(), 8.0F, 6.0F, 4210752);
 //        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float)(this.ySize - 96 + 2), 4210752);
     }

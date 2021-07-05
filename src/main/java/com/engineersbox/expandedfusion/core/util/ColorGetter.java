@@ -26,7 +26,7 @@ public final class ColorGetter {
 
     private ColorGetter() {}
 
-    public static int getColor(Fluid fluid) {
+    public static int getColor(final Fluid fluid) {
         try {
             return FLUID_COLORS.get(NameUtils.from(fluid), () -> getFluidColor(fluid));
         } catch (ExecutionException e) {
@@ -36,7 +36,7 @@ public final class ColorGetter {
         return getFluidColor(fluid);
     }
 
-    private static int getFluidColor(Fluid fluid) {
+    private static int getFluidColor(final Fluid fluid) {
         if (fluid == Fluids.WATER) {
             return 0x0094FF;
         }
@@ -49,7 +49,7 @@ public final class ColorGetter {
         return 0xFFFFFF;
     }
 
-    public static int getColor(TextureAtlasSprite sprite) {
+    public static int getColor(final TextureAtlasSprite sprite) {
         if (ModList.get().isLoaded("jei")) {
             List<Integer> colors = mezz.jei.color.ColorGetter.INSTANCE.getColors(sprite, 0xFFFFFF, 1);
             return colors.isEmpty() ? 0xFFFFFF : colors.get(0);

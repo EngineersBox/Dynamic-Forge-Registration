@@ -36,7 +36,7 @@ public final class ModItems {
     static void register() {}
 
     @OnlyIn(Dist.CLIENT)
-    public static void registerItemColors(ColorHandlerEvent.Item event) {
+    public static void registerItemColors(final ColorHandlerEvent.Item event) {
         event.getItemColors().register((stack, tintIndex) -> {
             if (tintIndex == 1) {
                 return ColorGetter.getColor(CANISTER.get().getFluid(stack).getFluid());
@@ -45,15 +45,15 @@ public final class ModItems {
         }, CANISTER);
     }
 
-    private static BucketItem createBucketItem(Supplier<FlowingFluid> fluid) {
+    private static BucketItem createBucketItem(final Supplier<FlowingFluid> fluid) {
         return new BucketItem(fluid, new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP).maxStackSize(1).containerItem(Items.BUCKET));
     }
 
-    private static NoPlaceBucketItem createNoPlaceBucketItem(Supplier<Fluid> fluid) {
+    private static NoPlaceBucketItem createNoPlaceBucketItem(final Supplier<Fluid> fluid) {
         return new NoPlaceBucketItem(fluid, new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP).maxStackSize(1).containerItem(Items.BUCKET));
     }
 
-    private static <T extends Item> ItemRegistryObject<T> register(String name, Supplier<T> item) {
+    private static <T extends Item> ItemRegistryObject<T> register(final String name, final Supplier<T> item) {
         return new ItemRegistryObject<>(Registration.ITEMS.register(name, item));
     }
 }

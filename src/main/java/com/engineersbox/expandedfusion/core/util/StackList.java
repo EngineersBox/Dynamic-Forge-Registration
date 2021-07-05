@@ -27,7 +27,7 @@ public final class StackList extends ArrayList<ItemStack> {
      * @param stacks The {@link ItemStack}s, may be empty but not null
      * @return A new list of all non-empty (valid) stacks
      */
-    public static StackList of(ItemStack... stacks) {
+    public static StackList of(final ItemStack... stacks) {
         StackList newList = new StackList();
         Collections.addAll(newList, stacks);
         return newList;
@@ -40,7 +40,7 @@ public final class StackList extends ArrayList<ItemStack> {
      * @return A new list of all non-empty stacks from the inventory
      * @since 3.0.6
      */
-    public static StackList from(IInventory inventory) {
+    public static StackList from(final IInventory inventory) {
         StackList newList = new StackList();
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
             newList.add(inventory.getStackInSlot(i));
@@ -48,7 +48,7 @@ public final class StackList extends ArrayList<ItemStack> {
         return newList;
     }
 
-    public static StackList from(Iterable<INBT> tagList) {
+    public static StackList from(final Iterable<INBT> tagList) {
         StackList newList = new StackList();
         for (INBT nbt : tagList) {
             if (nbt instanceof CompoundNBT) {
@@ -60,40 +60,40 @@ public final class StackList extends ArrayList<ItemStack> {
 
     //region Convenience methods
 
-    public ItemStack firstOfType(Class<?> itemClass) {
+    public ItemStack firstOfType(final Class<?> itemClass) {
         return firstMatch(itemClassMatcher(itemClass));
     }
 
-    public ItemStack firstMatch(Predicate<ItemStack> predicate) {
+    public ItemStack firstMatch(final Predicate<ItemStack> predicate) {
         return stream().filter(predicate).findFirst().orElse(ItemStack.EMPTY);
     }
 
-    public ItemStack uniqueOfType(Class<?> itemClass) {
+    public ItemStack uniqueOfType(final Class<?> itemClass) {
         return uniqueMatch(itemClassMatcher(itemClass));
     }
 
-    public ItemStack uniqueMatch(Predicate<ItemStack> predicate) {
+    public ItemStack uniqueMatch(final Predicate<ItemStack> predicate) {
         return stream().filter(predicate).collect(Collectors.collectingAndThen(Collectors.toList(),
                 list -> list.size() == 1 ? list.get(0) : ItemStack.EMPTY));
     }
 
-    public Collection<ItemStack> allOfType(Class<?> itemClass) {
+    public Collection<ItemStack> allOfType(final Class<?> itemClass) {
         return allMatches(itemClassMatcher(itemClass));
     }
 
-    public Collection<ItemStack> allMatches(Predicate<ItemStack> predicate) {
+    public Collection<ItemStack> allMatches(final Predicate<ItemStack> predicate) {
         return stream().filter(predicate).collect(Collectors.toList());
     }
 
-    public int countOfType(Class<?> itemClass) {
+    public int countOfType(final Class<?> itemClass) {
         return countOfMatches(itemClassMatcher(itemClass));
     }
 
-    public int countOfMatches(Predicate<ItemStack> predicate) {
+    public int countOfMatches(final Predicate<ItemStack> predicate) {
         return (int) stream().filter(predicate).count();
     }
 
-    private static Predicate<ItemStack> itemClassMatcher(Class<?> itemClass) {
+    private static Predicate<ItemStack> itemClassMatcher(final Class<?> itemClass) {
         return stack -> itemClass.isInstance(stack.getItem());
     }
 
@@ -102,12 +102,12 @@ public final class StackList extends ArrayList<ItemStack> {
     //region ArrayList overrides
 
     @Override
-    public boolean add(ItemStack itemStack) {
+    public boolean add(final ItemStack itemStack) {
         return !itemStack.isEmpty() && super.add(itemStack);
     }
 
     @Override
-    public boolean addAll(Collection<? extends ItemStack> c) {
+    public boolean addAll(final Collection<? extends ItemStack> c) {
         boolean added = false;
         for (ItemStack stack : c) {
             if (!stack.isEmpty()) {
@@ -118,7 +118,7 @@ public final class StackList extends ArrayList<ItemStack> {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends ItemStack> c) {
+    public boolean addAll(final int index, final Collection<? extends ItemStack> c) {
         boolean added = false;
         for (ItemStack stack : c) {
             if (!stack.isEmpty()) {
@@ -130,7 +130,7 @@ public final class StackList extends ArrayList<ItemStack> {
     }
 
     @Override
-    public void add(int index, ItemStack element) {
+    public void add(final int index, final ItemStack element) {
         if (!element.isEmpty()) {
             super.add(index, element);
         }

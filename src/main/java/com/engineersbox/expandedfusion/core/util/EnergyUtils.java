@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public final class EnergyUtils {
     private EnergyUtils() {throw new IllegalAccessError("Utility class");}
 
-    public static void trySendToNeighbors(IBlockReader world, BlockPos pos, IEnergyHandler energyHandler, int maxSend) {
+    public static void trySendToNeighbors(final IBlockReader world, final BlockPos pos, final IEnergyHandler energyHandler, final int maxSend) {
         for (Direction side : Direction.values()) {
             if (energyHandler.getEnergyStored() == 0) {
                 return;
@@ -25,7 +25,7 @@ public final class EnergyUtils {
         }
     }
 
-    public static void trySendTo(IBlockReader world, BlockPos pos, IEnergyHandler energyHandler, int maxSend, Direction side) {
+    public static void trySendTo(final IBlockReader world, final BlockPos pos, final IEnergyHandler energyHandler, final int maxSend, final Direction side) {
         TileEntity tileEntity = world.getTileEntity(pos.offset(side));
         if (tileEntity != null) {
             IEnergyStorage energy = energyHandler.getEnergy(side).orElse(new EnergyStorage(0));
@@ -33,7 +33,7 @@ public final class EnergyUtils {
         }
     }
 
-    private static void trySendEnergy(int maxSend, IEnergyStorage energy, IEnergyStorage other) {
+    private static void trySendEnergy(final int maxSend, final IEnergyStorage energy, final IEnergyStorage other) {
         if (other.canReceive()) {
             int toSend = energy.extractEnergy(maxSend, true);
             int sent = other.receiveEnergy(toSend, false);
@@ -53,7 +53,7 @@ public final class EnergyUtils {
      */
     @SuppressWarnings("ConstantConditions")
     @Nullable
-    public static IEnergyStorage getEnergy(IWorldReader world, BlockPos pos) {
+    public static IEnergyStorage getEnergy(final IWorldReader world, final BlockPos pos) {
         if (!world.isAreaLoaded(pos, 1)) return null;
         TileEntity tileEntity = world.getTileEntity(pos);
         return tileEntity != null ? tileEntity.getCapability(CapabilityEnergy.ENERGY).orElse(null) : null;
@@ -67,7 +67,7 @@ public final class EnergyUtils {
      */
     @SuppressWarnings("ConstantConditions")
     @Nullable
-    public static IEnergyStorage getEnergy(ICapabilityProvider provider) {
+    public static IEnergyStorage getEnergy(final ICapabilityProvider provider) {
         return provider.getCapability(CapabilityEnergy.ENERGY).orElse(null);
     }
 
@@ -81,7 +81,7 @@ public final class EnergyUtils {
      */
     @SuppressWarnings("ConstantConditions")
     @Nullable
-    public static IEnergyStorage getEnergyFromSideOrNull(ICapabilityProvider provider, Direction side) {
+    public static IEnergyStorage getEnergyFromSideOrNull(final ICapabilityProvider provider, final Direction side) {
         return provider.getCapability(CapabilityEnergy.ENERGY, side).orElse(provider.getCapability(CapabilityEnergy.ENERGY).orElse(null));
     }
 }

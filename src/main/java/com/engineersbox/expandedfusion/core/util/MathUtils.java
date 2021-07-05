@@ -10,22 +10,22 @@ public final class MathUtils {
         throw new IllegalAccessError("Utility class");
     }
 
-    public static double clamp(double value, double lowerBound, double upperBound) {
-        return value < lowerBound ? lowerBound : value > upperBound ? upperBound : value;
+    public static double clamp(final double value, final double lowerBound, final double upperBound) {
+        return value < lowerBound ? lowerBound : Math.min(value, upperBound);
     }
 
-    public static float clamp(float value, float lowerBound, float upperBound) {
-        return value < lowerBound ? lowerBound : value > upperBound ? upperBound : value;
+    public static float clamp(final float value, final float lowerBound, final float upperBound) {
+        return value < lowerBound ? lowerBound : Math.min(value, upperBound);
     }
 
-    public static int clamp(int value, int lowerBound, int upperBound) {
-        return value < lowerBound ? lowerBound : value > upperBound ? upperBound : value;
+    public static int clamp(final int value, final int lowerBound, final int upperBound) {
+        return value < lowerBound ? lowerBound : Math.min(value, upperBound);
     }
 
     /**
      * Compare if two doubles are equal, using precision constant {@link #DOUBLES_EQUAL_PRECISION}.
      */
-    public static boolean doublesEqual(double a, double b) {
+    public static boolean doublesEqual(final double a, final double b) {
         return doublesEqual(a, b, DOUBLES_EQUAL_PRECISION);
     }
 
@@ -34,7 +34,7 @@ public final class MathUtils {
      *
      * @param precision Should be a small, positive number (like {@link #DOUBLES_EQUAL_PRECISION})
      */
-    public static boolean doublesEqual(double a, double b, double precision) {
+    public static boolean doublesEqual(final double a, final double b, final double precision) {
         return Math.abs(b - a) < precision;
     }
 
@@ -44,14 +44,14 @@ public final class MathUtils {
      * @param value The value
      * @return True if and only if {@code value} is equal to {@code (int) value}
      */
-    public static boolean doubleIsInt(double value) {
+    public static boolean doubleIsInt(final double value) {
         return MathUtils.doublesEqual(value, (int) value);
     }
 
     /**
      * Compare if two floats are equal, using precision constant {@link #DOUBLES_EQUAL_PRECISION}.
      */
-    public static boolean floatsEqual(float a, float b) {
+    public static boolean floatsEqual(final float a, final float b) {
         return floatsEqual(a, b, (float) DOUBLES_EQUAL_PRECISION);
     }
 
@@ -61,7 +61,7 @@ public final class MathUtils {
      * @param value The value
      * @return True if and only if {@code value} is equal to {@code (int) value}
      */
-    public static boolean floatIsInt(float value) {
+    public static boolean floatIsInt(final float value) {
         return floatsEqual(value, (int) value);
     }
 
@@ -70,28 +70,28 @@ public final class MathUtils {
      *
      * @param precision Should be a small, positive number (like {@link #DOUBLES_EQUAL_PRECISION})
      */
-    public static boolean floatsEqual(float a, float b, float precision) {
+    public static boolean floatsEqual(final float a, final float b, final float precision) {
         return Math.abs(b - a) < precision;
     }
 
-    public static boolean inRangeExclusive(double value, double min, double max) {
+    public static boolean inRangeExclusive(final double value, final double min, final double max) {
         return value < max && value > min;
     }
 
-    public static boolean inRangeExclusive(int value, int min, int max) {
+    public static boolean inRangeExclusive(final int value, final int min, final int max) {
         return value < max && value > min;
     }
 
-    public static boolean inRangeInclusive(double value, double min, double max) {
+    public static boolean inRangeInclusive(final double value, final double min, final double max) {
         return value <= max && value >= min;
     }
 
-    public static boolean inRangeInclusive(int value, int min, int max) {
+    public static boolean inRangeInclusive(final int value, final int min, final int max) {
         return value <= max && value >= min;
     }
 
     public static int min(final int a, final int b) {
-        return a < b ? a : b;
+        return Math.min(a, b);
     }
 
     public static int min(int a, final int b, final int c) {
@@ -107,7 +107,7 @@ public final class MathUtils {
         return a;
     }
 
-    public static int min(int a, final int b, final int c, final int d, int... rest) {
+    public static int min(final int a, final int b, final int c, final int d, final int... rest) {
         int min = min(a, b, c, d);
         for (int i : rest)
             if (i < min)
@@ -116,7 +116,7 @@ public final class MathUtils {
     }
 
     public static int max(final int a, final int b) {
-        return a > b ? a : b;
+        return Math.max(a, b);
     }
 
     public static int max(int a, final int b, final int c) {
@@ -132,7 +132,7 @@ public final class MathUtils {
         return a;
     }
 
-    public static int max(int a, final int b, final int c, final int d, int... rest) {
+    public static int max(final int a, final int b, final int c, final int d, final int... rest) {
         int max = max(a, b, c, d);
         for (int i : rest)
             if (i > max)
@@ -140,31 +140,31 @@ public final class MathUtils {
         return max;
     }
 
-    public static double nextGaussian(double mean, double deviation) {
+    public static double nextGaussian(final double mean, final double deviation) {
         return deviation * RANDOM.nextGaussian() + mean;
     }
 
-    public static double nextGaussian(Random random, double mean, double deviation) {
+    public static double nextGaussian(final Random random, final double mean, final double deviation) {
         return deviation * random.nextGaussian() + mean;
     }
 
-    public static int nextInt(int bound) {
+    public static int nextInt(final int bound) {
         return RANDOM.nextInt(bound);
     }
 
-    public static int nextIntInclusive(int min, int max) {
+    public static int nextIntInclusive(final int min, final int max) {
         return RANDOM.nextInt(max - min + 1) + min;
     }
 
-    public static int nextIntInclusive(Random random, int min, int max) {
+    public static int nextIntInclusive(final Random random, final int min, final int max) {
         return random.nextInt(max - min + 1) + min;
     }
 
-    public static boolean tryPercentage(double percent) {
+    public static boolean tryPercentage(final double percent) {
         return RANDOM.nextDouble() < percent;
     }
 
-    public static boolean tryPercentage(Random random, double percent) {
+    public static boolean tryPercentage(final Random random, final double percent) {
         return random.nextDouble() < percent;
     }
 }

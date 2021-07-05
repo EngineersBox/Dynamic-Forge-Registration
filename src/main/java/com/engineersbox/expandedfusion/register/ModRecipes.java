@@ -17,11 +17,11 @@ public final class ModRecipes {
 
     static void register() {}
 
-    private static RegistryObject<IRecipeSerializer<?>> registerSerializer(ResourceLocation name, Supplier<IRecipeSerializer<?>> serializer) {
+    private static RegistryObject<IRecipeSerializer<?>> registerSerializer(final ResourceLocation name, final Supplier<IRecipeSerializer<?>> serializer) {
         return Registration.RECIPE_SERIALIZERS.register(name.getPath(), serializer);
     }
 
-    private static <T extends IRecipe<?>> IRecipeType<T> registerType(ResourceLocation name) {
+    private static <T extends IRecipe<?>> IRecipeType<T> registerType(final ResourceLocation name) {
         return Registry.register(Registry.RECIPE_TYPE, name, new IRecipeType<T>() {
             @Override
             public String toString() {

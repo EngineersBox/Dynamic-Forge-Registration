@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.common.machine.tileentity;
 
+import com.engineersbox.expandedfusion.core.common.DataField;
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.tileentity.AbstractEnergyInventoryTileEntity;
 import net.minecraft.block.BlockState;
@@ -15,19 +16,19 @@ public abstract class AbstractMachineBaseTileEntity extends AbstractEnergyInvent
 
     protected final IIntArray fields = new IIntArray() {
         @Override
-        public int get(int index) {
-            switch (index) {
+        public int get(final int index) {
+            switch (DataField.fromInt(index)) {
                 //Minecraft actually sends fields as shorts, so we need to split energy into 2 fields
-                case 0:
+                case ENERGY_STORED_LOWER:
                     // Energy lower bytes
                     return AbstractMachineBaseTileEntity.this.getEnergyStored() & 0xFFFF;
-                case 1:
+                case ENERGY_STORED_HIGHER:
                     // Energy upper bytes
                     return (AbstractMachineBaseTileEntity.this.getEnergyStored() >> 16) & 0xFFFF;
-                case 2:
+                case MAX_ENERGY_STORED_LOWER:
                     // Max energy lower bytes
                     return AbstractMachineBaseTileEntity.this.getMaxEnergyStored() & 0xFFFF;
-                case 3:
+                case MAX_ENERGY_STORED_HIGHER:
                     // Max energy upper bytes
                     return (AbstractMachineBaseTileEntity.this.getMaxEnergyStored() >> 16) & 0xFFFF;
                 default:
@@ -36,22 +37,22 @@ public abstract class AbstractMachineBaseTileEntity extends AbstractEnergyInvent
         }
 
         @Override
-        public void set(int index, int value) {
-            switch (index) {
+        public void set(final int index, final int value) {
+            switch (DataField.fromInt(index)) {
                 //Minecraft actually sends fields as shorts, so we need to split energy into 2 fields
-                case 0:
+                case ENERGY_STORED_LOWER:
                     // Energy lower bytes
                     AbstractMachineBaseTileEntity.this.setEnergyStoredDirectly((value & 0xFFFF) + (AbstractMachineBaseTileEntity.this.getEnergyStored() & 0xFFFF0000));
                     return;
-                case 1:
+                case ENERGY_STORED_HIGHER:
                     // Energy upper bytes
                     AbstractMachineBaseTileEntity.this.setEnergyStoredDirectly((value << 16) + (AbstractMachineBaseTileEntity.this.getEnergyStored() & 0xFFFF));
                     return;
-                case 2:
+                case MAX_ENERGY_STORED_LOWER:
                     // Max energy lower bytes
                     AbstractMachineBaseTileEntity.this.setMaxEnergyStoredDirectly((value & 0xFFFF) + (AbstractMachineBaseTileEntity.this.getEnergyStored() & 0xFFFF0000));
                     return;
-                case 3:
+                case MAX_ENERGY_STORED_HIGHER:
                     // Max energy upper bytes
                     AbstractMachineBaseTileEntity.this.setMaxEnergyStoredDirectly((value << 16) + (AbstractMachineBaseTileEntity.this.getEnergyStored() & 0xFFFF));
                     return;
@@ -65,7 +66,12 @@ public abstract class AbstractMachineBaseTileEntity extends AbstractEnergyInvent
         }
     };
 
-    protected AbstractMachineBaseTileEntity(TileEntityType<?> typeIn, int inventorySize, int maxEnergy, int maxReceive, int maxExtract, MachineTier tier) {
+    protected AbstractMachineBaseTileEntity(final TileEntityType<?> typeIn,
+                                            final int inventorySize,
+                                            final int maxEnergy,
+                                            final int maxReceive,
+                                            final int maxExtract,
+                                            final MachineTier tier) {
         super(typeIn, inventorySize, maxEnergy, maxReceive, maxExtract);
         this.tier = tier;
     }
@@ -80,18 +86,18 @@ public abstract class AbstractMachineBaseTileEntity extends AbstractEnergyInvent
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tags) {
+    public void read(final BlockState state, final CompoundNBT tags) {
         super.read(state, tags);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tags) {
+    public CompoundNBT write(final CompoundNBT tags) {
         super.write(tags);
         return tags;
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+    public void onDataPacket(final NetworkManager net, final SUpdateTileEntityPacket packet) {
         super.onDataPacket(net, packet);
     }
 

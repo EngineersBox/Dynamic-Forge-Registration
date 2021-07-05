@@ -27,7 +27,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     private final LazyOptional<? extends IItemHandler>[] handlers =
             SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
 
-    protected LockableSidedInventoryTileEntity(TileEntityType<?> typeIn, int inventorySize) {
+    protected LockableSidedInventoryTileEntity(final TileEntityType<?> typeIn, final int inventorySize) {
         super(typeIn);
         this.items = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
     }
@@ -48,7 +48,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack getStackInSlot(final int index) {
         if (index < 0 || index >= items.size()) {
             return ItemStack.EMPTY;
         }
@@ -56,17 +56,17 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
+    public ItemStack decrStackSize(final int index, final int count) {
         return ItemStackHelper.getAndSplit(items, index, count);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
+    public ItemStack removeStackFromSlot(final int index) {
         return ItemStackHelper.getAndRemove(items, index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setInventorySlotContents(final int index, final ItemStack stack) {
         items.set(index, stack);
         if (stack.getCount() > getInventoryStackLimit()) {
             stack.setCount(getInventoryStackLimit());
@@ -74,7 +74,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
+    public boolean isUsableByPlayer(final PlayerEntity player) {
         return world != null && world.getTileEntity(pos) == this && MCMathUtils.distanceSq(player, pos) <= 64;
     }
 
@@ -84,14 +84,14 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public void read(BlockState stateIn, CompoundNBT tags) {
+    public void read(final BlockState stateIn, final CompoundNBT tags) {
         super.read(stateIn, tags);
         items = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(tags, items);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tags) {
+    public CompoundNBT write(final CompoundNBT tags) {
         super.write(tags);
         ItemStackHelper.saveAllItems(tags, items);
         return tags;
@@ -105,14 +105,14 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+    public void onDataPacket(final NetworkManager net, final SUpdateTileEntityPacket packet) {
         super.onDataPacket(net, packet);
         ItemStackHelper.loadAllItems(packet.getNbtCompound(), items);
     }
 
     @Nullable
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap, @Nullable final Direction side) {
         if (!this.removed && side != null && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (side == Direction.UP)
                 return handlers[0].cast();

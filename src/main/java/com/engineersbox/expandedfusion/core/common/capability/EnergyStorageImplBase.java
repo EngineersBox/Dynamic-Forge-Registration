@@ -13,14 +13,14 @@ import javax.annotation.Nullable;
 public class EnergyStorageImplBase extends EnergyStorage implements ICapabilityProvider {
     private final LazyOptional<EnergyStorageImplBase> lazy;
 
-    public EnergyStorageImplBase(int capacity, int maxReceive, int maxExtract) {
+    public EnergyStorageImplBase(final int capacity, final int maxReceive, final int maxExtract) {
         super(capacity, maxReceive, maxExtract, 0);
         this.lazy = LazyOptional.of(() -> this);
     }
 
     @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap, @Nullable final Direction side) {
         return CapabilityEnergy.ENERGY.orEmpty(cap, lazy.cast());
     }
 

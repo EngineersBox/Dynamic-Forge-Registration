@@ -55,36 +55,36 @@ public class ModBlocks {
     static void register() {}
 
     @OnlyIn(Dist.CLIENT)
-    public static void registerRenderTypes(FMLClientSetupEvent event) {
+    public static void registerRenderTypes(final FMLClientSetupEvent event) {
         Registration.getBlocks(AbstractMachineBlock.class).forEach(block ->
                 RenderTypeLookup.setRenderLayer(block, RenderType.getTranslucent()));
     }
 
-    private static <T extends Block> BlockRegistryObject<T> registerNoItem(String name, Supplier<T> block) {
+    private static <T extends Block> BlockRegistryObject<T> registerNoItem(final String name, final Supplier<T> block) {
         return new BlockRegistryObject<>(Registration.BLOCKS.register(name, block));
     }
 
-    private static <T extends Block> BlockRegistryObject<T> register(String name, Supplier<T> block) {
+    private static <T extends Block> BlockRegistryObject<T> register(final String name, final Supplier<T> block) {
         return register(name, block, ModBlocks::defaultItem);
     }
 
-    private static <T extends Block> BlockRegistryObject<T> register(String name, Supplier<T> block, Function<BlockRegistryObject<T>, Supplier<? extends BlockItem>> item) {
+    private static <T extends Block> BlockRegistryObject<T> register(final String name, final Supplier<T> block, final Function<BlockRegistryObject<T>, Supplier<? extends BlockItem>> item) {
         BlockRegistryObject<T> ret = registerNoItem(name, block);
         Registration.ITEMS.register(name, item.apply(ret));
         return ret;
     }
 
-    private static BlockRegistryObject<FlowingFluidBlock> registerFluid(String name, Supplier<FlowingFluid> fluid) {
+    private static BlockRegistryObject<FlowingFluidBlock> registerFluid(final String name, final Supplier<FlowingFluid> fluid) {
         return registerNoItem(name, () ->
                 new FlowingFluidBlock(fluid, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));
     }
 
-    private static <T extends Block> Supplier<BlockItem> defaultItem(BlockRegistryObject<T> block) {
+    private static <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block) {
         return () -> new BlockItem(block.get(), new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP));
     }
 
     @Nullable
-    public static ITextComponent checkForMissingLootTables(PlayerEntity player) {
+    public static ITextComponent checkForMissingLootTables(final PlayerEntity player) {
         // Checks for missing block loot tables, but only in dev
         if (!(player.world instanceof ServerWorld)) return null;
 

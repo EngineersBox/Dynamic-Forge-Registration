@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.common.machine.tileentity;
 
+import com.engineersbox.expandedfusion.core.common.DataField;
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
 import com.engineersbox.expandedfusion.core.common.machine.IMachineInventory;
@@ -25,24 +26,24 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
 
     protected final IIntArray fields = new IIntArray() {
         @Override
-        public int get(int index) {
-            switch (index) {
+        public int get(final int index) {
+            switch (DataField.fromInt(index)) {
                 //Minecraft actually sends fields as shorts, so we need to split energy into 2 fields
-                case 0:
+                case ENERGY_STORED_LOWER:
                     // Energy lower bytes
                     return AbstractMachineTileEntity.this.getEnergyStored() & 0xFFFF;
-                case 1:
+                case ENERGY_STORED_HIGHER:
                     // Energy upper bytes
                     return (AbstractMachineTileEntity.this.getEnergyStored() >> 16) & 0xFFFF;
-                case 2:
+                case MAX_ENERGY_STORED_LOWER:
                     // Max energy lower bytes
                     return AbstractMachineTileEntity.this.getMaxEnergyStored() & 0xFFFF;
-                case 3:
+                case MAX_ENERGY_STORED_HIGHER:
                     // Max energy upper bytes
                     return (AbstractMachineTileEntity.this.getMaxEnergyStored() >> 16) & 0xFFFF;
-                case 5:
+                case PROGRESS:
                     return (int) AbstractMachineTileEntity.this.progress;
-                case 6:
+                case PROCESS_TIME:
                     return AbstractMachineTileEntity.this.processTime;
                 default:
                     return 0;
@@ -50,12 +51,12 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         }
 
         @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 5:
+        public void set(final int index, final int value) {
+            switch (DataField.fromInt(index)) {
+                case PROGRESS:
                     AbstractMachineTileEntity.this.progress = value;
                     break;
-                case 6:
+                case PROCESS_TIME:
                     AbstractMachineTileEntity.this.processTime = value;
                     break;
             }
@@ -67,7 +68,9 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         }
     };
 
-    protected AbstractMachineTileEntity(TileEntityType<?> typeIn, int inventorySize, MachineTier tier) {
+    protected AbstractMachineTileEntity(final TileEntityType<?> typeIn,
+                                        final int inventorySize,
+                                        final  MachineTier tier) {
         super(typeIn, inventorySize, tier.energyCapacity, 500, 0, tier);
     }
 
@@ -78,11 +81,11 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
 
     protected abstract int getEnergyUsedPerTick();
 
-    protected BlockState getActiveState(BlockState currentState) {
+    protected BlockState getActiveState(final BlockState currentState) {
         return currentState.with(AbstractFurnaceBlock.LIT, true);
     }
 
-    protected BlockState getInactiveState(BlockState currentState) {
+    protected BlockState getInactiveState(final BlockState currentState) {
         return currentState.with(AbstractFurnaceBlock.LIT, false);
     }
 
@@ -107,7 +110,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
      * @param recipe The recipe
      * @return Process time in ticks
      */
-    protected abstract int getProcessTime(R recipe);
+    protected abstract int getProcessTime(final R recipe);
 
     /**
      * Get the processing speed. This is added to processing progress every tick. A speed of 1 would
@@ -126,7 +129,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
      * @param recipe The recipe
      * @return The results of the processing operation
      */
-    protected abstract Collection<ItemStack> getProcessResults(R recipe);
+    protected abstract Collection<ItemStack> getProcessResults(final R recipe);
 
     /**
      * Get all possible results of processing this recipe. Override if recipes can contain a
@@ -135,7 +138,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
      * @param recipe The recipe
      * @return All possible results of the processing operation
      */
-    protected Collection<ItemStack> getPossibleProcessResult(R recipe) {
+    protected Collection<ItemStack> getPossibleProcessResult(final R recipe) {
         return getProcessResults(recipe);
     }
 
@@ -144,7 +147,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         return 1;
     }
 
-    protected void sendUpdate(BlockState newState) {
+    protected void sendUpdate(final BlockState newState) {
         if (world == null) return;
         BlockState oldState = world.getBlockState(pos);
         if (oldState != newState) {
@@ -189,13 +192,13 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         }
     }
 
-    private boolean canMachineRun(R recipe) {
+    private boolean canMachineRun(final R recipe) {
         return world != null
                 && getEnergyStored() >= getEnergyUsedPerTick()
                 && hasRoomInOutput(getPossibleProcessResult(recipe));
     }
 
-    protected boolean hasRoomInOutput(Iterable<ItemStack> results) {
+    protected boolean hasRoomInOutput(final Iterable<ItemStack> results) {
         for (ItemStack stack : results) {
             if (!hasRoomForOutputItem(stack)) {
                 return false;
@@ -204,7 +207,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         return true;
     }
 
-    private boolean hasRoomForOutputItem(ItemStack stack) {
+    private boolean hasRoomForOutputItem(final ItemStack stack) {
         for (int i : getOutputSlots()) {
             ItemStack output = getStackInSlot(i);
             if (InventoryUtils.canItemsStack(stack, output)) {
@@ -214,7 +217,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         return false;
     }
 
-    protected void storeResultItem(ItemStack stack) {
+    protected void storeResultItem(final ItemStack stack) {
         // Merge the item into any output slot it can fit in
         for (int i : getOutputSlots()) {
             ItemStack output = getStackInSlot(i);
@@ -229,7 +232,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         }
     }
 
-    protected void consumeIngredients(R recipe) {
+    protected void consumeIngredients(final R recipe) {
         decrStackSize(0, 1);
     }
 
@@ -239,14 +242,14 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tags) {
+    public void read(final BlockState state, final CompoundNBT tags) {
         super.read(state, tags);
         this.progress = tags.getInt("Progress");
         this.processTime = tags.getInt("ProcessTime");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tags) {
+    public CompoundNBT write(final CompoundNBT tags) {
         super.write(tags);
         tags.putInt("Progress", (int) this.progress);
         tags.putInt("ProcessTime", this.processTime);
@@ -254,7 +257,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+    public void onDataPacket(final NetworkManager net, final SUpdateTileEntityPacket packet) {
         super.onDataPacket(net, packet);
         CompoundNBT tags = packet.getNbtCompound();
         this.progress = tags.getInt("Progress");

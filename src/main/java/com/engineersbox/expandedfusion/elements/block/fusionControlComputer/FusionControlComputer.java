@@ -39,7 +39,10 @@ public class FusionControlComputer extends AbstractMachineBlock {
     }
 
     @Override
-    public void animateTick(final BlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
+    public void animateTick(final BlockState stateIn,
+                            final World worldIn,
+                            final BlockPos pos,
+                            final Random rand) {
         // TODO: Unique sound and particles? Copied from BlastFurnaceBlock.
         if (stateIn.get(LIT)) {
             final double d0 = (double) pos.getX() + 0.5D;

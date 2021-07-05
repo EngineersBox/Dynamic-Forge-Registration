@@ -11,7 +11,10 @@ public class AbstractEnergyStorageContainer<T extends AbstractEnergyInventoryTil
     protected final T tileEntity;
     protected final IIntArray fields;
 
-    protected AbstractEnergyStorageContainer(ContainerType<?> type, int id, T tileEntityIn, IIntArray fieldsIn) {
+    protected AbstractEnergyStorageContainer(final ContainerType<?> type,
+                                             final int id,
+                                             final T tileEntityIn,
+                                             final IIntArray fieldsIn) {
         super(type, id);
         this.tileEntity = tileEntityIn;
         this.fields = fieldsIn;
@@ -20,7 +23,7 @@ public class AbstractEnergyStorageContainer<T extends AbstractEnergyInventoryTil
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
+    public boolean canInteractWith(final PlayerEntity playerIn) {
         // TODO
         return true;
     }

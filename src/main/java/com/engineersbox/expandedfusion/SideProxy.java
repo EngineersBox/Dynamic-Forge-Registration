@@ -44,13 +44,13 @@ class SideProxy implements IProxy {
     @Override
     public void tryFetchTagsHack() {}
 
-    private void imcEnqueue(InterModEnqueueEvent event) {
+    private void imcEnqueue(final InterModEnqueueEvent event) {
     }
 
-    private void imcProcess(InterModProcessEvent event) {
+    private void imcProcess(final InterModProcessEvent event) {
     }
 
-    private void serverAboutToStart(FMLServerAboutToStartEvent event) {
+    private void serverAboutToStart(final FMLServerAboutToStartEvent event) {
         server = event.getServer();
     }
 
@@ -72,12 +72,12 @@ class SideProxy implements IProxy {
             TagRegistryManager.fetchTags();
         }
 
-        private void clientSetup(FMLClientSetupEvent event) {
+        private void clientSetup(final FMLClientSetupEvent event) {
             ModBlocks.registerRenderTypes(event);
             ModContainers.registerScreens(event);
         }
 
-        public void setFog(EntityViewRenderEvent.FogColors fog) {
+        public void setFog(final EntityViewRenderEvent.FogColors fog) {
             World w = fog.getInfo().getRenderViewEntity().getEntityWorld();
             BlockPos pos = fog.getInfo().getBlockPos();
             BlockState bs = w.getBlockState(pos);
@@ -99,7 +99,7 @@ class SideProxy implements IProxy {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
         }
 
-        private void serverSetup(FMLDedicatedServerSetupEvent event) {
+        private void serverSetup(final FMLDedicatedServerSetupEvent event) {
         }
     }
 }

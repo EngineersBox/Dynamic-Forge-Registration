@@ -29,7 +29,7 @@ public final class InventoryUtils {
      * @return A collection of slots to be added
      * @since 4.1.1
      */
-    public static Collection<Slot> createPlayerSlots(PlayerInventory playerInventory, int startX, int startY) {
+    public static Collection<Slot> createPlayerSlots(final PlayerInventory playerInventory, final int startX, final int startY) {
         Collection<Slot> list = new ArrayList<>();
         // Backpack
         for (int y = 0; y < 3; ++y) {
@@ -44,7 +44,7 @@ public final class InventoryUtils {
         return list;
     }
 
-    public static boolean canItemsStackTag(ItemStack a, ItemStack b) {
+    public static boolean canItemsStackTag(final ItemStack a, final ItemStack b) {
         if (a.getItem() != b.getItem())
             return false;
         if (a.getTag() == null && b.getTag() != null)
@@ -61,7 +61,7 @@ public final class InventoryUtils {
      * @return The first matching stack, or {@link ItemStack#EMPTY} if there is none
      * @since 3.1.0 (was in StackHelper from 3.0.6)
      */
-    public static ItemStack firstMatch(IInventory inv, Predicate<ItemStack> predicate) {
+    public static ItemStack firstMatch(final IInventory inv, final Predicate<ItemStack> predicate) {
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
             ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty() && predicate.test(stack)) {
@@ -71,7 +71,7 @@ public final class InventoryUtils {
         return ItemStack.EMPTY;
     }
 
-    public static ItemStack mergeItem(IInventory inventory, int slotStart, int slotEndExclusive, ItemStack stack) {
+    public static ItemStack mergeItem(final IInventory inventory, final int slotStart, final int slotEndExclusive, final ItemStack stack) {
         if (inventory == null || stack.isEmpty()) {
             return stack;
         }
@@ -101,7 +101,7 @@ public final class InventoryUtils {
         return stack;
     }
 
-    public static Collection<ItemStack> mergeItems(IInventory inventory, int slotStart, int slotEndExclusive, Collection<ItemStack> stacks) {
+    public static Collection<ItemStack> mergeItems(final IInventory inventory, final int slotStart, final int slotEndExclusive, final Collection<ItemStack> stacks) {
         if (inventory == null && stacks.isEmpty()) {
             return ImmutableList.of();
         }
@@ -127,7 +127,7 @@ public final class InventoryUtils {
      * @param ingredient The items to match ({@link net.minecraft.item.crafting.Ingredient}, etc.)
      * @return The number of items in all matching item stacks
      */
-    public static int getTotalCount(IInventory inventory, Predicate<ItemStack> ingredient) {
+    public static int getTotalCount(final IInventory inventory, final Predicate<ItemStack> ingredient) {
         int total = 0;
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
             ItemStack stack = inventory.getStackInSlot(i);
@@ -146,7 +146,7 @@ public final class InventoryUtils {
      * @param ingredient The items to match ({@link net.minecraft.item.crafting.Ingredient}, etc.)
      * @param amount The total number of items to remove
      */
-    public static void consumeItems(IInventory inventory, Predicate<ItemStack> ingredient, int amount) {
+    public static void consumeItems(final IInventory inventory, final Predicate<ItemStack> ingredient, int amount) {
         int amountLeft = amount;
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
             ItemStack stack = inventory.getStackInSlot(i);
@@ -166,13 +166,13 @@ public final class InventoryUtils {
         }
     }
 
-    public static boolean canItemsStack(ItemStack a, ItemStack b) {
+    public static boolean canItemsStack(final ItemStack a, final ItemStack b) {
         // Determine if the item stacks can be merged
         if (a.isEmpty() || b.isEmpty()) return true;
         return ItemHandlerHelper.canItemStacksStack(a, b) && a.getCount() + b.getCount() <= a.getMaxStackSize();
     }
 
-    public static boolean mergeItem(IInventory inventory, ItemStack stack, int slot) {
+    public static boolean mergeItem(final IInventory inventory, final ItemStack stack, final int slot) {
         ItemStack current = inventory.getStackInSlot(slot);
         if (current.isEmpty()) {
             inventory.setInventorySlotContents(slot, stack);
@@ -184,13 +184,13 @@ public final class InventoryUtils {
         return false;
     }
 
-//    public static boolean isFilledFluidContainer(ItemStack stack) {
+//    public static boolean isFilledFluidContainer(final ItemStack stack) {
 //        Item item = stack.getItem();
 //        return (item instanceof BucketItem && ((BucketItem) item).getFluid() != Fluids.EMPTY)
 //                || (item instanceof CanisterItem && !((CanisterItem) item).getFluid(stack).isEmpty());
 //    }
 //
-//    public static boolean isEmptyFluidContainer(ItemStack stack) {
+//    public static boolean isEmptyFluidContainer(final ItemStack stack) {
 //        Item item = stack.getItem();
 //        return (item instanceof BucketItem && ((BucketItem) item).getFluid() == Fluids.EMPTY)
 //                || (item instanceof CanisterItem && ((CanisterItem) item).getFluid(stack).isEmpty());

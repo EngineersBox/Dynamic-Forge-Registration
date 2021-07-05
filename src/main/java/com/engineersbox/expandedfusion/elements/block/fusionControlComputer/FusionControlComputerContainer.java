@@ -13,11 +13,14 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
 public class FusionControlComputerContainer extends AbstractMachineContainer<FusionControlComputerTileEntity> {
-    public FusionControlComputerContainer(int id, PlayerInventory playerInventory) {
+    public FusionControlComputerContainer(final int id, final PlayerInventory playerInventory) {
         this(id, playerInventory, new FusionControlComputerTileEntity(), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));
     }
 
-    public FusionControlComputerContainer(int id, PlayerInventory playerInventory, FusionControlComputerTileEntity tileEntity, IIntArray fieldsIn) {
+    public FusionControlComputerContainer(final int id,
+                                          final PlayerInventory playerInventory,
+                                          final FusionControlComputerTileEntity tileEntity,
+                                          final IIntArray fieldsIn) {
         super(ModContainers.FUSION_CONTROL_COMPUTER, id, tileEntity, fieldsIn);
 
         this.addSlot(new Slot(this.tileEntity, 0, 56, 35));
@@ -27,7 +30,7 @@ public class FusionControlComputerContainer extends AbstractMachineContainer<Fus
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack transferStackInSlot(final PlayerEntity playerIn, final int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
         if (slot == null || !slot.getHasStack()) {
@@ -70,7 +73,7 @@ public class FusionControlComputerContainer extends AbstractMachineContainer<Fus
         return itemstack;
     }
 
-    private boolean isSmeltingIngredient(ItemStack stack) {
+    private boolean isSmeltingIngredient(final ItemStack stack) {
         // TODO
         return true;
     }

@@ -17,7 +17,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to}
      */
-    public static double distance(Vector3i from, Vector3i to) {
+    public static double distance(final Vector3i from, final Vector3i to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
         int dz = to.getZ() - from.getZ();
@@ -31,7 +31,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to}
      */
-    public static double distance(IPosition from, IPosition to) {
+    public static double distance(final IPosition from, final IPosition to) {
         double dx = to.getX() - from.getX();
         double dy = to.getY() - from.getY();
         double dz = to.getZ() - from.getZ();
@@ -46,7 +46,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos}
      */
-    public static double distance(Entity entity, Vector3i pos) {
+    public static double distance(final Entity entity, final Vector3i pos) {
         double dx = pos.getX() + 0.5 - entity.getPosX();
         double dy = pos.getY() + 0.5 - entity.getPosY();
         double dz = pos.getZ() + 0.5 - entity.getPosZ();
@@ -61,7 +61,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos}
      */
-    public static double distance(Entity entity, IPosition pos) {
+    public static double distance(final Entity entity, final IPosition pos) {
         double dx = pos.getX() - entity.getPosX();
         double dy = pos.getY() - entity.getPosY();
         double dz = pos.getZ() - entity.getPosZ();
@@ -76,7 +76,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to} squared
      */
-    public static double distanceSq(Vector3i from, Vector3i to) {
+    public static double distanceSq(final Vector3i from, final Vector3i to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
         int dz = to.getZ() - from.getZ();
@@ -91,7 +91,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to} squared
      */
-    public static double distanceSq(IPosition from, IPosition to) {
+    public static double distanceSq(final IPosition from, final IPosition to) {
         double dx = to.getX() - from.getX();
         double dy = to.getY() - from.getY();
         double dz = to.getZ() - from.getZ();
@@ -105,7 +105,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos} squared
      */
-    public static double distanceSq(Entity entity, Vector3i pos) {
+    public static double distanceSq(final Entity entity, final Vector3i pos) {
         double dx = pos.getX() + 0.5 - entity.getPosX();
         double dy = pos.getY() + 0.5 - entity.getPosY();
         double dz = pos.getZ() + 0.5 - entity.getPosZ();
@@ -119,7 +119,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos} squared
      */
-    public static double distanceSq(Entity entity, IPosition pos) {
+    public static double distanceSq(final Entity entity, final IPosition pos) {
         double dx = pos.getX() - entity.getPosX();
         double dy = pos.getY() - entity.getPosY();
         double dz = pos.getZ() - entity.getPosZ();
@@ -134,7 +134,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to} squared, ignoring Y-axis
      */
-    public static double distanceHorizontal(Vector3i from, Vector3i to) {
+    public static double distanceHorizontal(final Vector3i from, final Vector3i to) {
         int dx = to.getX() - from.getX();
         int dz = to.getZ() - from.getZ();
         return Math.sqrt(dx * dx + dz * dz);
@@ -148,7 +148,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to} squared
      */
-    public static double distanceHorizontal(IPosition from, IPosition to) {
+    public static double distanceHorizontal(final IPosition from, final IPosition to) {
         double dx = to.getX() - from.getX();
         double dz = to.getZ() - from.getZ();
         return Math.sqrt(dx * dx + dz * dz);
@@ -161,7 +161,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos}, ignoring Y-axis
      */
-    public static double distanceHorizontal(Entity entity, Vector3i pos) {
+    public static double distanceHorizontal(final Entity entity, final Vector3i pos) {
         double dx = pos.getX() + 0.5 - entity.getPosX();
         double dz = pos.getZ() + 0.5 - entity.getPosZ();
         return Math.sqrt(dx * dx + dz * dz);
@@ -174,7 +174,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos}, ignoring Y-axis
      */
-    public static double distanceHorizontal(Entity entity, IPosition pos) {
+    public static double distanceHorizontal(final Entity entity, final IPosition pos) {
         double dx = pos.getX() - entity.getPosX();
         double dz = pos.getZ() - entity.getPosZ();
         return Math.sqrt(dx * dx + dz * dz);
@@ -188,7 +188,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to} squared, ignoring Y-axis
      */
-    public static double distanceHorizontalSq(Vector3i from, Vector3i to) {
+    public static double distanceHorizontalSq(final Vector3i from, final Vector3i to) {
         int dx = to.getX() - from.getX();
         int dz = to.getZ() - from.getZ();
         return dx * dx + dz * dz;
@@ -202,7 +202,7 @@ public final class MCMathUtils {
      * @param to   Another point
      * @return The distance between {@code from} and {@code to} squared, ignoring Y-axis
      */
-    public static double distanceHorizontalSq(IPosition from, IPosition to) {
+    public static double distanceHorizontalSq(final IPosition from, final IPosition to) {
         double dx = to.getX() - from.getX();
         double dz = to.getZ() - from.getZ();
         return dx * dx + dz * dz;
@@ -216,7 +216,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos} squared, ignoring Y-axis
      */
-    public static double distanceHorizontalSq(Entity entity, Vector3i pos) {
+    public static double distanceHorizontalSq(final Entity entity, final Vector3i pos) {
         double dx = pos.getX() + 0.5 - entity.getPosX();
         double dz = pos.getZ() + 0.5 - entity.getPosZ();
         return dx * dx + dz * dz;
@@ -230,7 +230,7 @@ public final class MCMathUtils {
      * @param pos    The other point
      * @return The distance between {code entity} and {@code pos} squared, ignoring Y-axis
      */
-    public static double distanceHorizontalSq(Entity entity, IPosition pos) {
+    public static double distanceHorizontalSq(final Entity entity, final IPosition pos) {
         double dx = pos.getX() - entity.getPosX();
         double dz = pos.getZ() - entity.getPosZ();
         return dx * dx + dz * dz;
