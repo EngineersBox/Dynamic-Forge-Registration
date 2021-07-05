@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.common.tileentity;
 
 import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
-import com.engineersbox.expandedfusion.core.common.handler.IEnergyHandler;
+import com.engineersbox.expandedfusion.core.common.energy.IEnergyHandler;
 import com.engineersbox.expandedfusion.core.util.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;

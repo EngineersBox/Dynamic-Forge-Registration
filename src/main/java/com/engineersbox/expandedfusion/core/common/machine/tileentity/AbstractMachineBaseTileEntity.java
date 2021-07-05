@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.common.machine;
+package com.engineersbox.expandedfusion.core.common.machine.tileentity;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.tileentity.AbstractEnergyInventoryTileEntity;

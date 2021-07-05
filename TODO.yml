@@ -1,0 +1,122 @@
+- Blocks:
+    - Ore:
+        - Tin
+        - Nobium/Columbium
+        - Beryllium
+        - Copper
+        - Tungsten
+        - Ilmenite
+        - Columbite
+    - Flat:
+        - Metals:
+            - Tin
+            - Nobium/Columbium
+            - Titanium
+            - Copper
+            - Graphite
+            - Steel
+            - Beryllium
+            - Tungsten/Wolfram
+            - Magnesium
+        - Machine Frame (Tier 1 - 3)
+        - Nobium-Titanium coil
+        - Nobium-Tin coil
+        - Copper-Beryllium bonded shielding
+        - Divertor cassette assembly
+        - Cryostat pressure chamber wall
+    - Machines:
+        - Fusion control computer
+        - Chemical exchanger
+        - Fractional distiller
+        - Electrolyser
+- Items:
+    - Cell:
+        - Empty
+        - Full
+    - Bucket
+    - Ingot, Rod, Plate, Dust:
+        - Tin
+        - Nobium/Columbium
+        - Titanium
+        - Copper
+        - Graphite
+        - Steel
+        - Beryllium
+        - Tungsten/Wolfram
+        - Magnesium
+    - Hammer
+    - Crimper
+    - Snips
+- Fluids:
+    - Hydrogen (H)
+    - Helium (He)
+    - Helium-3 (He3)
+    - Deuterium (H2 or D)
+    - Tritium (H3 or T)
+    - Oxygen (O)
+- Recipes:
+    - Crafting:
+        - Hammer:
+            - Items:
+                - P: Plate
+                - S: Stick
+            - Pattern:
+                - P P ~
+                - P S S
+                - P P ~
+        - Crimper:
+            - Items:
+                - P: Plate
+                - S: Stick
+                - R: Rod
+            - Pattern:
+                - P R ~
+                - R P S
+                - ~ S ~
+        - Snips:
+            - Items:
+                - P: Plate
+                - S: Stick
+                - R: Rod
+            - Pattern:
+                  - ~ P ~
+                  - P R S
+                  - ~ S ~
+    - Fusion:
+        - D2 + T3 = Helium Plasma
+    - Chemical Exchanger:
+        - Girdler-Sulfide Process:
+            - IN:
+                - H2S
+                - H2O
+            - OUT:
+                - HDO (25%)
+                - H2O (75%)
+    - Fractional Distiller:
+        - Deuterium concentration:
+            - IN:
+                - HDO
+            - OUT 1 (100%):
+                - HDO
+                - H
+                - O
+            - 250 FE
+    - Electrolyser:
+        - Heavy water deuterium separation:
+            - IN:
+                - HDO
+            - OUT 1 (100%):
+                - H
+                - D
+                - O
+            - 250 FE
+        - Water deuterium separation:
+            - IN:
+                - H2O
+            - OUT 1 (5%):
+                - H
+                - D
+                - O
+            - OUT 2 (95%):
+                - H
+                - O

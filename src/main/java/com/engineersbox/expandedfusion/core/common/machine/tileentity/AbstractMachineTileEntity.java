@@ -1,7 +1,8 @@
-package com.engineersbox.expandedfusion.core.common.machine;
+package com.engineersbox.expandedfusion.core.common.machine.tileentity;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
+import com.engineersbox.expandedfusion.core.common.machine.IMachineInventory;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;

@@ -1,6 +1,7 @@
-package com.engineersbox.expandedfusion.core.common.machine;
+package com.engineersbox.expandedfusion.core.common.machine.container;
 
 import com.engineersbox.expandedfusion.core.common.energy.AbstractEnergyStorageContainer;
+import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineBaseTileEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.IIntArray;
 

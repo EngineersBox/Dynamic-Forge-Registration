@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.common.handler;
+package com.engineersbox.expandedfusion.core.common.energy;
 
 import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
 import net.minecraft.nbt.CompoundNBT;

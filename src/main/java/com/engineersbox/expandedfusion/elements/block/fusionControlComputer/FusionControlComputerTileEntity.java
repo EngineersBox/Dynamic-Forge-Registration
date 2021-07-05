@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
-import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineTileEntity;
+import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.register.ModTileEntities;
 import com.google.common.collect.ImmutableList;

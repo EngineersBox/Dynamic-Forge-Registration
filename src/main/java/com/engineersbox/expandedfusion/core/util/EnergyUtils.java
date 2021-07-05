@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.util;
 
-import com.engineersbox.expandedfusion.core.common.handler.IEnergyHandler;
+import com.engineersbox.expandedfusion.core.common.energy.IEnergyHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;

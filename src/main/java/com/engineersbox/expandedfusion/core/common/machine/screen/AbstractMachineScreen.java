@@ -1,5 +1,6 @@
-package com.engineersbox.expandedfusion.core.common.machine;
+package com.engineersbox.expandedfusion.core.common.machine.screen;
 
+import com.engineersbox.expandedfusion.core.common.machine.container.AbstractMachineContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;

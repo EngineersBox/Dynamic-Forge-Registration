@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineScreen;
+import com.engineersbox.expandedfusion.core.common.machine.screen.AbstractMachineScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
