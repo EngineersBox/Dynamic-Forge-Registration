@@ -39,7 +39,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
 
     @Override
     public boolean isEmpty() {
-        for (ItemStack stack : items) {
+        for (final ItemStack stack : items) {
             if (!stack.isEmpty()) {
                 return false;
             }
@@ -99,7 +99,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        CompoundNBT tags = getUpdateTag();
+        final CompoundNBT tags = getUpdateTag();
         ItemStackHelper.saveAllItems(tags, items);
         return new SUpdateTileEntityPacket(pos, 1, tags);
     }
@@ -126,7 +126,7 @@ public abstract class LockableSidedInventoryTileEntity extends LockableTileEntit
     @Override
     public void remove() {
         super.remove();
-        for (LazyOptional<? extends IItemHandler> handler : handlers) {
+        for (final LazyOptional<? extends IItemHandler> handler : handlers) {
             handler.invalidate();
         }
     }

@@ -50,11 +50,11 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
     protected AbstractCookingRecipe getRecipe() {
         if (world == null) return null;
 
-        RecipeManager recipeManager = world.getRecipeManager();
-        Optional<BlastingRecipe> optional = recipeManager.getRecipe(IRecipeType.BLASTING, this, world);
+        final RecipeManager recipeManager = world.getRecipeManager();
+        final Optional<BlastingRecipe> optional = recipeManager.getRecipe(IRecipeType.BLASTING, this, world);
         if (optional.isPresent()) return optional.get();
 
-        Optional<FurnaceRecipe> optional1 = recipeManager.getRecipe(IRecipeType.SMELTING, this, world);
+        final Optional<FurnaceRecipe> optional1 = recipeManager.getRecipe(IRecipeType.SMELTING, this, world);
         return optional1.orElse(null);
     }
 

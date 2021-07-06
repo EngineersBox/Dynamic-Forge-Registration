@@ -29,7 +29,7 @@ public abstract class AbstractMachineBaseScreen<C extends AbstractMachineBaseCon
                                         final int x,
                                         final int y) {
         if (isPointInRegion(153, 17, 13, 51, x, y)) {
-            IFormattableTextComponent text = TextUtil.energyWithMax(container.getEnergyStored(), container.getMaxEnergyStored());
+            final IFormattableTextComponent text = TextUtil.energyWithMax(container.getEnergyStored(), container.getMaxEnergyStored());
             renderTooltip(matrixStack, text, x, y);
         }
         super.renderHoveredTooltip(matrixStack, x, y);

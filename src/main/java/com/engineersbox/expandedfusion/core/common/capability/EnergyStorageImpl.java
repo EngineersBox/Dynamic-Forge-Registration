@@ -81,10 +81,10 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
 
         @Override
         public int receiveEnergy(final int maxReceive, final boolean simulate) {
-            World world = EnergyStorageImpl.this.tileEntity.getWorld();
+            final World world = EnergyStorageImpl.this.tileEntity.getWorld();
             if (world == null) return 0;
 
-            int received = EnergyStorageImpl.this.receiveEnergy(maxReceive, simulate);
+            final int received = EnergyStorageImpl.this.receiveEnergy(maxReceive, simulate);
             if (received > 0 && !simulate)
                 this.lastReceiveTick = world.getGameTime();
             return received;
@@ -92,10 +92,10 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
 
         @Override
         public int extractEnergy(final int maxExtract, final boolean simulate) {
-            World world = EnergyStorageImpl.this.tileEntity.getWorld();
+            final World world = EnergyStorageImpl.this.tileEntity.getWorld();
             if (world == null) return 0;
 
-            long time = world.getGameTime();
+            final long time = world.getGameTime();
             if (time != this.lastReceiveTick) {
                 return EnergyStorageImpl.this.extractEnergy(maxExtract, simulate);
             }

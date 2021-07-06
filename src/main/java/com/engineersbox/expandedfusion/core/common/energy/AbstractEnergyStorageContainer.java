@@ -37,20 +37,20 @@ public class AbstractEnergyStorageContainer<T extends AbstractEnergyInventoryTil
     }
 
     public int getEnergyStored() {
-        int upper = fields.get(1) & 0xFFFF;
-        int lower = fields.get(0) & 0xFFFF;
+        final int upper = fields.get(1) & 0xFFFF;
+        final int lower = fields.get(0) & 0xFFFF;
         return (upper << 16) + lower;
     }
 
     public int getMaxEnergyStored() {
-        int upper = fields.get(3) & 0xFFFF;
-        int lower = fields.get(2) & 0xFFFF;
+        final int upper = fields.get(3) & 0xFFFF;
+        final int lower = fields.get(2) & 0xFFFF;
         return (upper << 16) + lower;
     }
 
     public int getEnergyBarHeight() {
-        int max = getMaxEnergyStored();
-        int energyClamped = MathUtils.clamp(getEnergyStored(), 0, max);
+        final int max = getMaxEnergyStored();
+        final int energyClamped = MathUtils.clamp(getEnergyStored(), 0, max);
         return max > 0 ? 50 * energyClamped / max : 0;
     }
 }

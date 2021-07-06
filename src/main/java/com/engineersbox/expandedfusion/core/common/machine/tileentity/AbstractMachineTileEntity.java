@@ -16,7 +16,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.IIntArray;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends AbstractMachineBaseTileEntity implements IMachineInventory {
     public static final int FIELDS_COUNT = 7;
@@ -149,7 +152,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
 
     protected void sendUpdate(final BlockState newState) {
         if (world == null) return;
-        BlockState oldState = world.getBlockState(pos);
+        final BlockState oldState = world.getBlockState(pos);
         if (oldState != newState) {
             world.setBlockState(pos, newState, 3);
             world.notifyBlockUpdate(pos, oldState, newState, 3);
@@ -161,29 +164,35 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
         sendUpdate(getInactiveState(world.getBlockState(pos)));
     }
 
+    private void handleProcessProgressChanges(final R recipe) {
+        if (world == null) {
+            return;
+        }
+        processTime = getProcessTime(recipe);
+        progress += getProcessSpeed();
+        energy.consumeEnergy(getEnergyUsedPerTick());
+
+        if (progress >= processTime) {
+            // Create result
+            getProcessResults(recipe).forEach(this::storeResultItem);
+            consumeIngredients(recipe);
+            progress = 0;
+
+            if (getRecipe() == null) {
+                setInactiveState();
+            }
+        } else {
+            sendUpdate(getActiveState(world.getBlockState(pos)));
+        }
+    }
+
     @Override
     public void tick() {
         if (world == null || world.isRemote) return;
 
-        R recipe = getRecipe();
+        final R recipe = getRecipe();
         if (recipe != null && canMachineRun(recipe)) {
-            // Process
-            processTime = getProcessTime(recipe);
-            progress += getProcessSpeed();
-            energy.consumeEnergy(getEnergyUsedPerTick());
-
-            if (progress >= processTime) {
-                // Create result
-                getProcessResults(recipe).forEach(this::storeResultItem);
-                consumeIngredients(recipe);
-                progress = 0;
-
-                if (getRecipe() == null) {
-                    setInactiveState();
-                }
-            } else {
-                sendUpdate(getActiveState(world.getBlockState(pos)));
-            }
+            handleProcessProgressChanges(recipe);
         } else {
             if (recipe == null) {
                 progress = 0;
@@ -199,28 +208,17 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
     }
 
     protected boolean hasRoomInOutput(final Iterable<ItemStack> results) {
-        for (ItemStack stack : results) {
-            if (!hasRoomForOutputItem(stack)) {
-                return false;
-            }
-        }
-        return true;
+        return StreamSupport.stream(results.spliterator(), false).allMatch(this::hasRoomForOutputItem);
     }
 
     private boolean hasRoomForOutputItem(final ItemStack stack) {
-        for (int i : getOutputSlots()) {
-            ItemStack output = getStackInSlot(i);
-            if (InventoryUtils.canItemsStack(stack, output)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(getOutputSlots()).anyMatch((i) -> InventoryUtils.canItemsStack(stack, getStackInSlot(i)));
     }
 
     protected void storeResultItem(final ItemStack stack) {
         // Merge the item into any output slot it can fit in
         for (int i : getOutputSlots()) {
-            ItemStack output = getStackInSlot(i);
+            final ItemStack output = getStackInSlot(i);
             if (InventoryUtils.canItemsStack(stack, output)) {
                 if (output.isEmpty()) {
                     setInventorySlotContents(i, stack);
@@ -259,14 +257,14 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
     @Override
     public void onDataPacket(final NetworkManager net, final SUpdateTileEntityPacket packet) {
         super.onDataPacket(net, packet);
-        CompoundNBT tags = packet.getNbtCompound();
+        final CompoundNBT tags = packet.getNbtCompound();
         this.progress = tags.getInt("Progress");
         this.processTime = tags.getInt("ProcessTime");
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT tags = super.getUpdateTag();
+        final CompoundNBT tags = super.getUpdateTag();
         tags.putInt("Progress", (int) this.progress);
         tags.putInt("ProcessTime", this.processTime);
         return tags;

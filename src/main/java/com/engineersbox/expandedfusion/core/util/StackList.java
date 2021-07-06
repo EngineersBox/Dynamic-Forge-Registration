@@ -28,7 +28,7 @@ public final class StackList extends ArrayList<ItemStack> {
      * @return A new list of all non-empty (valid) stacks
      */
     public static StackList of(final ItemStack... stacks) {
-        StackList newList = new StackList();
+        final StackList newList = new StackList();
         Collections.addAll(newList, stacks);
         return newList;
     }
@@ -41,7 +41,7 @@ public final class StackList extends ArrayList<ItemStack> {
      * @since 3.0.6
      */
     public static StackList from(final IInventory inventory) {
-        StackList newList = new StackList();
+        final StackList newList = new StackList();
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
             newList.add(inventory.getStackInSlot(i));
         }
@@ -49,8 +49,8 @@ public final class StackList extends ArrayList<ItemStack> {
     }
 
     public static StackList from(final Iterable<INBT> tagList) {
-        StackList newList = new StackList();
-        for (INBT nbt : tagList) {
+        final StackList newList = new StackList();
+        for (final INBT nbt : tagList) {
             if (nbt instanceof CompoundNBT) {
                 newList.add(ItemStack.read((CompoundNBT) nbt));
             }
@@ -109,7 +109,7 @@ public final class StackList extends ArrayList<ItemStack> {
     @Override
     public boolean addAll(final Collection<? extends ItemStack> c) {
         boolean added = false;
-        for (ItemStack stack : c) {
+        for (final ItemStack stack : c) {
             if (!stack.isEmpty()) {
                 added |= super.add(stack);
             }
@@ -120,7 +120,7 @@ public final class StackList extends ArrayList<ItemStack> {
     @Override
     public boolean addAll(final int index, final Collection<? extends ItemStack> c) {
         boolean added = false;
-        for (ItemStack stack : c) {
+        for (final ItemStack stack : c) {
             if (!stack.isEmpty()) {
                 super.add(index, stack);
                 added = true;

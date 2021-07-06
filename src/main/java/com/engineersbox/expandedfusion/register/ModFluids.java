@@ -26,19 +26,19 @@ public final class ModFluids {
     }
 
     private static <T extends Fluid> T register(final String name, final T fluid) {
-        ResourceLocation id = ExpandedFusion.getId(name);
+        final ResourceLocation id = ExpandedFusion.getId(name);
         fluid.setRegistryName(id);
         ForgeRegistries.FLUIDS.register(fluid);
         return fluid;
     }
 
     private static ForgeFlowingFluid.Properties properties(final String name, final Supplier<Fluid> still, final Supplier<Fluid> flowing) {
-        String tex = "block/" + name;
+        final String tex = "block/" + name;
         return new ForgeFlowingFluid.Properties(still, flowing, FluidAttributes.builder(ExpandedFusion.getId(tex + "_still"), ExpandedFusion.getId(tex + "_flowing")));
     }
 
     private static ForgeFlowingFluid.Properties propertiesGas(final String name, final Supplier<Fluid> still) {
-        String tex = "block/" + name;
+        final String tex = "block/" + name;
         //noinspection ReturnOfNull -- null-returning Supplier for flowing fluid
         return new ForgeFlowingFluid.Properties(still, () -> null, FluidAttributes.builder(ExpandedFusion.getId(tex), ExpandedFusion.getId(tex)).gaseous());
     }

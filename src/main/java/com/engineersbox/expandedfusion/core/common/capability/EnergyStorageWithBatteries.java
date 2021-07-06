@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> extends EnergyStorageImpl {
     private final IInventory inventory;
-    private final LazyOptional<EnergyStorageWithBatteries> lazy;
+    private final LazyOptional<EnergyStorageWithBatteries<?>> lazy;
 
     protected int energyInternal;
     protected int capacityInternal;
@@ -55,23 +55,21 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     @Override
     public int receiveEnergy(final int maxReceive, final boolean simulate) {
         if (!canReceive()) return 0;
-
-        int batteryCount = getBatteryCount();
+        final int batteryCount = getBatteryCount();
         int left = maxReceive;
         if (batteryCount > 0) {
-            int perBattery = left / batteryCount;
+            final int perBattery = left / batteryCount;
 
             for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-                ItemStack stack = inventory.getStackInSlot(i);
-                LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
+                final ItemStack stack = inventory.getStackInSlot(i);
+                final LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
 
                 if (optional.isPresent()) {
                     left -= optional.orElseThrow(IllegalStateException::new).receiveEnergy(perBattery, simulate);
                 }
             }
         }
-
-        int internalReceive = Math.min(capacityInternal - energyInternal, Math.min(this.maxReceive, left));
+        final int internalReceive = Math.min(capacityInternal - energyInternal, Math.min(this.maxReceive, left));
         if (!simulate)
             energyInternal += internalReceive;
         return maxReceive - (left - internalReceive);
@@ -81,24 +79,25 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     public int extractEnergy(final int maxExtract, final boolean simulate) {
         if (!canExtract()) return 0;
 
-        int internalExtract = Math.min(energyInternal, Math.min(this.maxExtract, maxExtract));
+        final int internalExtract = Math.min(energyInternal, Math.min(this.maxExtract, maxExtract));
         if (!simulate)
             energyInternal -= internalExtract;
         if (internalExtract >= maxExtract)
             return internalExtract;
 
-        int batteryCount = getBatteryCount();
+        final int batteryCount = getBatteryCount();
         int extracted = internalExtract;
-        if (batteryCount > 0) {
-            int perBattery = (maxExtract - internalExtract) / batteryCount;
+        if (batteryCount <= 0) {
+            return extracted;
+        }
+        final int perBattery = (maxExtract - internalExtract) / batteryCount;
 
-            for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-                ItemStack stack = inventory.getStackInSlot(i);
-                LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
+        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+            final ItemStack stack = inventory.getStackInSlot(i);
+            final LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
 
-                if (optional.isPresent()) {
-                    extracted += optional.orElseThrow(IllegalStateException::new).extractEnergy(perBattery, simulate);
-                }
+            if (optional.isPresent()) {
+                extracted += optional.orElseThrow(IllegalStateException::new).extractEnergy(perBattery, simulate);
             }
         }
 
@@ -118,8 +117,8 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     public int getEnergyStored() {
         int ret = energyInternal;
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
+            final ItemStack stack = inventory.getStackInSlot(i);
+            final LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
 
             if (optional.isPresent()) {
                 ret += optional.orElseThrow(IllegalStateException::new).getEnergyStored();
@@ -132,8 +131,8 @@ public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> exten
     public int getMaxEnergyStored() {
         int ret = capacityInternal;
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
+            final ItemStack stack = inventory.getStackInSlot(i);
+            final LazyOptional<IEnergyStorage> optional = stack.getCapability(CapabilityEnergy.ENERGY);
 
             if (optional.isPresent()) {
                 ret += optional.orElseThrow(IllegalStateException::new).getMaxEnergyStored();

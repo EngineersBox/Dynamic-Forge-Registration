@@ -27,7 +27,7 @@ public class ModContainers {
     }
 
     private static <C extends Container> ContainerType<C> register(final String name, final ContainerType.IFactory<C> containerFactory) {
-        ContainerType<C> type = new ContainerType<>(containerFactory);
+        final ContainerType<C> type = new ContainerType<>(containerFactory);
         return register(name, type);
     }
 

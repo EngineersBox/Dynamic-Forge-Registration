@@ -32,11 +32,11 @@ public class FusionControlComputerContainer extends AbstractMachineContainer<Fus
     @Override
     public ItemStack transferStackInSlot(final PlayerEntity playerIn, final int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        final Slot slot = this.inventorySlots.get(index);
         if (slot == null || !slot.getHasStack()) {
             return itemstack;
         }
-        ItemStack itemstack1 = slot.getStack();
+        final ItemStack itemstack1 = slot.getStack();
         itemstack = itemstack1.copy();
 
         final int inventorySize = 2;

@@ -41,7 +41,7 @@ public final class ColorGetter {
             return 0x0094FF;
         }
         if (ModList.get().isLoaded("jei")) {
-            TextureAtlasSprite[] sprites = ForgeHooksClient.getFluidSprites(Minecraft.getInstance().world, BlockPos.ZERO, fluid.getDefaultState());
+            final TextureAtlasSprite[] sprites = ForgeHooksClient.getFluidSprites(Minecraft.getInstance().world, BlockPos.ZERO, fluid.getDefaultState());
             if (sprites.length > 0) {
                 return getColor(sprites[0]);
             }
@@ -51,7 +51,7 @@ public final class ColorGetter {
 
     public static int getColor(final TextureAtlasSprite sprite) {
         if (ModList.get().isLoaded("jei")) {
-            List<Integer> colors = mezz.jei.color.ColorGetter.INSTANCE.getColors(sprite, 0xFFFFFF, 1);
+            final List<Integer> colors = mezz.jei.color.ColorGetter.INSTANCE.getColors(sprite, 0xFFFFFF, 1);
             return colors.isEmpty() ? 0xFFFFFF : colors.get(0);
         }
         return 0xFFFFFF;

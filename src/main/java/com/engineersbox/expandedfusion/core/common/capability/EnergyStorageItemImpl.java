@@ -19,8 +19,8 @@ public class EnergyStorageItemImpl extends EnergyStorage {
         if (!canReceive())
             return 0;
 
-        int energyStored = getEnergyStored();
-        int energyReceived = Math.min(capacity - energyStored, Math.min(this.maxReceive, maxReceive));
+        final int energyStored = getEnergyStored();
+        final int energyReceived = Math.min(capacity - energyStored, Math.min(this.maxReceive, maxReceive));
         if (!simulate)
             setEnergyStored(energyStored + energyReceived);
         return energyReceived;
@@ -31,8 +31,8 @@ public class EnergyStorageItemImpl extends EnergyStorage {
         if (!canExtract())
             return 0;
 
-        int energyStored = getEnergyStored();
-        int energyExtracted = Math.min(energyStored, Math.min(this.maxExtract, maxExtract));
+        final int energyStored = getEnergyStored();
+        final int energyExtracted = Math.min(energyStored, Math.min(this.maxExtract, maxExtract));
         if (!simulate)
             setEnergyStored(energyStored - energyExtracted);
         return energyExtracted;

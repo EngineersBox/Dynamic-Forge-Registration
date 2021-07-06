@@ -72,10 +72,10 @@ public class NetworkTargetProxy implements IProxy {
         }
 
         public void setFog(final EntityViewRenderEvent.FogColors fog) {
-            World w = fog.getInfo().getRenderViewEntity().getEntityWorld();
-            BlockPos pos = fog.getInfo().getBlockPos();
-            BlockState bs = w.getBlockState(pos);
-            Block b = bs.getBlock();
+            final World w = fog.getInfo().getRenderViewEntity().getEntityWorld();
+            final BlockPos pos = fog.getInfo().getBlockPos();
+            final BlockState bs = w.getBlockState(pos);
+            final Block b = bs.getBlock();
 
 //            if (b.equals(ModBlocks.OIL)) {
 //                float red = 0.02F;

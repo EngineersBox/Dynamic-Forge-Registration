@@ -63,7 +63,7 @@ public final class InventoryUtils {
      */
     public static ItemStack firstMatch(final IInventory inv, final Predicate<ItemStack> predicate) {
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
-            ItemStack stack = inv.getStackInSlot(i);
+            final ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty() && predicate.test(stack)) {
                 return stack;
             }
@@ -106,16 +106,16 @@ public final class InventoryUtils {
             return ImmutableList.of();
         }
 
-        ImmutableList.Builder<ItemStack> leftovers = ImmutableList.builder();
+        final ImmutableList.Builder<ItemStack> leftovers = ImmutableList.builder();
 
-        for (ItemStack stack : stacks) {
+        stacks.forEach((stack) -> {
             stack = mergeItem(inventory, slotStart, slotEndExclusive, stack);
 
             // Failed to merge?
             if (!stack.isEmpty()) {
                 leftovers.add(stack);
             }
-        }
+        });
 
         return leftovers.build();
     }
@@ -146,10 +146,10 @@ public final class InventoryUtils {
      * @param ingredient The items to match ({@link net.minecraft.item.crafting.Ingredient}, etc.)
      * @param amount The total number of items to remove
      */
-    public static void consumeItems(final IInventory inventory, final Predicate<ItemStack> ingredient, int amount) {
+    public static void consumeItems(final IInventory inventory, final Predicate<ItemStack> ingredient, final int amount) {
         int amountLeft = amount;
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            ItemStack stack = inventory.getStackInSlot(i);
+            final ItemStack stack = inventory.getStackInSlot(i);
             if (!stack.isEmpty() && ingredient.test(stack)) {
                 int toRemove = Math.min(amountLeft, stack.getCount());
 
@@ -173,7 +173,7 @@ public final class InventoryUtils {
     }
 
     public static boolean mergeItem(final IInventory inventory, final ItemStack stack, final int slot) {
-        ItemStack current = inventory.getStackInSlot(slot);
+        final ItemStack current = inventory.getStackInSlot(slot);
         if (current.isEmpty()) {
             inventory.setInventorySlotContents(slot, stack);
             return true;
@@ -185,13 +185,13 @@ public final class InventoryUtils {
     }
 
 //    public static boolean isFilledFluidContainer(final ItemStack stack) {
-//        Item item = stack.getItem();
+//        final Item item = stack.getItem();
 //        return (item instanceof BucketItem && ((BucketItem) item).getFluid() != Fluids.EMPTY)
 //                || (item instanceof CanisterItem && !((CanisterItem) item).getFluid(stack).isEmpty());
 //    }
 //
 //    public static boolean isEmptyFluidContainer(final ItemStack stack) {
-//        Item item = stack.getItem();
+//        final Item item = stack.getItem();
 //        return (item instanceof BucketItem && ((BucketItem) item).getFluid() == Fluids.EMPTY)
 //                || (item instanceof CanisterItem && ((CanisterItem) item).getFluid(stack).isEmpty());
 //    }

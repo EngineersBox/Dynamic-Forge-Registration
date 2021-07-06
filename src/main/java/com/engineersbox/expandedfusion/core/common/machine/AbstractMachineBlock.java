@@ -21,7 +21,7 @@ public abstract class AbstractMachineBlock extends AbstractFurnaceBlock {
 
     @Override
     protected void interactWith(final World worldIn, final BlockPos pos, final PlayerEntity player) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        final TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof INamedContainerProvider) {
             player.openContainer((INamedContainerProvider) tileEntity);
         }
@@ -29,14 +29,15 @@ public abstract class AbstractMachineBlock extends AbstractFurnaceBlock {
 
     @Override
     public void onReplaced(final BlockState state, final World worldIn, final BlockPos pos, final BlockState newState, final boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof IInventory) {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-                worldIn.updateComparatorOutputLevel(pos, this);
-            }
-
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
+        if (state.getBlock() == newState.getBlock()) {
+            return;
         }
+        final TileEntity tileentity = worldIn.getTileEntity(pos);
+        if (tileentity instanceof IInventory) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+            worldIn.updateComparatorOutputLevel(pos, this);
+        }
+
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 }

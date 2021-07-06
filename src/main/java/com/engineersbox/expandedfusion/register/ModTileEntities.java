@@ -26,7 +26,7 @@ public class ModTileEntities {
     }
 
     private static <T extends TileEntity> TileEntityType<T> register(final String name, final Supplier<T> tileFactory, final Block... blocks) {
-        TileEntityType<T> type = TileEntityType.Builder.create(tileFactory, blocks).build(null);
+        final TileEntityType<T> type = TileEntityType.Builder.create(tileFactory, blocks).build(null);
         return register(name, type);
     }
 

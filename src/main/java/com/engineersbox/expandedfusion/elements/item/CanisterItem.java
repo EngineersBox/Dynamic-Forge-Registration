@@ -29,8 +29,8 @@ public class CanisterItem extends Item implements IFluidContainer {
     }
 
     public static ItemStack getStack(@Nullable final Fluid fluid, final int count) {
-        IItemProvider item = fluid != null ? ModItems.CANISTER : ModItems.EMPTY_CANISTER;
-        ItemStack result = new ItemStack(item, count);
+        final IItemProvider item = fluid != null ? ModItems.CANISTER : ModItems.EMPTY_CANISTER;
+        final ItemStack result = new ItemStack(item, count);
         if (fluid != null) {
             ResourceLocation fluidId = Objects.requireNonNull(fluid.getRegistryName());
             result.getOrCreateTag().putString("CanisterFluid", fluidId.toString());
@@ -53,11 +53,11 @@ public class CanisterItem extends Item implements IFluidContainer {
         if (!(stack.getItem() instanceof CanisterItem)) {
             return FluidStack.EMPTY;
         }
-        ResourceLocation fluidId = ResourceLocation.tryCreate(getFluidKey(stack));
+        final ResourceLocation fluidId = ResourceLocation.tryCreate(getFluidKey(stack));
         if (fluidId == null) {
             return FluidStack.EMPTY;
         }
-        Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidId);
+        final Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidId);
         if (fluid == null) {
             return FluidStack.EMPTY;
         }
@@ -71,8 +71,8 @@ public class CanisterItem extends Item implements IFluidContainer {
 
     @Override
     public ITextComponent getDisplayName(final ItemStack stack) {
-        FluidStack fluid = getFluid(stack);
-        ITextComponent fluidText = fluid.isEmpty() ? TextUtil.translate("misc", "empty") : fluid.getDisplayName();
+        final FluidStack fluid = getFluid(stack);
+        final ITextComponent fluidText = fluid.isEmpty() ? TextUtil.translate("misc", "empty") : fluid.getDisplayName();
         return new TranslationTextComponent(this.getTranslationKey(), fluidText);
     }
 
@@ -88,12 +88,13 @@ public class CanisterItem extends Item implements IFluidContainer {
 
     @Override
     public void fillItemGroup(final ItemGroup group, final NonNullList<ItemStack> items) {
-        if (isInGroup(group)) {
-            items.add(getStack(null));
-            ForgeRegistries.FLUIDS.getValues().stream()
-                    .filter(f -> f.isSource(f.getDefaultState()))
-                    .map(CanisterItem::getStack)
-                    .forEach(items::add);
+        if (!isInGroup(group)) {
+            return;
         }
+        items.add(getStack(null));
+        ForgeRegistries.FLUIDS.getValues().stream()
+                .filter(f -> f.isSource(f.getDefaultState()))
+                .map(CanisterItem::getStack)
+                .forEach(items::add);
     }
 }

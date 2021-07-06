@@ -36,10 +36,10 @@ public interface IFluidContainer {
      * valid fluid container
      */
     static FluidStack getBucketOrContainerFluid(final ItemStack stack) {
-        Item item = stack.getItem();
+        final Item item = stack.getItem();
         //noinspection ChainOfInstanceofChecks
         if (item instanceof BucketItem) {
-            Fluid fluid = ((BucketItem) item).getFluid();
+            final Fluid fluid = ((BucketItem) item).getFluid();
             return new FluidStack(fluid, 1000);
         }
         if (item instanceof IFluidContainer) {
@@ -57,7 +57,7 @@ public interface IFluidContainer {
      * fluid container
      */
     static ItemStack fillBucketOrFluidContainer(final ItemStack empty, final FluidStack fluid) {
-        Item item = empty.getItem();
+        final Item item = empty.getItem();
         //noinspection ChainOfInstanceofChecks
         if (item instanceof BucketItem) {
             return new ItemStack(fluid.getFluid().getFilledBucket());

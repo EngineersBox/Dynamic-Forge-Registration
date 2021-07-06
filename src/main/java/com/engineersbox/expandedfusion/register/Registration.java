@@ -33,7 +33,7 @@ public class Registration {
     private Registration() {throw new IllegalAccessError("Utility class");}
 
     public static void register() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(modEventBus);
         CONTAINERS.register(modEventBus);
         ITEMS.register(modEventBus);
