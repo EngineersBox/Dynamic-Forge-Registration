@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.util;
 
 import com.engineersbox.expandedfusion.core.util.generator.StreamGenerator;
+import com.google.common.collect.Range;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -19,16 +20,16 @@ public final class InventoryUtils {
     public static Collection<Slot> createPlayerSlots(final PlayerInventory playerInventory, final int startX, final int startY) {
         final Optional<Collection<Slot>> list = new StreamGenerator<Slot>()
             .setBounds(
-                new StreamGenerator.RangeBounds(0, 9),
-                new StreamGenerator.RangeBounds(0, 3)
+                Range.closedOpen(0, 9),
+                Range.closedOpen(0, 3)
             ).setConsumers(
-                (x) -> Optional.of(new Slot(
+                (int ...x) -> Optional.of(new Slot(
                     playerInventory,
                     x[0],
                     8 + x[0] * 18,
                     startY + 58
                 )),
-                (xy) -> Optional.of(new Slot(
+                (int ...xy) -> Optional.of(new Slot(
                     playerInventory,
                     xy[0] + xy[1] * 9 + 9,
                     startX + xy[0] * 18,
@@ -108,7 +109,7 @@ public final class InventoryUtils {
     public static int getTotalCount(final IInventory inventory, final Predicate<ItemStack> ingredient) {
         final AtomicInteger total = new AtomicInteger();
         new StreamGenerator<Void>()
-            .setBounds(new StreamGenerator.RangeBounds(0, inventory.getSizeInventory()))
+            .setBounds(Range.closedOpen(0, inventory.getSizeInventory()))
             .setConsumers((i) -> {
                 final ItemStack stack = inventory.getStackInSlot(i[0]);
                 if (!stack.isEmpty() && ingredient.test(stack)) {

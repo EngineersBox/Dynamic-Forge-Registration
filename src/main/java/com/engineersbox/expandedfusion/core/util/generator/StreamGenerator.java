@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.util.generator;
 
+import com.google.common.collect.Range;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
@@ -7,22 +8,12 @@ import java.util.stream.IntStream;
 
 public class StreamGenerator<T> {
 
-    public static class RangeBounds {
-        public final int lower;
-        public final int upper;
-
-        public RangeBounds(final int lower, final int upper) {
-            this.lower = lower;
-            this.upper = upper;
-        }
-    }
-
     @FunctionalInterface
     public interface NIntOptionalFunction<T> {
         Optional<T> accept(final int ...i);
     }
 
-    private final List<RangeBounds> bounds;
+    private final List<Range<Integer>> bounds;
     private final List<NIntOptionalFunction<T>> consumers;
 
     public StreamGenerator() {
@@ -30,7 +21,8 @@ public class StreamGenerator<T> {
         this.consumers = new ArrayList<>();
     }
 
-    public StreamGenerator<T> setBounds(final RangeBounds ...b) {
+    @SafeVarargs
+    public final StreamGenerator<T> setBounds(final Range<Integer>... b) {
         this.bounds.addAll(Arrays.asList(b));
         return this;
     }
@@ -45,8 +37,8 @@ public class StreamGenerator<T> {
         if (idx < 0 || idx >= this.bounds.size()) {
             return;
         }
-        final RangeBounds b = this.bounds.get(idx);
-        IntStream.range(b.lower, b.upper).forEach((i) -> {
+        final Range<Integer> b = this.bounds.get(idx);
+        IntStream.range(b.lowerEndpoint(), b.upperEndpoint()).forEach((i) -> {
             final int[] newValues = ArrayUtils.insert(idx, values, i);
             final Optional<T> res = this.consumers.get(idx).accept(newValues);
             res.ifPresent(collection::add);
