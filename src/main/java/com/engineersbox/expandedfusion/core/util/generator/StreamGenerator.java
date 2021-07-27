@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 
 public class StreamGenerator<T> {
 
+    private static final int MAX_STREAM_ELEMENTS = 10;
+
     @FunctionalInterface
     public interface NIntOptionalFunction<T> {
         Optional<T> accept(final int ...i);
@@ -23,12 +25,18 @@ public class StreamGenerator<T> {
 
     @SafeVarargs
     public final StreamGenerator<T> setBounds(final Range<Integer>... b) {
+        if (b.length > MAX_STREAM_ELEMENTS) {
+            throw new IllegalArgumentException("Varargs size exceeds maximum: " + MAX_STREAM_ELEMENTS);
+        }
         this.bounds.addAll(Arrays.asList(b));
         return this;
     }
 
     @SafeVarargs
     public final StreamGenerator<T> setConsumers(final NIntOptionalFunction<T>... c) {
+        if (c.length > MAX_STREAM_ELEMENTS) {
+            throw new IllegalArgumentException("Varargs size exceeds maximum: " + MAX_STREAM_ELEMENTS);
+        }
         this.consumers.addAll(Arrays.asList(c));
         return this;
     }
