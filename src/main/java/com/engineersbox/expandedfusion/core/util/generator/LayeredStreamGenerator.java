@@ -6,7 +6,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class StreamGenerator<T> {
+public class LayeredStreamGenerator<T> {
 
     private static final int MAX_STREAM_ELEMENTS = 10;
 
@@ -18,13 +18,13 @@ public class StreamGenerator<T> {
     private final List<Range<Integer>> bounds;
     private final List<NIntOptionalFunction<T>> consumers;
 
-    public StreamGenerator() {
+    public LayeredStreamGenerator() {
         this.bounds = new ArrayList<>();
         this.consumers = new ArrayList<>();
     }
 
     @SafeVarargs
-    public final StreamGenerator<T> setBounds(final Range<Integer>... b) {
+    public final LayeredStreamGenerator<T> setBounds(final Range<Integer>... b) {
         if (b.length > MAX_STREAM_ELEMENTS) {
             throw new IllegalArgumentException("Varargs size exceeds maximum: " + MAX_STREAM_ELEMENTS);
         }
@@ -33,7 +33,7 @@ public class StreamGenerator<T> {
     }
 
     @SafeVarargs
-    public final StreamGenerator<T> setConsumers(final NIntOptionalFunction<T>... c) {
+    public final LayeredStreamGenerator<T> setConsumers(final NIntOptionalFunction<T>... c) {
         if (c.length > MAX_STREAM_ELEMENTS) {
             throw new IllegalArgumentException("Varargs size exceeds maximum: " + MAX_STREAM_ELEMENTS);
         }

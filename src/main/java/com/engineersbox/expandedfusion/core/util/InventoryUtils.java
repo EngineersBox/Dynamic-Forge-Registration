@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.util;
 
-import com.engineersbox.expandedfusion.core.util.generator.StreamGenerator;
+import com.engineersbox.expandedfusion.core.util.generator.LayeredStreamGenerator;
 import com.google.common.collect.Range;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 public final class InventoryUtils {
 
     public static Collection<Slot> createPlayerSlots(final PlayerInventory playerInventory, final int startX, final int startY) {
-        final Optional<Collection<Slot>> list = new StreamGenerator<Slot>()
+        final Optional<Collection<Slot>> list = new LayeredStreamGenerator<Slot>()
             .setBounds(
                 Range.closedOpen(0, 9),
                 Range.closedOpen(0, 3)
@@ -108,7 +108,7 @@ public final class InventoryUtils {
 
     public static int getTotalCount(final IInventory inventory, final Predicate<ItemStack> ingredient) {
         final AtomicInteger total = new AtomicInteger();
-        new StreamGenerator<Void>()
+        new LayeredStreamGenerator<Void>()
             .setBounds(Range.closedOpen(0, inventory.getSizeInventory()))
             .setConsumers((i) -> {
                 final ItemStack stack = inventory.getStackInSlot(i[0]);
