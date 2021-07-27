@@ -1,47 +1,41 @@
 package com.engineersbox.expandedfusion.core.util;
 
-import net.minecraft.fluid.Fluids;
+import com.engineersbox.expandedfusion.core.util.generator.StreamGenerator;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 public final class InventoryUtils {
-    private InventoryUtils() {throw new IllegalAccessError("Utility class");}
 
-    /**
-     * Creates slots for the player's inventory for a {@link Container}. Convenience method to
-     * improve readability of Container code.
-     *
-     * @param playerInventory Player's inventory
-     * @param startX          X-position of top-left slot
-     * @param startY          Y-position of top-left slot
-     * @return A collection of slots to be added
-     * @since 4.1.1
-     */
     public static Collection<Slot> createPlayerSlots(final PlayerInventory playerInventory, final int startX, final int startY) {
-        Collection<Slot> list = new ArrayList<>();
-        // Backpack
-        for (int y = 0; y < 3; ++y) {
-            for (int x = 0; x < 9; ++x) {
-                list.add(new Slot(playerInventory, x + y * 9 + 9, startX + x * 18, startY + y * 18));
-            }
-        }
-        // Hotbar
-        for (int x = 0; x < 9; ++x) {
-            list.add(new Slot(playerInventory, x, 8 + x * 18, startY + 58));
-        }
-        return list;
+        final Optional<Collection<Slot>> list = new StreamGenerator<Slot>()
+            .setBounds(
+                new StreamGenerator.RangeBounds(0, 9),
+                new StreamGenerator.RangeBounds(0, 3)
+            ).setConsumers(
+                (x) -> Optional.of(new Slot(
+                    playerInventory,
+                    x[0],
+                    8 + x[0] * 18,
+                    startY + 58
+                )),
+                (xy) -> Optional.of(new Slot(
+                    playerInventory,
+                    xy[0] + xy[1] * 9 + 9,
+                    startX + xy[0] * 18,
+                    startY + xy[1] * 18
+                ))
+            ).apply();
+        return list.orElse(Collections.emptyList());
     }
 
     public static boolean canItemsStackTag(final ItemStack a, final ItemStack b) {
@@ -52,15 +46,6 @@ public final class InventoryUtils {
         return (a.getTag() == null || a.getTag().equals(b.getTag())) && a.areCapsCompatible(b);
     }
 
-    /**
-     * Obtain the first matching stack. {@link StackList} has a similar method, but this avoids
-     * creating the entire list when it isn't needed.
-     *
-     * @param inv       The inventory to search
-     * @param predicate Condition to match
-     * @return The first matching stack, or {@link ItemStack#EMPTY} if there is none
-     * @since 3.1.0 (was in StackHelper from 3.0.6)
-     */
     public static ItemStack firstMatch(final IInventory inv, final Predicate<ItemStack> predicate) {
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
             final ItemStack stack = inv.getStackInSlot(i);
@@ -78,7 +63,7 @@ public final class InventoryUtils {
 
         // Merge into non-empty slots first
         for (int i = slotStart; i < slotEndExclusive && !stack.isEmpty(); ++i) {
-            ItemStack inSlot = inventory.getStackInSlot(i);
+            final ItemStack inSlot = inventory.getStackInSlot(i);
             if (canItemsStack(inSlot, stack)) {
                 int amountCanFit = MathUtils.min(inSlot.getMaxStackSize() - inSlot.getCount(), stack.getCount(), inventory.getInventoryStackLimit());
                 inSlot.grow(amountCanFit);
@@ -91,7 +76,7 @@ public final class InventoryUtils {
         for (int i = slotStart; i < slotEndExclusive && !stack.isEmpty(); ++i) {
             if (inventory.getStackInSlot(i).isEmpty()) {
                 int amountCanFit = MathUtils.min(stack.getCount(), inventory.getInventoryStackLimit());
-                ItemStack toInsert = stack.copy();
+                final ItemStack toInsert = stack.copy();
                 toInsert.setCount(amountCanFit);
                 stack.shrink(amountCanFit);
                 inventory.setInventorySlotContents(i, toInsert);
@@ -120,32 +105,20 @@ public final class InventoryUtils {
         return leftovers.build();
     }
 
-    /**
-     * Gets the total number of matching items in all slots in the inventory.
-     *
-     * @param inventory  The inventory
-     * @param ingredient The items to match ({@link net.minecraft.item.crafting.Ingredient}, etc.)
-     * @return The number of items in all matching item stacks
-     */
     public static int getTotalCount(final IInventory inventory, final Predicate<ItemStack> ingredient) {
-        int total = 0;
-        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty() && ingredient.test(stack)) {
-                total += stack.getCount();
-            }
-        }
-        return total;
+        final AtomicInteger total = new AtomicInteger();
+        new StreamGenerator<Void>()
+            .setBounds(new StreamGenerator.RangeBounds(0, inventory.getSizeInventory()))
+            .setConsumers((i) -> {
+                final ItemStack stack = inventory.getStackInSlot(i[0]);
+                if (!stack.isEmpty() && ingredient.test(stack)) {
+                    total.addAndGet(stack.getCount());
+                }
+                return Optional.empty();
+            }).apply();
+        return total.get();
     }
 
-    /**
-     * Consumes (removes) items from the inventory. This is useful for machines, which may have
-     * multiple input slots and recipes that consume multiple of one item.
-     *
-     * @param inventory The inventory
-     * @param ingredient The items to match ({@link net.minecraft.item.crafting.Ingredient}, etc.)
-     * @param amount The total number of items to remove
-     */
     public static void consumeItems(final IInventory inventory, final Predicate<ItemStack> ingredient, final int amount) {
         int amountLeft = amount;
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {

@@ -18,7 +18,6 @@ import net.minecraft.util.IIntArray;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends AbstractMachineBaseTileEntity implements IMachineInventory {

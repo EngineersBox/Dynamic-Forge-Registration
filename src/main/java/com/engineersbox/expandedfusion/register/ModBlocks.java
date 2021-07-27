@@ -91,16 +91,18 @@ public class ModBlocks {
         final LootTableManager lootTableManager = ((ServerWorld) player.world).getServer().getLootTableManager();
         final Collection<String> missing = new ArrayList<>();
 
-        ForgeRegistries.BLOCKS.getValues().forEach((block) -> {
-            final ResourceLocation lootTable = block.getLootTable();
-            // The AirBlock check filters out removed blocks
-            if (lootTable.getNamespace().equals(ExpandedFusion.MOD_ID)
-                && !(block instanceof AirBlock)
-                && !lootTableManager.getLootTableKeys().contains(lootTable)) {
-                ExpandedFusion.LOGGER.error("Missing block loot table '{}' for {}", lootTable, block.getRegistryName());
-                missing.add(lootTable.toString());
-            }
-        });
+        synchronized (missing) {
+            ForgeRegistries.BLOCKS.getValues().parallelStream().forEach((block) -> {
+                final ResourceLocation lootTable = block.getLootTable();
+                // The AirBlock check filters out removed blocks
+                if (lootTable.getNamespace().equals(ExpandedFusion.MOD_ID)
+                        && !(block instanceof AirBlock)
+                        && !lootTableManager.getLootTableKeys().contains(lootTable)) {
+                    ExpandedFusion.LOGGER.error("Missing block loot table '{}' for {}", lootTable, block.getRegistryName());
+                    missing.add(lootTable.toString());
+                }
+            });
+        }
 
         if (!missing.isEmpty()) {
             String list = String.join(", ", missing);
