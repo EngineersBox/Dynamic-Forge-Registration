@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.stream.StreamSupport;
 
 public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends AbstractMachineBaseTileEntity implements IMachineInventory {
+    public final EnergyProperties energyProps;
+
     public static final int FIELDS_COUNT = 7;
 
     protected float progress;
@@ -72,8 +74,10 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
 
     protected AbstractMachineTileEntity(final TileEntityType<?> typeIn,
                                         final int inventorySize,
-                                        final  MachineTier tier) {
+                                        final  MachineTier tier,
+                                        final EnergyProperties energyProps) {
         super(typeIn, inventorySize, tier.energyCapacity, 500, 0, tier);
+        this.energyProps = energyProps;
     }
 
     @Override

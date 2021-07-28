@@ -2,9 +2,9 @@ package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
+import com.engineersbox.expandedfusion.core.common.machine.tileentity.EnergyProperties;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.register.ModTileEntities;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -15,31 +15,33 @@ import net.minecraft.util.text.ITextComponent;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<AbstractCookingRecipe> {
-    // Energy constant
-    public static final int MAX_ENERGY = 50_000;
-    public static final int MAX_RECEIVE = 500;
-    public static final int ENERGY_USED_PER_TICK = 30;
-
     // Inventory constants
-    private static final int INVENTORY_SIZE = 2;
     private static final int[] SLOTS_INPUT = {0};
     private static final int[] SLOTS_OUTPUT = {1};
     private static final int[] SLOTS_ALL = {0, 1};
+    private static final int INVENTORY_SIZE = SLOTS_ALL.length;
 
     public FusionControlComputerTileEntity() {
-        super(ModTileEntities.FUSION_CONTROL_COMPUTER, INVENTORY_SIZE, MachineTier.REINFORCED);
+        super(
+            ModTileEntities.FUSION_CONTROL_COMPUTER,
+            INVENTORY_SIZE,
+            MachineTier.REINFORCED,
+            new EnergyProperties(
+                50_000,
+                500,
+                30
+            )
+        );
     }
 
     @Override
     protected int getEnergyUsedPerTick() {
-        return ENERGY_USED_PER_TICK;
+        return this.energyProps.usedPerTick;
     }
 
-    @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
     @Override
     protected int[] getOutputSlots() {
         return SLOTS_OUTPUT;
@@ -68,7 +70,6 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
         return Collections.singleton(recipe.getCraftingResult(this));
     }
 
-    @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
     @Override
     public int[] getSlotsForFace(final Direction side) {
         return SLOTS_ALL;
@@ -92,15 +93,5 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
     @Override
     protected Container createMenu(final int id, final PlayerInventory playerInventory) {
         return new FusionControlComputerContainer(id, playerInventory, this, this.fields);
-    }
-
-    List<String> getDebugText() {
-        return ImmutableList.of(
-                "progress = " + progress,
-                "processTime = " + processTime,
-                "energy = " + getEnergyStored() + " FE / " + getMaxEnergyStored() + " FE",
-                "ENERGY_USED_PER_TICK = " + ENERGY_USED_PER_TICK,
-                "MAX_RECEIVE = " + MAX_RECEIVE
-        );
     }
 }
