@@ -2,7 +2,7 @@ package com.engineersbox.expandedfusion.core.common.machine.tileentity;
 
 import com.engineersbox.expandedfusion.core.common.DataField;
 import com.engineersbox.expandedfusion.core.common.MachineTier;
-import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
+import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageCapability;
 import com.engineersbox.expandedfusion.core.common.machine.IMachineInventory;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import net.minecraft.block.AbstractFurnaceBlock;
@@ -77,7 +77,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
     }
 
     @Override
-    public EnergyStorageImpl getEnergyImpl() {
+    public EnergyStorageCapability getEnergyImpl() {
         return super.getEnergyImpl();
     }
 

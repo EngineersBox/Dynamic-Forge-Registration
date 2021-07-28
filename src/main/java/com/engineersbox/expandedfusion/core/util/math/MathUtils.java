@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.util;
+package com.engineersbox.expandedfusion.core.util.math;
 
 import java.util.Random;
 

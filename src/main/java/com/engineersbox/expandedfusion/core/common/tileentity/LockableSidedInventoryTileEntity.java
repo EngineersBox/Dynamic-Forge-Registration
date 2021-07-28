@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.common.tileentity;
 
-import com.engineersbox.expandedfusion.core.util.MCMathUtils;
+import com.engineersbox.expandedfusion.core.util.math.MCMathUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;

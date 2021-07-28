@@ -13,14 +13,14 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.EnumMap;
 
-public class EnergyStorageImpl extends EnergyStorageImplBase {
+public class EnergyStorageCapability extends EnergyStorageCapabilityProvider {
     private final EnumMap<Direction, LazyOptional<Connection>> connections = new EnumMap<>(Direction.class);
     private final TileEntity tileEntity;
 
-    public EnergyStorageImpl(final int capacity,
-                             final int maxReceive,
-                             final int maxExtract,
-                             final TileEntity tileEntity) {
+    public EnergyStorageCapability(final int capacity,
+                                   final int maxReceive,
+                                   final int maxExtract,
+                                   final TileEntity tileEntity) {
         super(capacity, maxReceive, maxExtract);
         this.tileEntity = tileEntity;
         Arrays.stream(Direction.values()).forEach(d -> connections.put(d, LazyOptional.of(Connection::new)));
@@ -81,10 +81,10 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
 
         @Override
         public int receiveEnergy(final int maxReceive, final boolean simulate) {
-            final World world = EnergyStorageImpl.this.tileEntity.getWorld();
+            final World world = EnergyStorageCapability.this.tileEntity.getWorld();
             if (world == null) return 0;
 
-            final int received = EnergyStorageImpl.this.receiveEnergy(maxReceive, simulate);
+            final int received = EnergyStorageCapability.this.receiveEnergy(maxReceive, simulate);
             if (received > 0 && !simulate)
                 this.lastReceiveTick = world.getGameTime();
             return received;
@@ -92,34 +92,34 @@ public class EnergyStorageImpl extends EnergyStorageImplBase {
 
         @Override
         public int extractEnergy(final int maxExtract, final boolean simulate) {
-            final World world = EnergyStorageImpl.this.tileEntity.getWorld();
+            final World world = EnergyStorageCapability.this.tileEntity.getWorld();
             if (world == null) return 0;
 
             final long time = world.getGameTime();
             if (time != this.lastReceiveTick) {
-                return EnergyStorageImpl.this.extractEnergy(maxExtract, simulate);
+                return EnergyStorageCapability.this.extractEnergy(maxExtract, simulate);
             }
             return 0;
         }
 
         @Override
         public int getEnergyStored() {
-            return EnergyStorageImpl.this.getEnergyStored();
+            return EnergyStorageCapability.this.getEnergyStored();
         }
 
         @Override
         public int getMaxEnergyStored() {
-            return EnergyStorageImpl.this.getMaxEnergyStored();
+            return EnergyStorageCapability.this.getMaxEnergyStored();
         }
 
         @Override
         public boolean canExtract() {
-            return EnergyStorageImpl.this.canExtract();
+            return EnergyStorageCapability.this.canExtract();
         }
 
         @Override
         public boolean canReceive() {
-            return EnergyStorageImpl.this.canReceive();
+            return EnergyStorageCapability.this.canReceive();
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.register.handlers;
+package com.engineersbox.expandedfusion.register.registry;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.IItemProvider;

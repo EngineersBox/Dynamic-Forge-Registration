@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.common.energy;
 
-import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
+import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageCapability;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.LazyOptional;
@@ -11,7 +11,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 
 public interface IEnergyHandler {
-    EnergyStorageImpl getEnergyImpl();
+    EnergyStorageCapability getEnergyImpl();
 
     default LazyOptional<IEnergyStorage> getEnergy(@Nullable final Direction side) {
         return getEnergyImpl().getCapability(CapabilityEnergy.ENERGY, side);
@@ -29,16 +29,16 @@ public interface IEnergyHandler {
 
     default void setEnergyStoredDirectly(final int value) {
         getEnergy(null).ifPresent(e -> {
-            if (e instanceof EnergyStorageImpl) {
-                ((EnergyStorageImpl) e).setEnergyDirectly(value);
+            if (e instanceof EnergyStorageCapability) {
+                ((EnergyStorageCapability) e).setEnergyDirectly(value);
             }
         });
     }
 
     default void setMaxEnergyStoredDirectly(final int value) {
         getEnergy(null).ifPresent(e -> {
-            if (e instanceof EnergyStorageImpl) {
-                ((EnergyStorageImpl) e).setMaxEnergyDirectly(value);
+            if (e instanceof EnergyStorageCapability) {
+                ((EnergyStorageCapability) e).setMaxEnergyDirectly(value);
             }
         });
     }

@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.core.util.ColorGetter;
 import com.engineersbox.expandedfusion.elements.item.CanisterItem;
 import com.engineersbox.expandedfusion.elements.item.EmptyCanisterItem;
 import com.engineersbox.expandedfusion.elements.item.NoPlaceBucketItem;
-import com.engineersbox.expandedfusion.register.handlers.ItemRegistryObject;
+import com.engineersbox.expandedfusion.register.registry.ItemRegistryObject;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;

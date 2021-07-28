@@ -1,8 +1,10 @@
 package com.engineersbox.expandedfusion.core.common.tileentity;
 
+import com.engineersbox.expandedfusion.core.annotation.SyncVariable;
 import com.engineersbox.expandedfusion.core.common.DataField;
-import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageImpl;
+import com.engineersbox.expandedfusion.core.common.capability.EnergyStorageCapability;
 import com.engineersbox.expandedfusion.core.common.energy.IEnergyHandler;
+import com.engineersbox.expandedfusion.core.sync.SyncHandler;
 import com.engineersbox.expandedfusion.core.util.EnergyUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInventoryTileEntity implements IEnergyHandler, ITickableTileEntity {
-    protected final EnergyStorageImpl energy;
+    protected final EnergyStorageCapability energy;
     private final int maxExtract;
 
     private final IIntArray fields = new IIntArray() {
@@ -62,12 +64,12 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
                                                 final int maxReceive,
                                                 final int maxExtract) {
         super(typeIn, inventorySize);
-        this.energy = new EnergyStorageImpl(maxEnergy, maxReceive, maxExtract, this);
+        this.energy = new EnergyStorageCapability(maxEnergy, maxReceive, maxExtract, this);
         this.maxExtract = maxExtract;
     }
 
     @Override
-    public EnergyStorageImpl getEnergyImpl() {
+    public EnergyStorageCapability getEnergyImpl() {
         return energy;
     }
 
@@ -87,14 +89,14 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
     @Override
     public void read(final BlockState state, final CompoundNBT tags) {
         super.read(state, tags);
-        SyncVariable.Helper.readSyncVars(this, tags);
+        SyncHandler.readSyncVars(this, tags);
         readEnergy(tags);
     }
 
     @Override
     public CompoundNBT write(final CompoundNBT tags) {
         super.write(tags);
-        SyncVariable.Helper.writeSyncVars(this, tags, SyncVariable.Type.WRITE);
+        SyncHandler.writeSyncVars(this, tags, SyncVariable.Type.WRITE);
         writeEnergy(tags);
         return tags;
     }
@@ -102,14 +104,14 @@ public abstract class AbstractEnergyInventoryTileEntity extends LockableSidedInv
     @Override
     public void onDataPacket(final NetworkManager net, final SUpdateTileEntityPacket packet) {
         super.onDataPacket(net, packet);
-        SyncVariable.Helper.readSyncVars(this, packet.getNbtCompound());
+        SyncHandler.readSyncVars(this, packet.getNbtCompound());
         readEnergy(packet.getNbtCompound());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
         CompoundNBT tags = super.getUpdateTag();
-        SyncVariable.Helper.writeSyncVars(this, tags, SyncVariable.Type.PACKET);
+        SyncHandler.writeSyncVars(this, tags, SyncVariable.Type.PACKET);
         writeEnergy(tags);
         return tags;
     }

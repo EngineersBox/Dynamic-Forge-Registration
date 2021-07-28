@@ -10,10 +10,10 @@ import net.minecraftforge.energy.EnergyStorage;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnergyStorageImplBase extends EnergyStorage implements ICapabilityProvider {
-    private final LazyOptional<EnergyStorageImplBase> lazy;
+public class EnergyStorageCapabilityProvider extends EnergyStorage implements ICapabilityProvider {
+    private final LazyOptional<EnergyStorageCapabilityProvider> lazy;
 
-    public EnergyStorageImplBase(final int capacity, final int maxReceive, final int maxExtract) {
+    public EnergyStorageCapabilityProvider(final int capacity, final int maxReceive, final int maxExtract) {
         super(capacity, maxReceive, maxExtract, 0);
         this.lazy = LazyOptional.of(() -> this);
     }

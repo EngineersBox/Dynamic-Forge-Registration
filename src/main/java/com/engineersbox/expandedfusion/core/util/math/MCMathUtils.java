@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.util;
+package com.engineersbox.expandedfusion.core.util.math;
 
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;

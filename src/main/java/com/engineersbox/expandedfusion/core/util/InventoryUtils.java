@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.util;
 
 import com.engineersbox.expandedfusion.core.util.generator.LayeredStreamGenerator;
+import com.engineersbox.expandedfusion.core.util.math.MathUtils;
 import com.google.common.collect.Range;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

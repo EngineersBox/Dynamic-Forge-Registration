@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.common.energy;
 
 import com.engineersbox.expandedfusion.core.common.tileentity.AbstractEnergyInventoryTileEntity;
-import com.engineersbox.expandedfusion.core.util.MathUtils;
+import com.engineersbox.expandedfusion.core.util.math.MathUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;

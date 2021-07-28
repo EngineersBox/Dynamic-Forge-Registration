@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.register;
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.elements.block.fusionControlComputer.FusionControlComputer;
-import com.engineersbox.expandedfusion.register.handlers.BlockRegistryObject;
+import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;

@@ -12,7 +12,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> extends EnergyStorageImpl {
+public class EnergyStorageWithBatteries<T extends TileEntity & IInventory> extends EnergyStorageCapability {
     private final IInventory inventory;
     private final LazyOptional<EnergyStorageWithBatteries<?>> lazy;
 

@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.register.handlers;
+package com.engineersbox.expandedfusion.register.registry;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;

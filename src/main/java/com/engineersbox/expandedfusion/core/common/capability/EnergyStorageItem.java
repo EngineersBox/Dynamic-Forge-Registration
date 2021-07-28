@@ -3,13 +3,13 @@ package com.engineersbox.expandedfusion.core.common.capability;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.EnergyStorage;
 
-public class EnergyStorageItemImpl extends EnergyStorage {
+public class EnergyStorageItem extends EnergyStorage {
     private final ItemStack stack;
 
-    public EnergyStorageItemImpl(final ItemStack stack,
-                                 final int capacity,
-                                 final int maxReceive,
-                                 final int maxExtract) {
+    public EnergyStorageItem(final ItemStack stack,
+                             final int capacity,
+                             final int maxReceive,
+                             final int maxExtract) {
         super(capacity, maxReceive, maxExtract);
         this.stack = stack;
     }

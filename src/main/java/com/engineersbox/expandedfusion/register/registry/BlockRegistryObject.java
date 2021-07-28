@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.register.handlers;
+package com.engineersbox.expandedfusion.register.registry;
 
 import com.engineersbox.expandedfusion.core.common.block.IBlockProvider;
 import net.minecraft.block.Block;
