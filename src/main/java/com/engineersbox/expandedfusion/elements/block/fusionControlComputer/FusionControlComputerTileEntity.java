@@ -5,6 +5,7 @@ import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMa
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.EnergyProperties;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.register.ModTileEntities;
+import com.engineersbox.expandedfusion.register.registry.annotation.TileEntityProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+@TileEntityProvider(name = "fusion_control_computer")
 public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<AbstractCookingRecipe> {
     // Inventory constants
     private static final int[] SLOTS_INPUT = {0};

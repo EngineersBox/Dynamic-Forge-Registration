@@ -5,6 +5,7 @@ import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMa
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
 import com.engineersbox.expandedfusion.register.ModContainers;
+import com.engineersbox.expandedfusion.register.registry.annotation.ContainerProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
+@ContainerProvider(name = "fusion_control_computer")
 public class FusionControlComputerContainer extends AbstractMachineContainer<FusionControlComputerTileEntity> {
     public FusionControlComputerContainer(final int id, final PlayerInventory playerInventory) {
         this(id, playerInventory, new FusionControlComputerTileEntity(), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));

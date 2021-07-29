@@ -48,7 +48,7 @@ public class ModBlocks {
 //    public static final BlockRegistryObject<Block> CRYOSTAT_PRESSURE_CHAMBER_WALL = Registration.BLOCKS.register("cryostat_pressure_chamber_wall", () -> new Block(Block.Properties.create(Material.IRON)));
 
     // Machines
-    public static final BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputer::new);
+    public static BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER;// = register("fusion_control_computer", FusionControlComputer::new);
 
     private ModBlocks() {}
 

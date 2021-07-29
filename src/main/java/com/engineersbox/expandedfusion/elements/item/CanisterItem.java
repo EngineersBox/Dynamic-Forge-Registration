@@ -21,7 +21,6 @@ import java.util.Objects;
 public class CanisterItem extends Item implements IFluidContainer {
     public CanisterItem(final Properties properties) {
         super(properties);
-        //addPropertyOverride(SilentMechanisms.getId("fluid_level"), (stack, world, entity) -> getFluid(stack).getAmount());
     }
 
     public static ItemStack getStack(@Nullable final Fluid fluid) {
@@ -38,14 +37,8 @@ public class CanisterItem extends Item implements IFluidContainer {
         return result;
     }
 
-/*    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new FluidCanisterWrapper(stack);
-    }*/
-
     public static String getFluidKey(final ItemStack stack) {
-        return stack.hasTag() ? stack.getOrCreateTag().getString("CanisterFluid") : "";
+        return stack.hasTag() ? stack.getOrCreateTag().getString("CanisterFluid") : null;
     }
 
     @Override
@@ -53,7 +46,11 @@ public class CanisterItem extends Item implements IFluidContainer {
         if (!(stack.getItem() instanceof CanisterItem)) {
             return FluidStack.EMPTY;
         }
-        final ResourceLocation fluidId = ResourceLocation.tryCreate(getFluidKey(stack));
+        final String fluidKey = getFluidKey(stack);
+        if (fluidKey == null) {
+            return FluidStack.EMPTY;
+        }
+        final ResourceLocation fluidId = ResourceLocation.tryCreate(fluidKey);
         if (fluidId == null) {
             return FluidStack.EMPTY;
         }
