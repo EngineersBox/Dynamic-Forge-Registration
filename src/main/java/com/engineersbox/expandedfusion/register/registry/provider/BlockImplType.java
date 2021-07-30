@@ -2,18 +2,25 @@ package com.engineersbox.expandedfusion.register.registry.provider;
 
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockProvider;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockContainerProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockScreenProvider;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockTileEntityProvider;
 
 import java.lang.annotation.Annotation;
 
 public enum BlockImplType {
     BASE(new Requirement[]{Requirement.BLOCK}),
-    TILE_ENTITY(new Requirement[]{Requirement.BLOCK, Requirement.TILE_ENTITY, Requirement.CONTAINER});
+    TILE_ENTITY(new Requirement[]{
+        Requirement.BLOCK,
+        Requirement.TILE_ENTITY,
+        Requirement.CONTAINER,
+        Requirement.SCREEN
+    });
 
     public enum Requirement {
         BLOCK,
         TILE_ENTITY,
-        CONTAINER;
+        CONTAINER,
+        SCREEN;
 
         public Class<? extends Annotation> toAnnotationEquivalent() {
             switch (this) {
@@ -23,6 +30,8 @@ public enum BlockImplType {
                     return BlockTileEntityProvider.class;
                 case CONTAINER:
                     return BlockContainerProvider.class;
+                case SCREEN:
+                    return BlockScreenProvider.class;
             }
             return null;
         }

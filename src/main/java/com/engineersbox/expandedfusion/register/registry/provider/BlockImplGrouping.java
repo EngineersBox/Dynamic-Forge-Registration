@@ -2,9 +2,11 @@ package com.engineersbox.expandedfusion.register.registry.provider;
 
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockProvider;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockContainerProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockScreenProvider;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockTileEntityProvider;
 import com.engineersbox.expandedfusion.register.registry.exception.DuplicateBlockComponentBinding;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
 
@@ -16,6 +18,7 @@ public class BlockImplGrouping {
     private Class<? extends TileEntity> tileEntity;
     private Class<? extends Block> block;
     private Class<? extends Container> container;
+    private Class<? extends ContainerScreen<? extends Container>> screen;
 
     public Class<? extends TileEntity> getTileEntity() {
         return tileEntity;
@@ -69,6 +72,24 @@ public class BlockImplGrouping {
             throw new DuplicateBlockComponentBinding(this.container, container);
         }
         this.container = container;
+    }
+
+    public Class<? extends ContainerScreen<? extends Container>> getScreen() {
+        return screen;
+    }
+
+    public BlockScreenProvider getScreenProviderAnnotation() {
+        if (this.screen == null) {
+            return null;
+        }
+        return this.screen.getAnnotation(BlockScreenProvider.class);
+    }
+
+    public void setScreen(final Class<? extends ContainerScreen<? extends Container>> screen) throws DuplicateBlockComponentBinding {
+        if (this.screen != null) {
+            throw new DuplicateBlockComponentBinding(this.screen, screen);
+        }
+        this.screen = screen;
     }
 
     public List<Class<? extends Annotation>> hasRequirements(final BlockImplType blockImplType) {

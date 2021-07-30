@@ -35,12 +35,6 @@ public class ExpandedFusion {
         public final Map<String, ContainerType<? extends Container>> containers = new HashMap<>();
     }
 
-    @Provides
-    @Singleton
-    public RegistryProvider provideRegistryProvider() {
-        return new RegistryProvider();
-    }
-
     public ExpandedFusion() {
         INSTANCE = this;
         PROXY = DistExecutor.safeRunForDist(() -> NetworkTargetProxy.Client::new, () -> NetworkTargetProxy.Server::new);

@@ -1,6 +1,9 @@
 package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.register.registry.provider.BlockProviderRegistrationResolver;
+import com.google.inject.*;
+import com.google.inject.name.Names;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
@@ -16,6 +19,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.logging.log4j.Logger;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -39,6 +48,31 @@ public class Registration {
         ITEMS.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
         TILE_ENTITIES.register(modEventBus);
+
+        final Injector injector = Guice.createInjector(new AbstractModule() {
+            @Override
+            public void configure() {
+                bind(Logger.class).toInstance(ExpandedFusion.LOGGER);
+                bind(Reflections.class)
+                    .annotatedWith(Names.named("packageReflections"))
+                    .toInstance(new Reflections(
+                        new ConfigurationBuilder()
+                            .setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion"))
+                            .setScanners(
+                                new SubTypesScanner(),
+                                new TypeAnnotationsScanner()
+                            )
+                    ));
+            }
+
+            @Provides
+            @Singleton
+            public ExpandedFusion.RegistryProvider provideRegistryProvider() {
+                return new ExpandedFusion.RegistryProvider();
+            }
+        });
+        final BlockProviderRegistrationResolver providerResolver = injector.getInstance(BlockProviderRegistrationResolver.class);
+        providerResolver.registerAll();
 
         ModBlocks.register();
 //        ModContainers.register();
