@@ -1,4 +1,6 @@
-package com.engineersbox.expandedfusion.register.registry.annotation;
+package com.engineersbox.expandedfusion.register.registry.annotation.block;
+
+import com.engineersbox.expandedfusion.register.registry.provider.BlockImplType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,4 +11,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface BlockProvider {
     String name();
+    BlockImplType type();
+    boolean noItem() default false;
+    BaseBlockProperties[] properties() default {};
 }

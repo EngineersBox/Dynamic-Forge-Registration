@@ -26,12 +26,12 @@ public class ModContainers {
         ScreenManager.registerFactory(FUSION_CONTROL_COMPUTER, FusionControlComputerScreen::new);
     }
 
-    private static <C extends Container> ContainerType<C> register(final String name, final ContainerType.IFactory<C> containerFactory) {
+    public static <C extends Container> ContainerType<C> register(final String name, final ContainerType.IFactory<C> containerFactory) {
         final ContainerType<C> type = new ContainerType<>(containerFactory);
         return register(name, type);
     }
 
-    private static <C extends Container> ContainerType<C> register(final String name, final ContainerType<C> containerType) {
+    public static <C extends Container> ContainerType<C> register(final String name, final ContainerType<C> containerType) {
         containerType.setRegistryName(ExpandedFusion.getId(name));
         ForgeRegistries.CONTAINERS.register(containerType);
         return containerType;

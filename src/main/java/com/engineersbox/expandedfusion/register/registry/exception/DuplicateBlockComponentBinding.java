@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
 
-public class DuplicateBlockComponentBinding extends Exception {
+public class DuplicateBlockComponentBinding extends RuntimeException {
     private DuplicateBlockComponentBinding(final String baseClassName, final Class<?> current, final Class<?> duplicate) {
         super(String.format(
                 "Binding for block registration component [Base: %s] already exists. [Current: %s] [Duplicate: %s]",

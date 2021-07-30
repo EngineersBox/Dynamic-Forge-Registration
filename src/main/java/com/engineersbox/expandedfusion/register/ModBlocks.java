@@ -48,7 +48,7 @@ public class ModBlocks {
 //    public static final BlockRegistryObject<Block> CRYOSTAT_PRESSURE_CHAMBER_WALL = Registration.BLOCKS.register("cryostat_pressure_chamber_wall", () -> new Block(Block.Properties.create(Material.IRON)));
 
     // Machines
-    public static BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER;// = register("fusion_control_computer", FusionControlComputer::new);
+    public static final BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputer::new);
 
     private ModBlocks() {}
 
@@ -60,26 +60,26 @@ public class ModBlocks {
                 RenderTypeLookup.setRenderLayer(block, RenderType.getTranslucent()));
     }
 
-    private static <T extends Block> BlockRegistryObject<T> registerNoItem(final String name, final Supplier<T> block) {
+    public static <T extends Block> BlockRegistryObject<T> registerNoItem(final String name, final Supplier<T> block) {
         return new BlockRegistryObject<>(Registration.BLOCKS.register(name, block));
     }
 
-    private static <T extends Block> BlockRegistryObject<T> register(final String name, final Supplier<T> block) {
+    public static <T extends Block> BlockRegistryObject<T> register(final String name, final Supplier<T> block) {
         return register(name, block, ModBlocks::defaultItem);
     }
 
-    private static <T extends Block> BlockRegistryObject<T> register(final String name, final Supplier<T> block, final Function<BlockRegistryObject<T>, Supplier<? extends BlockItem>> item) {
+    public static <T extends Block> BlockRegistryObject<T> register(final String name, final Supplier<T> block, final Function<BlockRegistryObject<T>, Supplier<? extends BlockItem>> item) {
         final BlockRegistryObject<T> ret = registerNoItem(name, block);
         Registration.ITEMS.register(name, item.apply(ret));
         return ret;
     }
 
-    private static BlockRegistryObject<FlowingFluidBlock> registerFluid(final String name, final Supplier<FlowingFluid> fluid) {
+    public static BlockRegistryObject<FlowingFluidBlock> registerFluid(final String name, final Supplier<FlowingFluid> fluid) {
         return registerNoItem(name, () ->
                 new FlowingFluidBlock(fluid, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));
     }
 
-    private static <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block) {
+    public static <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block) {
         return () -> new BlockItem(block.get(), new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP));
     }
 
