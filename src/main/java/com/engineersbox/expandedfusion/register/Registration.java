@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.scanners.TypeElementsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
@@ -65,6 +66,7 @@ public class Registration {
                         new ConfigurationBuilder()
                             .setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion"))
                             .setScanners(
+                                new TypeElementsScanner(),
                                 new SubTypesScanner(),
                                 new TypeAnnotationsScanner()
                             )
