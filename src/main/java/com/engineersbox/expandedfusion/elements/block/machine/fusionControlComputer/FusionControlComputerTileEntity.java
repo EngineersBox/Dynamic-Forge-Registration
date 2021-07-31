@@ -1,11 +1,11 @@
-package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
+package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.EnergyProperties;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.register.ModTileEntities;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockTileEntityProvider;
+import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-@BlockTileEntityProvider(name = "fusion_control_computer")
+@BlockTileEntityProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<AbstractCookingRecipe> {
+
     // Inventory constants
     private static final int[] SLOTS_INPUT = {0};
     private static final int[] SLOTS_OUTPUT = {1};
@@ -28,7 +29,7 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
 
     public FusionControlComputerTileEntity() {
         super(
-            ModTileEntities.FUSION_CONTROL_COMPUTER,
+            BlockInjectionContext.getTileEntityType(FusionControlComputer.PROVIDER_NAME),
             INVENTORY_SIZE,
             MachineTier.REINFORCED,
             new EnergyProperties(

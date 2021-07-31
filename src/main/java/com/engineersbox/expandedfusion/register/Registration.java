@@ -1,6 +1,9 @@
 package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
+import com.engineersbox.expandedfusion.register.registry.contexts.ProviderModule;
+import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import com.engineersbox.expandedfusion.register.registry.provider.BlockProviderRegistrationResolver;
 import com.google.inject.*;
 import com.google.inject.name.Names;
@@ -31,7 +34,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Registration {
-    public static final ItemGroup CREATIVE_TAB_ITEM_GROUP = new ModItemGroups.ModItemGroup(ExpandedFusion.MOD_ID, () -> new ItemStack(ModBlocks.NOBIUM_TITANIUM_COIL.get()));
+    public static final ItemGroup CREATIVE_TAB_ITEM_GROUP = new ModItemGroups.ModItemGroup(
+            ExpandedFusion.MOD_ID,
+            () -> new ItemStack(BlockInjectionContext.getBlockRegistryObject(NiobiumTitaniumCoil.providerName).get())
+    );
     public static final DeferredRegister<Fluid> FLUIDS = create(ForgeRegistries.FLUIDS);
     public static final DeferredRegister<Block> BLOCKS = create(ForgeRegistries.BLOCKS);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = create(ForgeRegistries.CONTAINERS);
@@ -49,7 +55,7 @@ public class Registration {
         RECIPE_SERIALIZERS.register(modEventBus);
         TILE_ENTITIES.register(modEventBus);
 
-        final Injector injector = Guice.createInjector(new AbstractModule() {
+        final Injector injector = Guice.createInjector(new ProviderModule(), new AbstractModule() {
             @Override
             public void configure() {
                 bind(Logger.class).toInstance(ExpandedFusion.LOGGER);
@@ -63,12 +69,6 @@ public class Registration {
                                 new TypeAnnotationsScanner()
                             )
                     ));
-            }
-
-            @Provides
-            @Singleton
-            public ExpandedFusion.RegistryProvider provideRegistryProvider() {
-                return new ExpandedFusion.RegistryProvider();
             }
         });
         final BlockProviderRegistrationResolver providerResolver = injector.getInstance(BlockProviderRegistrationResolver.class);

@@ -6,6 +6,7 @@ import com.engineersbox.expandedfusion.register.ModContainers;
 import com.engineersbox.expandedfusion.register.ModTileEntities;
 import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.*;
+import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import com.engineersbox.expandedfusion.register.registry.exception.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.register.registry.exception.MisconfiguredProviderException;
 import com.google.inject.Inject;
@@ -39,7 +40,6 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     private final Reflections reflections;
     private final Map<String, BlockImplGrouping> blockImplClassGroupings;
-    private final Map<String, BlockImplGrouping> screensToBeRegistered = new HashMap<>();
     final ExpandedFusion.RegistryProvider registryProvider;
 
     @Inject
@@ -179,23 +179,20 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
         registerContainer(name, containerImpl);
-        this.screensToBeRegistered.put(name, group);
+        this.registryProvider.screensToBeRegistered.put(name, group);
     }
 
     @SuppressWarnings("unchecked")
     @OnlyIn(Dist.CLIENT)
-    private <T extends Container, U extends Screen & IHasContainer<T>> void registerScreens(final FMLClientSetupEvent event) {
-        this.screensToBeRegistered.forEach((String name, BlockImplGrouping group) -> {
-            final ContainerType<T> containerType = (ContainerType<T>) this.registryProvider.containers.get(name);
-            if (containerType == null) {
-                throw new RuntimeException(); // TODO: Implement an exception for this
-            }
+    public static <T extends Container, U extends Screen & IHasContainer<T>> void registerScreens(final FMLClientSetupEvent event) {
+        BlockInjectionContext.getScreensToBeRegistered().forEach((String name, BlockImplGrouping group) -> {
+            final ContainerType<T> containerType = (ContainerType<T>) BlockInjectionContext.getContainerType(name);
             final Class<? extends ContainerScreen<? extends T>> screen = (Class<? extends ContainerScreen<? extends T>>) group.getScreen();
             if (screen == null) {
                 throw new RuntimeException(); // TODO: Implement an exception for this
             }
-            final ScreenManager.IScreenFactory<T, U> factory = (final T c,final PlayerInventory p,final ITextComponent t) ->
-                    (U) this.<T,U>instantiateScreenWithIScreenFactoryParams(c,p,t,screen);
+            final ScreenManager.IScreenFactory<T, U> factory = (c,p,t) ->
+                    (U) BlockProviderRegistrationResolver.instantiateScreenWithIScreenFactoryParams(c,p,t,screen);
             ScreenManager.registerFactory(containerType, factory);
         });
     }
@@ -214,7 +211,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Container,U extends Screen & IHasContainer<T>> ScreenManager.IScreenFactory<T, U>
+    public static <T extends Container> ContainerScreen<T>
     instantiateScreenWithIScreenFactoryParams(final T container,
                                               final PlayerInventory playerInventory,
                                               final ITextComponent titleIn,
@@ -235,9 +232,9 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
         try {
-            return (ScreenManager.IScreenFactory<T, U>) new ArrayList<>(constructors).get(0).newInstance(container, playerInventory, titleIn);
+            return (ContainerScreen<T>) new ArrayList<>(constructors).get(0).newInstance(container, playerInventory, titleIn);
         } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new RuntimeException(e); // TODO: Implement an exception for this
         }
     }
 
@@ -262,13 +259,13 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         try {
             return (T) new ArrayList<>(constructors).get(0).newInstance(id, playerInventory);
         } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new RuntimeException(e); // TODO: Implement an exception for this
         }
     }
 
     private void registerTileEntity(@Nonnull final String name,
                                     @Nonnull final Class<? extends TileEntity> tileEntityImpl) {
-        final BlockRegistryObject<Block> blockRegistryObject = this.registryProvider.blocks.get(name);
+        final BlockRegistryObject<? extends Block> blockRegistryObject = this.registryProvider.blocks.get(name);
         if (blockRegistryObject == null) {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
@@ -303,7 +300,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         try {
             return (T) new ArrayList<>(constructors).get(0).newInstance();
         } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new RuntimeException(e); // TODO: Implement an exception for this
         }
     }
 

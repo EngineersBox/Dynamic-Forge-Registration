@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
+package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineBlock;
@@ -16,10 +16,13 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 @BlockProvider(
-        name = "fusion_control_computer",
+        name = FusionControlComputer.PROVIDER_NAME,
         type = BlockImplType.TILE_ENTITY
 )
 public class FusionControlComputer extends AbstractMachineBlock {
+    public static final String PROVIDER_NAME = "fusion_control_computer";
+
+    @SuppressWarnings("unused")
     public FusionControlComputer() {
         super(MachineTier.REINFORCED, Properties.create(Material.IRON).hardnessAndResistance(6, 20).sound(SoundType.METAL));
     }

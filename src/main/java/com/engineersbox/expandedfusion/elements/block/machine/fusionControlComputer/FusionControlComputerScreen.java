@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
+package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.common.machine.screen.AbstractMachineScreen;
@@ -7,10 +7,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-@BlockScreenProvider(name = "fusion_control_computer")
+@BlockScreenProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerScreen extends AbstractMachineScreen<FusionControlComputerContainer> {
     public static final ResourceLocation TEXTURE = ExpandedFusion.getId("textures/gui/fusion_control_computer.png");
 
+    @SuppressWarnings("unused")
     public FusionControlComputerScreen(final FusionControlComputerContainer containerIn,
                                        final PlayerInventory playerInventory,
                                        final ITextComponent titleIn) {

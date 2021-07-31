@@ -2,8 +2,8 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "expandedfusion:block/nobium_tin_coil_top",
-    "all": "expandedfusion:block/nobium_tin_coil"
+    "particle": "expandedfusion:block/niobium_tin_coil_top",
+    "all": "expandedfusion:block/niobium_tin_coil"
   },
   "elements": [
     {

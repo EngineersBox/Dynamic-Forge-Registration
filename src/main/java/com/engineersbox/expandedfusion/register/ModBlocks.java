@@ -2,7 +2,6 @@ package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineBlock;
-import com.engineersbox.expandedfusion.elements.block.fusionControlComputer.FusionControlComputer;
 import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
@@ -34,21 +33,21 @@ import java.util.function.Supplier;
 public class ModBlocks {
 
     // Mineral and metal solid blocks
-//    public static final BlockRegistryObject<Block> NOBIUM_BLOCK = register("nobium_block", () -> new Block(Block.Properties.create(Material.IRON)));
+//    public static final BlockRegistryObject<Block> NOBIUM_BLOCK = register("niobium_block", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> TITANIUM_BLOCK = register("titanium_block", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> TIN_BLOCK = register("tin_block", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> COPPER_BLOCK = register("copper_block", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> BERYLLIUM_BLOCK = register("beryllium_block", () -> new Block(Block.Properties.create(Material.IRON)));
 
     // Composite Machine Structure ModBlocks
-    public static final BlockRegistryObject<Block> NOBIUM_TITANIUM_COIL = register("nobium_titanium_coil", () -> new Block(Block.Properties.create(Material.IRON)));
-//    public static final BlockRegistryObject<Block> NOBIUM_TIN_COIL = Registration.BLOCKS.register("nobium_tin_coil", () -> new Block(Block.Properties.create(Material.IRON)));
+//    public static final BlockRegistryObject<Block> NOBIUM_TITANIUM_COIL = register("niobium_titanium_coil", () -> new Block(Block.Properties.create(Material.IRON)));
+//    public static final BlockRegistryObject<Block> NOBIUM_TIN_COIL = Registration.BLOCKS.register("niobium_tin_coil", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> COPPER_BERYLLIUM_BONDED_SHIELDING = Registration.BLOCKS.register("copper_beryllium_bonded_shielding", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> DIVERTOR_CASSETTE_ASSEMBLY = Registration.BLOCKS.register("divertor_cassette_assembly", () -> new Block(Block.Properties.create(Material.IRON)));
 //    public static final BlockRegistryObject<Block> CRYOSTAT_PRESSURE_CHAMBER_WALL = Registration.BLOCKS.register("cryostat_pressure_chamber_wall", () -> new Block(Block.Properties.create(Material.IRON)));
 
     // Machines
-    public static final BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputer::new);
+//    public static final BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputer::new);
 
     private ModBlocks() {}
 

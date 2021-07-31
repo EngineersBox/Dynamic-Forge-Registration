@@ -3,6 +3,7 @@ package com.engineersbox.expandedfusion;
 import com.engineersbox.expandedfusion.network.IProxy;
 import com.engineersbox.expandedfusion.network.NetworkTargetProxy;
 import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
+import com.engineersbox.expandedfusion.register.registry.provider.BlockImplGrouping;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import net.minecraft.block.Block;
@@ -29,10 +30,12 @@ public class ExpandedFusion {
     public static ExpandedFusion INSTANCE;
     public static IProxy PROXY;
 
+    @Singleton
     public static class RegistryProvider {
-        public final Map<String, BlockRegistryObject<Block>> blocks = new HashMap<>();
+        public final Map<String, BlockRegistryObject<? extends Block>> blocks = new HashMap<>();
         public final Map<String, TileEntityType<? extends TileEntity>> tileEntities = new HashMap<>();
         public final Map<String, ContainerType<? extends Container>> containers = new HashMap<>();
+        public final Map<String, BlockImplGrouping> screensToBeRegistered = new HashMap<>();
     }
 
     public ExpandedFusion() {

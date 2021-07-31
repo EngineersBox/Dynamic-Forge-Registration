@@ -2,7 +2,6 @@ package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.common.block.IBlockProvider;
-import com.engineersbox.expandedfusion.elements.block.fusionControlComputer.FusionControlComputerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -13,12 +12,12 @@ import java.util.function.Supplier;
 
 public class ModTileEntities {
 
-    public static TileEntityType<FusionControlComputerTileEntity> FUSION_CONTROL_COMPUTER;
+//    public static TileEntityType<FusionControlComputerTileEntity> FUSION_CONTROL_COMPUTER;
 
     private ModTileEntities() {}
 
     public static void registerAll(final RegistryEvent.Register<TileEntityType<?>> event) {
-        FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputerTileEntity::new, ModBlocks.FUSION_CONTROL_COMPUTER);
+//        FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputerTileEntity::new, ModBlocks.FUSION_CONTROL_COMPUTER);
     }
 
     public static <T extends TileEntity> TileEntityType<T> register(final String name, final Supplier<T> tileFactory, final IBlockProvider block) {

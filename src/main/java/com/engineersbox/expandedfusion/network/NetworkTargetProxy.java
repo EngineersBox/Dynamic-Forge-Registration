@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.register.*;
+import com.engineersbox.expandedfusion.register.registry.provider.BlockProviderRegistrationResolver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
@@ -68,7 +69,7 @@ public class NetworkTargetProxy implements IProxy {
 
         private void clientSetup(final FMLClientSetupEvent event) {
             ModBlocks.registerRenderTypes(event);
-            ModContainers.registerScreens(event);
+            BlockProviderRegistrationResolver.registerScreens(event);
         }
 
         public void setFog(final EntityViewRenderEvent.FogColors fog) {

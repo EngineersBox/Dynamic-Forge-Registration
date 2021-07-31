@@ -1,11 +1,11 @@
-package com.engineersbox.expandedfusion.elements.block.fusionControlComputer;
+package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
 import com.engineersbox.expandedfusion.core.common.machine.container.AbstractMachineContainer;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
-import com.engineersbox.expandedfusion.register.ModContainers;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockContainerProvider;
+import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -13,8 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-@BlockContainerProvider(name = "fusion_control_computer")
+@BlockContainerProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerContainer extends AbstractMachineContainer<FusionControlComputerTileEntity> {
+
+    @SuppressWarnings("unused")
     public FusionControlComputerContainer(final int id, final PlayerInventory playerInventory) {
         this(id, playerInventory, new FusionControlComputerTileEntity(), new IntArray(AbstractMachineTileEntity.FIELDS_COUNT));
     }
@@ -23,7 +25,7 @@ public class FusionControlComputerContainer extends AbstractMachineContainer<Fus
                                           final PlayerInventory playerInventory,
                                           final FusionControlComputerTileEntity tileEntity,
                                           final IIntArray fieldsIn) {
-        super(ModContainers.FUSION_CONTROL_COMPUTER, id, tileEntity, fieldsIn);
+        super(BlockInjectionContext.getContainerType(FusionControlComputer.PROVIDER_NAME), id, tileEntity, fieldsIn);
 
         this.addSlot(new Slot(this.tileEntity, 0, 56, 35));
         this.addSlot(new SlotOutputOnly(this.tileEntity, 1, 117, 35));
