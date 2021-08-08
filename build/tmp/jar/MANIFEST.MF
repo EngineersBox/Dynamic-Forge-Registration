@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: FusionReactor
-Implementation-Version: 1.0
-Specification-Vendor: expandedfusionsareus
-Specification-Title: expandedfusion
-Implementation-Timestamp: 2021-06-20T16:27:21+1000
-Specification-Version: 1
-Implementation-Vendor: expandedfusionsareus
-

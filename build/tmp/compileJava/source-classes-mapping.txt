@@ -1,3 +1,0 @@
-com/engineersbox/expandedfusion/ExpandedFusion.java
- com.engineersbox.expandedfusion.ExpandedFusion
- com.engineersbox.expandedfusion.ExpandedFusion$RegistryEvents
