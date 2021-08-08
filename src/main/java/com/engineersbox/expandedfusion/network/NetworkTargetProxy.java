@@ -68,7 +68,7 @@ public class NetworkTargetProxy implements IProxy {
         }
 
         private void clientSetup(final FMLClientSetupEvent event) {
-            ModBlocks.registerRenderTypes(event);
+            BlockProviderRegistrationResolver.registerRenderTypes(event);
             BlockProviderRegistrationResolver.registerScreens(event);
         }
 

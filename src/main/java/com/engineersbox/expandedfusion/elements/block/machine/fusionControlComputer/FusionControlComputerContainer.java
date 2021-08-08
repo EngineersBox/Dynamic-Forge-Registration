@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.core.common.machine.container.AbstractMac
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockContainerProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.ContainerProvider;
 import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-@BlockContainerProvider(name = FusionControlComputer.PROVIDER_NAME)
+@ContainerProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerContainer extends AbstractMachineContainer<FusionControlComputerTileEntity> {
 
     @SuppressWarnings("unused")

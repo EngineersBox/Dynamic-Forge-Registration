@@ -53,12 +53,6 @@ public class ModBlocks {
 
     static void register() {}
 
-    @OnlyIn(Dist.CLIENT)
-    public static void registerRenderTypes(final FMLClientSetupEvent event) {
-        Registration.getBlocks(AbstractMachineBlock.class).forEach(block ->
-                RenderTypeLookup.setRenderLayer(block, RenderType.getTranslucent()));
-    }
-
     public static <T extends Block> BlockRegistryObject<T> registerNoItem(final String name, final Supplier<T> block) {
         return new BlockRegistryObject<>(Registration.BLOCKS.register(name, block));
     }

@@ -1,9 +1,9 @@
 package com.engineersbox.expandedfusion.register.registry.provider;
 
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockContainerProvider;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockScreenProvider;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockTileEntityProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.ContainerProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.ScreenProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.TileEntityProvider;
 
 import java.lang.annotation.Annotation;
 
@@ -27,11 +27,11 @@ public enum BlockImplType {
                 case BLOCK:
                     return BlockProvider.class;
                 case TILE_ENTITY:
-                    return BlockTileEntityProvider.class;
+                    return TileEntityProvider.class;
                 case CONTAINER:
-                    return BlockContainerProvider.class;
+                    return ContainerProvider.class;
                 case SCREEN:
-                    return BlockScreenProvider.class;
+                    return ScreenProvider.class;
             }
             return null;
         }

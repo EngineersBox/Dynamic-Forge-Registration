@@ -3,8 +3,9 @@ package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComp
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.EnergyProperties;
+import com.engineersbox.expandedfusion.core.common.machine.tileentity.TransportSlotConfiguration;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockTileEntityProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.TileEntityProvider;
 import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -18,19 +19,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-@BlockTileEntityProvider(name = FusionControlComputer.PROVIDER_NAME)
+@TileEntityProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<AbstractCookingRecipe> {
 
-    // Inventory constants
-    private static final int[] SLOTS_INPUT = {0};
-    private static final int[] SLOTS_OUTPUT = {1};
-    private static final int[] SLOTS_ALL = {0, 1};
-    private static final int INVENTORY_SIZE = SLOTS_ALL.length;
+    private static final TransportSlotConfiguration SLOT_CONFIG = new TransportSlotConfiguration.Builder()
+        .withInputSlots(0)
+        .withOutputSlots(1)
+        .build();
 
     public FusionControlComputerTileEntity() {
         super(
             BlockInjectionContext.getTileEntityType(FusionControlComputer.PROVIDER_NAME),
-            INVENTORY_SIZE,
+            SLOT_CONFIG.slots.length,
             MachineTier.REINFORCED,
             new EnergyProperties(
                 50_000,
@@ -47,7 +47,7 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
 
     @Override
     protected int[] getOutputSlots() {
-        return SLOTS_OUTPUT;
+        return SLOT_CONFIG.output;
     }
 
     @Override
@@ -56,11 +56,11 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
         if (world == null) return null;
 
         final RecipeManager recipeManager = world.getRecipeManager();
-        final Optional<BlastingRecipe> optional = recipeManager.getRecipe(IRecipeType.BLASTING, this, world);
-        if (optional.isPresent()) return optional.get();
+        final Optional<BlastingRecipe> blastingRecipe = recipeManager.getRecipe(IRecipeType.BLASTING, this, world);
+        if (blastingRecipe.isPresent()) return blastingRecipe.get();
 
-        final Optional<FurnaceRecipe> optional1 = recipeManager.getRecipe(IRecipeType.SMELTING, this, world);
-        return optional1.orElse(null);
+        final Optional<FurnaceRecipe> furnaceRecipe = recipeManager.getRecipe(IRecipeType.SMELTING, this, world);
+        return furnaceRecipe.orElse(null);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
 
     @Override
     public int[] getSlotsForFace(final Direction side) {
-        return SLOTS_ALL;
+        return SLOT_CONFIG.slots;
     }
 
     @Override

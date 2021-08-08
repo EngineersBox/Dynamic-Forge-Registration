@@ -13,4 +13,6 @@ public abstract class RegistrationResolver {
                 .collect(Collectors.toSet());
     }
 
+    abstract void registerAll();
+
 }

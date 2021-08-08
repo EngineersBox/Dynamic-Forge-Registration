@@ -5,6 +5,7 @@ import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumC
 import com.engineersbox.expandedfusion.register.registry.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import com.engineersbox.expandedfusion.register.registry.provider.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.register.registry.provider.grouping.GroupingModule;
 import com.google.inject.*;
 import com.google.inject.name.Names;
 import net.minecraft.block.Block;
@@ -48,6 +49,19 @@ public class Registration {
 
     private Registration() {throw new IllegalAccessError("Utility class");}
 
+    private static class PackageReflections extends AbstractModule {
+        @Override
+        public void configure() {
+            bind(Logger.class).toInstance(ExpandedFusion.LOGGER);
+            bind(Reflections.class)
+                .annotatedWith(Names.named("packageReflections"))
+                .toInstance(new Reflections(new ConfigurationBuilder()
+                    .setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion"))
+                    .setScanners(new TypeElementsScanner(), new SubTypesScanner(), new TypeAnnotationsScanner())
+                ));
+        }
+    }
+
     public static void register() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(modEventBus);
@@ -56,23 +70,11 @@ public class Registration {
         RECIPE_SERIALIZERS.register(modEventBus);
         TILE_ENTITIES.register(modEventBus);
 
-        final Injector injector = Guice.createInjector(new ProviderModule(), new AbstractModule() {
-            @Override
-            public void configure() {
-                bind(Logger.class).toInstance(ExpandedFusion.LOGGER);
-                bind(Reflections.class)
-                    .annotatedWith(Names.named("packageReflections"))
-                    .toInstance(new Reflections(
-                        new ConfigurationBuilder()
-                            .setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion"))
-                            .setScanners(
-                                new TypeElementsScanner(),
-                                new SubTypesScanner(),
-                                new TypeAnnotationsScanner()
-                            )
-                    ));
-            }
-        });
+        final Injector injector = Guice.createInjector(
+            new ProviderModule(),
+            new GroupingModule(),
+                new PackageReflections()
+        );
         final BlockProviderRegistrationResolver providerResolver = injector.getInstance(BlockProviderRegistrationResolver.class);
         providerResolver.registerAll();
 

@@ -1,10 +1,11 @@
-package com.engineersbox.expandedfusion.register.registry.provider;
+package com.engineersbox.expandedfusion.register.registry.provider.grouping;
 
 import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockContainerProvider;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockScreenProvider;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockTileEntityProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.ContainerProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.ScreenProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.TileEntityProvider;
 import com.engineersbox.expandedfusion.register.registry.exception.DuplicateBlockComponentBinding;
+import com.engineersbox.expandedfusion.register.registry.provider.BlockImplType;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.inventory.container.Container;
@@ -14,7 +15,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockImplGrouping {
+public class BlockImplGrouping implements ImplGrouping {
     private Class<? extends TileEntity> tileEntity;
     private Class<? extends Block> block;
     private Class<? extends Container> container;
@@ -24,11 +25,11 @@ public class BlockImplGrouping {
         return tileEntity;
     }
 
-    public BlockTileEntityProvider getTileEntityProviderAnnotation() {
+    public TileEntityProvider getTileEntityProviderAnnotation() {
         if (this.tileEntity == null) {
             return null;
         }
-        return this.tileEntity.getAnnotation(BlockTileEntityProvider.class);
+        return this.tileEntity.getAnnotation(TileEntityProvider.class);
     }
 
     public void setTileEntity(final Class<? extends TileEntity> tileEntity) throws DuplicateBlockComponentBinding {
@@ -60,11 +61,11 @@ public class BlockImplGrouping {
         return container;
     }
 
-    public BlockContainerProvider getContainerProviderAnnotation() {
+    public ContainerProvider getContainerProviderAnnotation() {
         if (this.container == null) {
             return null;
         }
-        return this.container.getAnnotation(BlockContainerProvider.class);
+        return this.container.getAnnotation(ContainerProvider.class);
     }
 
     public void setContainer(final Class<? extends Container> container) throws DuplicateBlockComponentBinding {
@@ -78,11 +79,11 @@ public class BlockImplGrouping {
         return screen;
     }
 
-    public BlockScreenProvider getScreenProviderAnnotation() {
+    public ScreenProvider getScreenProviderAnnotation() {
         if (this.screen == null) {
             return null;
         }
-        return this.screen.getAnnotation(BlockScreenProvider.class);
+        return this.screen.getAnnotation(ScreenProvider.class);
     }
 
     public void setScreen(final Class<? extends ContainerScreen<? extends Container>> screen) throws DuplicateBlockComponentBinding {

@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.register.registry.contexts.block;
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
 import com.engineersbox.expandedfusion.register.registry.contexts.ProviderModule;
-import com.engineersbox.expandedfusion.register.registry.provider.BlockImplGrouping;
+import com.engineersbox.expandedfusion.register.registry.provider.grouping.BlockImplGrouping;
 import com.google.inject.Guice;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.Container;

@@ -127,6 +127,16 @@ dependencies {
         runtimeOnly fg.deobf("mezz.jei:jei-${project.jei_version}")
     }
 
+    // Guice
+    implementation group: 'com.google.inject', name: 'guice', version: '5.0.1'
+    // Reflections
+    implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
+    // SLF4J
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
+    // Auto Service
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0'
+    compile group: 'com.google.auto.service', name: 'auto-service', version: '1.0'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

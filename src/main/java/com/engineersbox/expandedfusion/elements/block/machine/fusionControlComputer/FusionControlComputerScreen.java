@@ -2,12 +2,13 @@ package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComp
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.common.machine.screen.AbstractMachineScreen;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.BlockScreenProvider;
+import com.engineersbox.expandedfusion.register.registry.annotation.block.ScreenProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-@BlockScreenProvider(name = FusionControlComputer.PROVIDER_NAME)
+@SuppressWarnings("unused")
+@ScreenProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerScreen extends AbstractMachineScreen<FusionControlComputerContainer> {
     public static final ResourceLocation TEXTURE = ExpandedFusion.getId("textures/gui/fusion_control_computer.png");
 

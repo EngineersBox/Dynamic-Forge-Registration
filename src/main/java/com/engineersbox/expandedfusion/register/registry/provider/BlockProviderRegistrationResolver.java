@@ -1,14 +1,18 @@
 package com.engineersbox.expandedfusion.register.registry.provider;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.register.ModBlocks;
 import com.engineersbox.expandedfusion.register.ModContainers;
 import com.engineersbox.expandedfusion.register.ModTileEntities;
+import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
 import com.engineersbox.expandedfusion.register.registry.annotation.block.*;
 import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
 import com.engineersbox.expandedfusion.register.registry.exception.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.register.registry.exception.MisconfiguredProviderException;
+import com.engineersbox.expandedfusion.register.registry.provider.grouping.BlockImplGrouping;
+import com.engineersbox.expandedfusion.register.registry.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraft.block.Block;
@@ -17,6 +21,8 @@ import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
@@ -38,97 +44,20 @@ import java.util.function.Supplier;
 
 public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
-    private final Reflections reflections;
-    private final Map<String, BlockImplGrouping> blockImplClassGroupings;
+    private final ImplClassGroupings<BlockImplGrouping> implClassGroupings;
     final ExpandedFusion.RegistryProvider registryProvider;
 
     @Inject
-    public BlockProviderRegistrationResolver(@Named("packageReflections") final Reflections reflections,
-                                             final ExpandedFusion.RegistryProvider registryProvider) {
-        this.reflections = reflections;
+    public BlockProviderRegistrationResolver(final ExpandedFusion.RegistryProvider registryProvider,
+                                             final ImplClassGroupings<BlockImplGrouping> implClassGroupings) {
         this.registryProvider = registryProvider;
-        this.blockImplClassGroupings = collectAnnotatedBlockResources();
+        this.implClassGroupings = implClassGroupings;
+        this.implClassGroupings.collectAnnotatedResources();
     }
 
-    private Map<String, BlockImplGrouping> collectAnnotatedBlockResources() {
-        final Map<String, BlockImplGrouping> classGroupings = new HashMap<>();
-        final Set<Class<? extends Block>> blockProviderAnnotatedClasses = super.filterClassesBySuperType(
-                Block.class,
-                this.reflections.getTypesAnnotatedWith(BlockProvider.class)
-        );
-        for (final Class<? extends Block> c : blockProviderAnnotatedClasses) {
-            final BlockProvider annotation = c.getAnnotation(BlockProvider.class);
-            if (annotation == null) {
-                continue;
-            }
-            addIfNotExists(classGroupings, annotation.name(), c);
-        }
-        final Set<Class<? extends TileEntity>> tileEntityProviderAnnotatedClasses = super.filterClassesBySuperType(
-                TileEntity.class,
-                this.reflections.getTypesAnnotatedWith(BlockTileEntityProvider.class)
-        );
-        for (final Class<? extends TileEntity> c : tileEntityProviderAnnotatedClasses) {
-            final BlockTileEntityProvider annotation = c.getAnnotation(BlockTileEntityProvider.class);
-            if (annotation == null) {
-                continue;
-            }
-            addIfNotExists(classGroupings, annotation.name(), c);
-        }
-        final Set<Class<? extends Container>> containerProviderAnnotatedClasses = super.filterClassesBySuperType(
-                Container.class,
-                this.reflections.getTypesAnnotatedWith(BlockContainerProvider.class)
-        );
-        for (final Class<? extends Container> c : containerProviderAnnotatedClasses) {
-            final BlockContainerProvider annotation = c.getAnnotation(BlockContainerProvider.class);
-            if (annotation == null) {
-                continue;
-            }
-            addIfNotExists(classGroupings, annotation.name(), c);
-        }
-        final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = super.filterClassesBySuperType(
-                ContainerScreen.class,
-                this.reflections.getTypesAnnotatedWith(BlockScreenProvider.class)
-        );
-        for (final Class<? extends ContainerScreen> c : screenProviderAnnotatedClasses) {
-            final BlockScreenProvider annotation = c.getAnnotation(BlockScreenProvider.class);
-            if (annotation == null) {
-                continue;
-            }
-            addIfNotExists(classGroupings, annotation.name(), c);
-        }
-        final Map<String, List<Class<? extends Annotation>>> missing = new HashMap<>();
-        classGroupings.forEach((String name, BlockImplGrouping group) -> {
-            List<Class<? extends Annotation>> requirements = group.hasRequirements(group.getBlockProviderAnnotation().type());
-            if (requirements.size() > 0) {
-                missing.put(name, requirements);
-            }
-        });
-        if (!missing.isEmpty()) {
-            throw new MisconfiguredProviderException(missing);
-        }
-        return classGroupings;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addIfNotExists(final Map<String, BlockImplGrouping> groupings, final String name, final Class<?> toAdd) throws DuplicateBlockComponentBinding {
-        BlockImplGrouping blockImplGrouping = groupings.get(name);
-        if (blockImplGrouping == null) {
-            blockImplGrouping = new BlockImplGrouping();
-        }
-        if (Block.class.isAssignableFrom(toAdd)) {
-            blockImplGrouping.setBlock((Class<? extends Block>) toAdd);
-        } else if (TileEntity.class.isAssignableFrom(toAdd)) {
-            blockImplGrouping.setTileEntity((Class<? extends TileEntity>) toAdd);
-        } else if (Container.class.isAssignableFrom(toAdd)) {
-            blockImplGrouping.setContainer((Class<? extends Container>) toAdd);
-        } else if (ContainerScreen.class.isAssignableFrom(toAdd)) {
-            blockImplGrouping.setScreen((Class<? extends ContainerScreen<? extends Container>>) toAdd);
-        }
-        groupings.put(name, blockImplGrouping);
-    }
-
+    @Override
     public void registerAll() {
-        this.blockImplClassGroupings.forEach(this::registerProviderAnnotatedBlock);
+        this.implClassGroupings.getClassGroupings().forEach(this::registerProviderAnnotatedBlock);
     }
 
     private void registerProviderAnnotatedBlock(@Nonnull final String name,
@@ -161,8 +90,8 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
         registerBlock(name, blockProvider, blockImpl);
-        final BlockTileEntityProvider blockTileEntityProvider = group.getTileEntityProviderAnnotation();
-        if (blockTileEntityProvider == null) {
+        final TileEntityProvider tileEntityProvider = group.getTileEntityProviderAnnotation();
+        if (tileEntityProvider == null) {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
         final Class<? extends TileEntity> tileEntityImpl = group.getTileEntity();
@@ -170,8 +99,8 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
         registerTileEntity(name, tileEntityImpl);
-        final BlockContainerProvider blockContainerProvider = group.getContainerProviderAnnotation();
-        if (blockContainerProvider == null) {
+        final ContainerProvider containerProvider = group.getContainerProviderAnnotation();
+        if (containerProvider == null) {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
         final Class<? extends Container> containerImpl = group.getContainer();
@@ -185,14 +114,16 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
     @SuppressWarnings("unchecked")
     @OnlyIn(Dist.CLIENT)
     public static <T extends Container, U extends Screen & IHasContainer<T>> void registerScreens(final FMLClientSetupEvent event) {
-        BlockInjectionContext.getScreensToBeRegistered().forEach((String name, BlockImplGrouping group) -> {
+        BlockInjectionContext.getScreensToBeRegistered().forEach((final String name, final BlockImplGrouping group) -> {
             final ContainerType<T> containerType = (ContainerType<T>) BlockInjectionContext.getContainerType(name);
             final Class<? extends ContainerScreen<? extends T>> screen = (Class<? extends ContainerScreen<? extends T>>) group.getScreen();
             if (screen == null) {
                 throw new RuntimeException(); // TODO: Implement an exception for this
             }
-            final ScreenManager.IScreenFactory<T, U> factory = (c,p,t) ->
-                    (U) BlockProviderRegistrationResolver.instantiateScreenWithIScreenFactoryParams(c,p,t,screen);
+            final ScreenManager.IScreenFactory<T, U> factory = (final T container,
+                                                                final PlayerInventory playerInventory,
+                                                                final ITextComponent titleIn) ->
+                (U) instantiateScreenWithIScreenFactoryParams(container, playerInventory, titleIn, screen);
             ScreenManager.registerFactory(containerType, factory);
         });
     }
@@ -211,7 +142,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Container> ContainerScreen<T>
+    private static <T extends Container> ContainerScreen<T>
     instantiateScreenWithIScreenFactoryParams(final T container,
                                               final PlayerInventory playerInventory,
                                               final ITextComponent titleIn,
@@ -317,9 +248,15 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             try {
                 return (Material) matValue.get().get(Material.AIR);
             } catch (IllegalAccessException e) {
-                // TODO: Implement exception for this
+                throw new RuntimeException(e); // TODO: Implement exception for this
             }
         }
         return Material.AIR;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void registerRenderTypes(final FMLClientSetupEvent event) {
+        Registration.getBlocks(AbstractMachineBlock.class).forEach(block ->
+                RenderTypeLookup.setRenderLayer(block, RenderType.getTranslucent()));
     }
 }
