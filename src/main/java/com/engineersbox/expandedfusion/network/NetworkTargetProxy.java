@@ -1,14 +1,12 @@
 package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.register.*;
-import com.engineersbox.expandedfusion.register.registry.provider.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.register.provider.block.BlockProviderRegistrationResolver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagRegistryManager;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -28,9 +26,9 @@ public class NetworkTargetProxy implements IProxy {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcProcess);
 
         // Add listeners for registry events
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(ContainerType.class, ModContainers::registerAll);
+//        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(ContainerType.class, ModContainers::registerAll);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, ModFluids::registerFluids);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, ModTileEntities::registerAll);
+//        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, ModTileEntities::registerAll);
 
         // Other events
         MinecraftForge.EVENT_BUS.addListener(this::serverAboutToStart);

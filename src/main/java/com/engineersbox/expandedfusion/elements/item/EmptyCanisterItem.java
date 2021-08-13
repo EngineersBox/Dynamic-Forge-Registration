@@ -1,13 +1,19 @@
 package com.engineersbox.expandedfusion.elements.item;
 
+import com.engineersbox.expandedfusion.register.annotation.item.ItemProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
+@ItemProvider(
+    name = EmptyCanisterItem.PROVIDER_NAME
+)
 public class EmptyCanisterItem extends CanisterItem {
-    public EmptyCanisterItem(final Properties properties) {
-        super(properties);
+    public static final String PROVIDER_NAME = "empty_canister";
+
+    public EmptyCanisterItem() {
+        super();
     }
 
     @Override

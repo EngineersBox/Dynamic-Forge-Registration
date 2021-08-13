@@ -49,6 +49,9 @@ public class ModBlocks {
     // Machines
 //    public static final BlockRegistryObject<Block> FUSION_CONTROL_COMPUTER = register("fusion_control_computer", FusionControlComputer::new);
 
+    // Fluids
+//    public static final BlockRegistryObject<FlowingFluidBlock> OIL = registerFluid("oil", () -> ModFluids.OIL);
+
     private ModBlocks() {}
 
     static void register() {}

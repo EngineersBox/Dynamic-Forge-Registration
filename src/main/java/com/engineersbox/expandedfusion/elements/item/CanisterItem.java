@@ -3,6 +3,8 @@ package com.engineersbox.expandedfusion.elements.item;
 import com.engineersbox.expandedfusion.core.api.IFluidContainer;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.register.ModItems;
+import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.register.annotation.item.ItemProvider;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -18,9 +20,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+@ItemProvider(
+    name = CanisterItem.PROVIDER_NAME
+)
 public class CanisterItem extends Item implements IFluidContainer {
-    public CanisterItem(final Properties properties) {
-        super(properties);
+    public static final String PROVIDER_NAME = "canister";
+
+    public CanisterItem() {
+        super(new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP));
     }
 
     public static ItemStack getStack(@Nullable final Fluid fluid) {

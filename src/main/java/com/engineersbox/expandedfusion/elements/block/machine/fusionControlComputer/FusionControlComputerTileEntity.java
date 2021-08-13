@@ -5,8 +5,8 @@ import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMa
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.EnergyProperties;
 import com.engineersbox.expandedfusion.core.common.machine.tileentity.TransportSlotConfiguration;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.register.registry.annotation.block.TileEntityProvider;
-import com.engineersbox.expandedfusion.register.registry.contexts.block.BlockInjectionContext;
+import com.engineersbox.expandedfusion.register.annotation.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.register.contexts.RegistryInjectionContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
 
     public FusionControlComputerTileEntity() {
         super(
-            BlockInjectionContext.getTileEntityType(FusionControlComputer.PROVIDER_NAME),
+            RegistryInjectionContext.getTileEntityType(FusionControlComputer.PROVIDER_NAME),
             SLOT_CONFIG.slots.length,
             MachineTier.REINFORCED,
             new EnergyProperties(

@@ -23,10 +23,8 @@ public final class ModItems {
 //    }
 
 //    public static final ItemRegistryObject<WrenchItem> WRENCH = register("wrench", WrenchItem::new);
-    public static final ItemRegistryObject<CanisterItem> CANISTER = register("canister", () ->
-            new CanisterItem(new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP)));
-    public static final ItemRegistryObject<EmptyCanisterItem> EMPTY_CANISTER = register("empty_canister", () ->
-            new EmptyCanisterItem(new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP)));
+    public static final ItemRegistryObject<CanisterItem> CANISTER = register("canister", CanisterItem::new);
+    public static final ItemRegistryObject<EmptyCanisterItem> EMPTY_CANISTER = register("empty_canister", EmptyCanisterItem::new);
 
 //    public static final ItemRegistryObject<BucketItem> OIL_BUCKET = register("oil_bucket", () ->
 //            createBucketItem(() -> ModFluids.OIL));
