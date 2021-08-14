@@ -1,7 +1,9 @@
 package com.engineersbox.expandedfusion.network;
 
+import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.register.*;
 import com.engineersbox.expandedfusion.register.provider.block.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.register.resolver.JITRegistrationResolver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
@@ -17,9 +19,14 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class NetworkTargetProxy implements IProxy {
     private MinecraftServer server = null;
+    private static final JITRegistrationResolver REGISTRATION_RESOLVER = new JITRegistrationResolver.Builder()
+            .withLogger(ExpandedFusion.LOGGER)
+            .withPackageName("com.engineersbox.expandedfusion")
+            .withDefaultSubscriptionHandlers()
+            .build();
 
     NetworkTargetProxy() {
-        Registration.register();
+        Registration.register(REGISTRATION_RESOLVER);
 
         // Add listeners for common events
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcEnqueue);
@@ -54,8 +61,8 @@ public class NetworkTargetProxy implements IProxy {
 
     public static class Client extends NetworkTargetProxy {
         public Client() {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishEvent);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(ModItems::registerItemColors);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
             MinecraftForge.EVENT_BUS.addListener(this::setFog);
         }
@@ -63,11 +70,6 @@ public class NetworkTargetProxy implements IProxy {
         @Override
         public void tryFetchTagsHack() {
             TagRegistryManager.fetchTags();
-        }
-
-        private void clientSetup(final FMLClientSetupEvent event) {
-            BlockProviderRegistrationResolver.registerRenderTypes(event);
-            BlockProviderRegistrationResolver.registerScreens(event);
         }
 
         public void setFog(final EntityViewRenderEvent.FogColors fog) {

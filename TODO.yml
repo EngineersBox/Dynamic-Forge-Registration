@@ -1,3 +1,13 @@
+- Registry:
+      - Create DefferedRegistryContext to hold DefferedRegistry instances
+      - Create DefferedRegistry instanced based on arry of enums passed to JITRegistrationResolver:
+            - BLOCK
+            - ITEM
+            - FLUID
+            - RECIPE
+            - CONATINER
+            - TILE_ENTITY
+
 - Blocks:
     - Ore:
         - Tin

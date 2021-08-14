@@ -38,7 +38,7 @@ public class Registration {
 
     private Registration() {throw new IllegalAccessError("Utility class");}
 
-    public static void register() {
+    public static void register(final JITRegistrationResolver registrationResolver) {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(modEventBus);
         CONTAINERS.register(modEventBus);
@@ -46,10 +46,6 @@ public class Registration {
         RECIPE_SERIALIZERS.register(modEventBus);
         TILE_ENTITIES.register(modEventBus);
 
-        final JITRegistrationResolver registrationResolver = new JITRegistrationResolver.Builder()
-                .withLogger(ExpandedFusion.LOGGER)
-                .withPackageName("com.engineersbox.expandedfusion")
-                .build();
         registrationResolver.instantiateResolvers();
         registrationResolver.registerAll();
 

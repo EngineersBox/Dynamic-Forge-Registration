@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.register.resolver;
 
 import com.engineersbox.expandedfusion.register.provider.RegistrationResolver;
+import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 
 public interface JITResolver {
 
@@ -15,5 +16,7 @@ public interface JITResolver {
     RegistrationResolver getBlockRegistrationResolver();
     RegistrationResolver getItemRegistrationResolver();
     RegistrationResolver getFluidRegistrationResolver();
+
+    void publishEvent(final ModLifecycleEvent eventConsumer);
 
 }
