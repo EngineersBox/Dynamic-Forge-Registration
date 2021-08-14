@@ -15,7 +15,7 @@ public class ItemProviderRegistrationResolver extends RegistrationResolver {
 
     @Inject
     public ItemProviderRegistrationResolver(final RegistryProvider registryProvider,
-                                             final ImplClassGroupings<ItemImplGrouping> implClassGroupings) {
+                                            final ImplClassGroupings<ItemImplGrouping> implClassGroupings) {
         this.registryProvider = registryProvider;
         this.implClassGroupings = implClassGroupings;
         this.implClassGroupings.collectAnnotatedResources();

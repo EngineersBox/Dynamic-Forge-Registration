@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class BlockRegistrationEventHandler implements EventSubscriptionHandler {
+public class BlockClientEventHandler implements EventSubscriptionHandler {
 
     @SuppressWarnings("unchecked, unused")
     @OnlyIn(Dist.CLIENT)

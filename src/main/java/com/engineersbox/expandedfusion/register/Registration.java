@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import com.engineersbox.expandedfusion.register.contexts.RegistryInjectionContext;
 import com.engineersbox.expandedfusion.register.resolver.JITRegistrationResolver;
+import com.engineersbox.expandedfusion.register.resolver.JITResolver;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
@@ -38,7 +39,7 @@ public class Registration {
 
     private Registration() {throw new IllegalAccessError("Utility class");}
 
-    public static void register(final JITRegistrationResolver registrationResolver) {
+    public static void register(final JITResolver registrationResolver) {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(modEventBus);
         CONTAINERS.register(modEventBus);

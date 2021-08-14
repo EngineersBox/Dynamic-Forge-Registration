@@ -2,7 +2,7 @@ package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.register.*;
-import com.engineersbox.expandedfusion.register.provider.block.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.register.handler.ItemClientEventHandler;
 import com.engineersbox.expandedfusion.register.resolver.JITRegistrationResolver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -22,7 +22,10 @@ public class NetworkTargetProxy implements IProxy {
     private static final JITRegistrationResolver REGISTRATION_RESOLVER = new JITRegistrationResolver.Builder()
             .withLogger(ExpandedFusion.LOGGER)
             .withPackageName("com.engineersbox.expandedfusion")
-            .withDefaultSubscriptionHandlers()
+            .withDefaultEventHandlers()
+            .withCustomEventHandlers(
+                ItemClientEventHandler.class
+            )
             .build();
 
     NetworkTargetProxy() {
@@ -33,9 +36,7 @@ public class NetworkTargetProxy implements IProxy {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcProcess);
 
         // Add listeners for registry events
-//        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(ContainerType.class, ModContainers::registerAll);
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, ModFluids::registerFluids);
-//        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(TileEntityType.class, ModTileEntities::registerAll);
 
         // Other events
         MinecraftForge.EVENT_BUS.addListener(this::serverAboutToStart);
@@ -62,7 +63,6 @@ public class NetworkTargetProxy implements IProxy {
     public static class Client extends NetworkTargetProxy {
         public Client() {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishEvent);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(ModItems::registerItemColors);
 
             MinecraftForge.EVENT_BUS.addListener(this::setFog);
         }
