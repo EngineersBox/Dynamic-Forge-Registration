@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.register.provider.block;
+package com.engineersbox.expandedfusion.register.provider.elements.block;
 
 import com.engineersbox.expandedfusion.register.annotation.block.BlockProvider;
 import com.engineersbox.expandedfusion.register.annotation.block.ContainerProvider;

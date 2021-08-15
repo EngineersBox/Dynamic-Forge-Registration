@@ -1,8 +1,9 @@
-package com.engineersbox.expandedfusion.register.provider.block;
+package com.engineersbox.expandedfusion.register.provider.elements.block;
 
-import com.engineersbox.expandedfusion.register.ModBlocks;
-import com.engineersbox.expandedfusion.register.ModContainers;
-import com.engineersbox.expandedfusion.register.ModTileEntities;
+import com.engineersbox.expandedfusion.register.provider.shim.BlockDeferredRegistryShim;
+import com.engineersbox.expandedfusion.register.provider.shim.ContainerDeferredRegistryShim;
+import com.engineersbox.expandedfusion.register.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.register.provider.shim.TileEntityDeferredRegistryShim;
 import com.engineersbox.expandedfusion.register.registry.BlockRegistryObject;
 import com.engineersbox.expandedfusion.register.annotation.block.*;
 import com.engineersbox.expandedfusion.register.provider.RegistrationResolver;
@@ -28,12 +29,21 @@ import java.util.function.Supplier;
 public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     private final ImplClassGroupings<BlockImplGrouping> implClassGroupings;
+    private final BlockDeferredRegistryShim blockDeferredRegistryShim;
+    private final ContainerDeferredRegistryShim containerDeferredRegistryShim;
+    private final TileEntityDeferredRegistryShim tileEntityDeferredRegistryShim;
     final RegistryProvider registryProvider;
 
     @Inject
     public BlockProviderRegistrationResolver(final RegistryProvider registryProvider,
-                                             final ImplClassGroupings<BlockImplGrouping> implClassGroupings) {
+                                             final ImplClassGroupings<BlockImplGrouping> implClassGroupings,
+                                             final RegistryShim<Block> blockDeferredRegistryShim,
+                                             final RegistryShim<Container> containerDeferredRegistryShim,
+                                             final RegistryShim<TileEntity> tileEntityDeferredRegistryShim) {
         this.registryProvider = registryProvider;
+        this.blockDeferredRegistryShim = (BlockDeferredRegistryShim) blockDeferredRegistryShim;
+        this.containerDeferredRegistryShim = (ContainerDeferredRegistryShim) containerDeferredRegistryShim;
+        this.tileEntityDeferredRegistryShim = (TileEntityDeferredRegistryShim) tileEntityDeferredRegistryShim;
         this.implClassGroupings = implClassGroupings;
         this.implClassGroupings.collectAnnotatedResources();
     }
@@ -100,7 +110,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                 this.instantiateContainerWithIFactoryParams(id, playerInventory, containerImpl);
         this.registryProvider.containers.put(
             name,
-            ModContainers.register(
+            this.containerDeferredRegistryShim.register(
                 name,
                 containerFactory
             )
@@ -140,7 +150,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         }
         this.registryProvider.tileEntities.put(
                 name,
-                ModTileEntities.register(name, () -> this.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
+                this.tileEntityDeferredRegistryShim.register(name, () -> this.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
         );
     }
 
@@ -154,7 +164,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         } else {
             blockSupplier = () -> new Block(createBlockProperties(properties[0]));
         }
-        this.registryProvider.blocks.put(name, ModBlocks.register(name, blockSupplier));
+        this.registryProvider.blocks.put(name, this.blockDeferredRegistryShim.register(name, blockSupplier));
     }
 
     @SuppressWarnings("unchecked")

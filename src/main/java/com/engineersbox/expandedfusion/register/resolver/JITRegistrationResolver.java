@@ -2,10 +2,10 @@ package com.engineersbox.expandedfusion.register.resolver;
 
 import com.engineersbox.expandedfusion.register.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.register.handler.BlockClientEventHandler;
-import com.engineersbox.expandedfusion.register.handler.ItemClientEventHandler;
 import com.engineersbox.expandedfusion.register.provider.RegistrationResolver;
-import com.engineersbox.expandedfusion.register.provider.block.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.register.provider.elements.block.BlockProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.register.provider.grouping.GroupingModule;
+import com.engineersbox.expandedfusion.register.provider.shim.RegistryShimModule;
 import com.engineersbox.expandedfusion.register.resolver.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.register.resolver.event.broker.EventBroker;
 import com.google.inject.Guice;
@@ -100,16 +100,8 @@ public class JITRegistrationResolver implements JITResolver {
             return this;
         }
 
-        public Builder withDefaultEventHandlers() {
-            Collections.addAll(
-                this.subscriptionHandlers,
-                BlockClientEventHandler.class
-            );
-            return this;
-        }
-
         @SafeVarargs
-        public final <T extends EventSubscriptionHandler> Builder withCustomEventHandlers(final Class<T> ...eventConsumers) {
+        public final Builder withEventHandlers(final Class<? extends EventSubscriptionHandler> ...eventConsumers) {
             Collections.addAll(this.subscriptionHandlers, eventConsumers);
             return this;
         }
@@ -134,6 +126,7 @@ public class JITRegistrationResolver implements JITResolver {
                 Guice.createInjector(
                     new ProviderModule(),
                     new GroupingModule(),
+                    new RegistryShimModule(),
                     new PackageReflectionsModule()
                         .withLogger(this.logger)
                         .withPackageName(this.packageName)

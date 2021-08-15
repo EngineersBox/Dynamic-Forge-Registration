@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComp
 import com.engineersbox.expandedfusion.core.common.MachineTier;
 import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.register.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.register.provider.block.BlockImplType;
+import com.engineersbox.expandedfusion.register.provider.elements.block.BlockImplType;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.register.annotation.block;
 
-import com.engineersbox.expandedfusion.register.provider.block.BlockImplType;
+import com.engineersbox.expandedfusion.register.provider.elements.block.BlockImplType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

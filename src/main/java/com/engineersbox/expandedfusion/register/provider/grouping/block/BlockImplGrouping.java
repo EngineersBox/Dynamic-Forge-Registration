@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.register.annotation.block.ContainerProvid
 import com.engineersbox.expandedfusion.register.annotation.block.ScreenProvider;
 import com.engineersbox.expandedfusion.register.annotation.block.TileEntityProvider;
 import com.engineersbox.expandedfusion.register.exception.grouping.DuplicateBlockComponentBinding;
-import com.engineersbox.expandedfusion.register.provider.block.BlockImplType;
+import com.engineersbox.expandedfusion.register.provider.elements.block.BlockImplType;
 import com.engineersbox.expandedfusion.register.provider.grouping.ImplGrouping;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

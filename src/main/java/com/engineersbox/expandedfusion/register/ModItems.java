@@ -1,6 +1,5 @@
 package com.engineersbox.expandedfusion.register;
 
-import com.engineersbox.expandedfusion.core.util.ColorGetter;
 import com.engineersbox.expandedfusion.elements.item.CanisterItem;
 import com.engineersbox.expandedfusion.elements.item.EmptyCanisterItem;
 import com.engineersbox.expandedfusion.elements.item.NoPlaceBucketItem;
@@ -10,9 +9,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 
 import java.util.function.Supplier;
 
@@ -28,20 +24,6 @@ public final class ModItems {
 
 //    public static final ItemRegistryObject<BucketItem> OIL_BUCKET = register("oil_bucket", () ->
 //            createBucketItem(() -> ModFluids.OIL));
-
-    private ModItems() {}
-
-    static void register() {}
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerItemColors(final ColorHandlerEvent.Item event) {
-        event.getItemColors().register((stack, tintIndex) -> {
-            if (tintIndex == 1) {
-                return ColorGetter.getColor(CANISTER.get().getFluid(stack).getFluid());
-            }
-            return 0xFFFFFF;
-        }, CANISTER);
-    }
 
     private static BucketItem createBucketItem(final Supplier<FlowingFluid> fluid) {
         return new BucketItem(fluid, new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP).maxStackSize(1).containerItem(Items.BUCKET));

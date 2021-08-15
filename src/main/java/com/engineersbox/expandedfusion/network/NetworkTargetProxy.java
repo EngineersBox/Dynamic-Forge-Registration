@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.register.*;
+import com.engineersbox.expandedfusion.register.handler.BlockClientEventHandler;
 import com.engineersbox.expandedfusion.register.handler.ItemClientEventHandler;
 import com.engineersbox.expandedfusion.register.resolver.JITRegistrationResolver;
 import net.minecraft.block.Block;
@@ -22,9 +23,9 @@ public class NetworkTargetProxy implements IProxy {
     private static final JITRegistrationResolver REGISTRATION_RESOLVER = new JITRegistrationResolver.Builder()
             .withLogger(ExpandedFusion.LOGGER)
             .withPackageName("com.engineersbox.expandedfusion")
-            .withDefaultEventHandlers()
-            .withCustomEventHandlers(
-                ItemClientEventHandler.class
+            .withEventHandlers(
+                    BlockClientEventHandler.class,
+                    ItemClientEventHandler.class
             )
             .build();
 
