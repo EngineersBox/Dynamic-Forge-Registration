@@ -19,8 +19,8 @@ public final class ModItems {
 //    }
 
 //    public static final ItemRegistryObject<WrenchItem> WRENCH = register("wrench", WrenchItem::new);
-    public static final ItemRegistryObject<CanisterItem> CANISTER = register("canister", CanisterItem::new);
-    public static final ItemRegistryObject<EmptyCanisterItem> EMPTY_CANISTER = register("empty_canister", EmptyCanisterItem::new);
+//    public static final ItemRegistryObject<CanisterItem> CANISTER = register("canister", CanisterItem::new);
+//    public static final ItemRegistryObject<EmptyCanisterItem> EMPTY_CANISTER = register("empty_canister", EmptyCanisterItem::new);
 
 //    public static final ItemRegistryObject<BucketItem> OIL_BUCKET = register("oil_bucket", () ->
 //            createBucketItem(() -> ModFluids.OIL));

@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.item;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.DuplicateItemComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplGrouping;
 import net.minecraft.item.Item;

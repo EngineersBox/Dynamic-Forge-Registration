@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.core.registration.provider.shim.Container
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.TileEntityDeferredRegistryShim;
 import com.engineersbox.expandedfusion.core.registration.registryObject.BlockRegistryObject;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.*;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.*;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
@@ -150,7 +150,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         }
         this.registryProvider.tileEntities.put(
                 name,
-                this.tileEntityDeferredRegistryShim.register(name, () -> this.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
+                this.tileEntityDeferredRegistryShim.register(name, () -> super.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
         );
     }
 
@@ -160,27 +160,11 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final BaseBlockProperties[] properties = blockProvider.properties();
         Supplier<Block> blockSupplier;
         if (properties.length < 1) {
-            blockSupplier = () -> this.<Block>instantiateWithDefaultConstructor(blockImpl);
+            blockSupplier = () -> super.<Block>instantiateWithDefaultConstructor(blockImpl);
         } else {
             blockSupplier = () -> new Block(createBlockProperties(properties[0]));
         }
         this.registryProvider.blocks.put(name, this.blockDeferredRegistryShim.register(name, blockSupplier));
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T instantiateWithDefaultConstructor(@Nonnull final Class<? extends T> impl) {
-        final Set<Constructor> constructors = ReflectionUtils.getConstructors(
-                impl,
-                (c) -> c.getParameterCount() < 1
-        );
-        if (constructors.size() < 1) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
-        }
-        try {
-            return (T) new ArrayList<>(constructors).get(0).newInstance();
-        } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e); // TODO: Implement an exception for this
-        }
     }
 
     private Block.Properties createBlockProperties(final BaseBlockProperties baseProps) {

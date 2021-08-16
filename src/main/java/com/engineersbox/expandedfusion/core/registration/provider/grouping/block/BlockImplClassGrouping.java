@@ -1,9 +1,9 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.block;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.ScreenProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ScreenProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.exception.MisconfiguredProviderException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
@@ -41,7 +41,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             if (annotation == null) {
                 continue;
             }
-            addIfNotExists(annotation.name(), c);
+            addIfNotExists(annotation.providerName(), c);
         }
         final Set<Class<? extends TileEntity>> tileEntityProviderAnnotatedClasses = super.filterClassesBySuperType(
                 TileEntity.class,

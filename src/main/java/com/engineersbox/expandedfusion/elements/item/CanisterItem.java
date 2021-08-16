@@ -1,10 +1,11 @@
 package com.engineersbox.expandedfusion.elements.item;
 
 import com.engineersbox.expandedfusion.core.api.IFluidContainer;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.register.ModItems;
 import com.engineersbox.expandedfusion.register.Registration;
-import com.engineersbox.expandedfusion.core.registration.annotation.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -20,11 +21,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+@LangMetadata(
+        nameMapping = CanisterItem.NAME_MAPPING
+)
 @ItemProvider(
     name = CanisterItem.PROVIDER_NAME
 )
 public class CanisterItem extends Item implements IFluidContainer {
     public static final String PROVIDER_NAME = "canister";
+    public static final String NAME_MAPPING = "Canister";
 
     public CanisterItem() {
         super(new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP));
@@ -35,7 +40,7 @@ public class CanisterItem extends Item implements IFluidContainer {
     }
 
     public static ItemStack getStack(@Nullable final Fluid fluid, final int count) {
-        final IItemProvider item = fluid != null ? ModItems.CANISTER : ModItems.EMPTY_CANISTER;
+        final IItemProvider item = RegistryInjectionContext.getItemRegistryObject(fluid != null ? CanisterItem.PROVIDER_NAME : EmptyCanisterItem.PROVIDER_NAME);
         final ItemStack result = new ItemStack(item, count);
         if (fluid != null) {
             ResourceLocation fluidId = Objects.requireNonNull(fluid.getRegistryName());
@@ -87,7 +92,7 @@ public class CanisterItem extends Item implements IFluidContainer {
 
     @Override
     public ItemStack getContainerItem(final ItemStack itemStack) {
-        return new ItemStack(ModItems.EMPTY_CANISTER);
+        return new ItemStack(RegistryInjectionContext.getItemRegistryObject(EmptyCanisterItem.PROVIDER_NAME));
     }
 
     @Override

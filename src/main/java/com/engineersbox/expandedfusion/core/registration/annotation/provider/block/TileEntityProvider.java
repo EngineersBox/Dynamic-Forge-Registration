@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.block;
+package com.engineersbox.expandedfusion.core.registration.annotation.provider.block;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface ScreenProvider {
+public @interface TileEntityProvider {
     String name();
 }

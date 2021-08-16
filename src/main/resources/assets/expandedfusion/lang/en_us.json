@@ -14,7 +14,11 @@
 
   "container.expandedfusion.fusion_control_computer": "Fusion Control Computer",
 
-  "misc.expandedfusion.energyWithMax": "Energy",
+  "item.expandedfusion.empty_canister": "Empty Canister",
+  "item.expandedfusion.canister": "Canister",
 
-  "itemGroup.expandedfusion":"Expanded Fusion"
+  "itemGroup.expandedfusion":"Expanded Fusion",
+
+  "misc.expandedfusion.energyWithMax": "Energy"
+
 }

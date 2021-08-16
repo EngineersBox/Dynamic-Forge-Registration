@@ -1,16 +1,21 @@
 package com.engineersbox.expandedfusion.elements.item;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 
+@LangMetadata(
+        nameMapping = EmptyCanisterItem.NAME_MAPPING
+)
 @ItemProvider(
     name = EmptyCanisterItem.PROVIDER_NAME
 )
 public class EmptyCanisterItem extends CanisterItem {
     public static final String PROVIDER_NAME = "empty_canister";
+    public static final String NAME_MAPPING = "Empty Canister";
 
     public EmptyCanisterItem() {
         super();

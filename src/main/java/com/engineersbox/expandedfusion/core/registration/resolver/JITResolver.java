@@ -3,20 +3,14 @@ package com.engineersbox.expandedfusion.core.registration.resolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 
-public interface JITResolver {
+public abstract class JITResolver extends RegistrationResolver {
 
-    void instantiateResolvers();
+    public abstract void instantiateResolvers();
 
-    void registerBlocks();
-    void registerItems();
-    void registerFluids();
+    abstract <T extends RegistrationResolver> void registerHandledElementsOfResolver(final ResolverType resolverType);
 
-    void registerAll();
+    abstract <T extends RegistrationResolver> T getRegistrationResolver(final ResolverType resolverType);
 
-    RegistrationResolver getBlockRegistrationResolver();
-    RegistrationResolver getItemRegistrationResolver();
-    RegistrationResolver getFluidRegistrationResolver();
-
-    void publishEvent(final ModLifecycleEvent eventConsumer);
+    abstract void publishEvent(final ModLifecycleEvent eventConsumer);
 
 }

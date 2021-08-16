@@ -1,8 +1,8 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 @AutoService(Processor.class)
 public class ProviderAnnotationProcessor extends AbstractProcessor {
 
-    public static final String BLOCK_PROVIDER_PACKAGE = "com.engineersbox.expandedfusion.core.registration.annotation.block.";
+    public static final String BLOCK_PROVIDER_PACKAGE = "com.engineersbox.expandedfusion.core.registration.annotation.provider.block.";
 
     private final Map<String, Consumer<Element>> providerAnnotationHandlers = ImmutableMap.of(
         BlockProvider.class.getName(), this::processBlockProvider,

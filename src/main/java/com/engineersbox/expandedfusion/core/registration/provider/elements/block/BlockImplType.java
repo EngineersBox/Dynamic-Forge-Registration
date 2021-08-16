@@ -1,9 +1,9 @@
 package com.engineersbox.expandedfusion.core.registration.provider.elements.block;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.ScreenProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ScreenProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
 
 import java.lang.annotation.Annotation;
 
