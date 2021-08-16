@@ -1,11 +1,11 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
-import com.engineersbox.expandedfusion.core.common.machine.container.AbstractMachineContainer;
-import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
+import com.engineersbox.expandedfusion.core.elements.machine.container.AbstractMachineContainer;
+import com.engineersbox.expandedfusion.core.elements.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
-import com.engineersbox.expandedfusion.register.annotation.block.ContainerProvider;
-import com.engineersbox.expandedfusion.register.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.annotation.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;

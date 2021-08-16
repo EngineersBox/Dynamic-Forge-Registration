@@ -1,9 +1,9 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
-import com.engineersbox.expandedfusion.core.common.MachineTier;
-import com.engineersbox.expandedfusion.core.common.machine.AbstractMachineBlock;
-import com.engineersbox.expandedfusion.register.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.register.provider.elements.block.BlockImplType;
+import com.engineersbox.expandedfusion.core.elements.MachineTier;
+import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
+import com.engineersbox.expandedfusion.core.registration.annotation.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockImplType;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;

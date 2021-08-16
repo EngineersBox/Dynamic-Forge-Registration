@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.core.api.IFluidContainer;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.register.ModItems;
 import com.engineersbox.expandedfusion.register.Registration;
-import com.engineersbox.expandedfusion.register.annotation.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.item.ItemProvider;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

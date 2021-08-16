@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.sync;
 
-import com.engineersbox.expandedfusion.core.annotation.SyncVariable;
+import com.engineersbox.expandedfusion.core.sync.annotation.SyncVariable;
 import com.engineersbox.expandedfusion.core.util.NBTSerializer;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.CompoundNBT;

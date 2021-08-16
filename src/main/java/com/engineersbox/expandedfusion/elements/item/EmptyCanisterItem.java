@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.elements.item;
 
-import com.engineersbox.expandedfusion.register.annotation.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.item.ItemProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

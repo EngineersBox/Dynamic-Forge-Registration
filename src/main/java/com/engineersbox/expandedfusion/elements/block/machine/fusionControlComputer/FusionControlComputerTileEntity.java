@@ -1,12 +1,12 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
-import com.engineersbox.expandedfusion.core.common.MachineTier;
-import com.engineersbox.expandedfusion.core.common.machine.tileentity.AbstractMachineTileEntity;
-import com.engineersbox.expandedfusion.core.common.machine.tileentity.EnergyProperties;
-import com.engineersbox.expandedfusion.core.common.machine.tileentity.TransportSlotConfiguration;
+import com.engineersbox.expandedfusion.core.elements.MachineTier;
+import com.engineersbox.expandedfusion.core.elements.machine.tileentity.AbstractMachineTileEntity;
+import com.engineersbox.expandedfusion.core.elements.machine.tileentity.EnergyProperties;
+import com.engineersbox.expandedfusion.core.elements.machine.tileentity.TransportSlotConfiguration;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.register.annotation.block.TileEntityProvider;
-import com.engineersbox.expandedfusion.register.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.annotation.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;

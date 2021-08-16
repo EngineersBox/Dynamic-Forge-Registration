@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.core.common.block.IBlockProvider;
+import com.engineersbox.expandedfusion.core.elements.block.IBlockProvider;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;

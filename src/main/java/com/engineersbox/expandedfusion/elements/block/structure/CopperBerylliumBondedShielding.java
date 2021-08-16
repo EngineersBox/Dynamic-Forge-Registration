@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.elements.block.structure;
 
-import com.engineersbox.expandedfusion.register.annotation.block.BlockProvider;
-import com.engineersbox.expandedfusion.register.provider.elements.block.BlockImplType;
+import com.engineersbox.expandedfusion.core.registration.annotation.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockImplType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

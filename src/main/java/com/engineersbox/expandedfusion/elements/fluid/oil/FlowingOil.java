@@ -1,8 +1,8 @@
 package com.engineersbox.expandedfusion.elements.fluid.oil;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.register.annotation.fluid.FluidProvider;
-import com.engineersbox.expandedfusion.register.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.annotation.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
