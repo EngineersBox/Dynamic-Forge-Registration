@@ -13,6 +13,8 @@ public class LangMetadataProcessor {
      *
      * The mod ID can be retrieved with System.getProperty("lang.metadata.mod.ID")
      * where the Mod ID is provided as JVM args: -Xlang.metadata.mod.ID
+     *
+     * It could also be inferred from an @Mod annotation from the Mod.value() property
      */
 
     public static final String MOD_ID_SYSTEM_PROPERTY = "lang.metadata.mod.ID";
