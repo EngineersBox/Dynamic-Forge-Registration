@@ -10,7 +10,7 @@ import net.minecraft.block.material.Material;
         nameMapping = CopperBerylliumBondedShielding.NAME_MAPPING
 )
 @BlockProvider(
-    providerName = CopperBerylliumBondedShielding.PROVIDER_NAME,
+    name = CopperBerylliumBondedShielding.PROVIDER_NAME,
     type = BlockImplType.BASE
 )
 public class CopperBerylliumBondedShielding extends Block {

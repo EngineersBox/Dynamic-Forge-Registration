@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
         nameMapping = FusionControlComputer.NAME_MAPPING
 )
 @BlockProvider(
-        providerName = FusionControlComputer.PROVIDER_NAME,
+        name = FusionControlComputer.PROVIDER_NAME,
         type = BlockImplType.TILE_ENTITY
 )
 public class FusionControlComputer extends AbstractMachineBlock {

@@ -10,7 +10,7 @@ import net.minecraft.block.material.Material;
         nameMapping = NiobiumTitaniumCoil.NAME_MAPPING
 )
 @BlockProvider(
-    providerName = NiobiumTitaniumCoil.PROVIDER_NAME,
+    name = NiobiumTitaniumCoil.PROVIDER_NAME,
     type = BlockImplType.BASE
 )
 public class NiobiumTitaniumCoil extends Block {

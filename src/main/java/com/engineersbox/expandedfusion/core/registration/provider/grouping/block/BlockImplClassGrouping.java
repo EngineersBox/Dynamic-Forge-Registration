@@ -41,7 +41,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             if (annotation == null) {
                 continue;
             }
-            addIfNotExists(annotation.providerName(), c);
+            addIfNotExists(annotation.name(), c);
         }
         final Set<Class<? extends TileEntity>> tileEntityProviderAnnotatedClasses = super.filterClassesBySuperType(
                 TileEntity.class,

@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComp
 
 import com.engineersbox.expandedfusion.core.elements.machine.container.AbstractMachineContainer;
 import com.engineersbox.expandedfusion.core.elements.machine.tileentity.AbstractMachineTileEntity;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
@@ -13,7 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-@ContainerProvider(name = FusionControlComputer.PROVIDER_NAME)
+@LangMetadata(
+        nameMapping = FusionControlComputer.NAME_MAPPING
+)
+@ContainerProvider(
+        name = FusionControlComputer.PROVIDER_NAME
+)
 public class FusionControlComputerContainer extends AbstractMachineContainer<FusionControlComputerTileEntity> {
 
     @SuppressWarnings("unused")

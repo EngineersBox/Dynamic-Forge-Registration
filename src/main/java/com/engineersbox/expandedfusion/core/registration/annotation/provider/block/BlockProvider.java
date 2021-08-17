@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface BlockProvider {
-    String providerName();
+    String name();
     BlockImplType type();
     boolean noItem() default false; // TODO: Handle this is provider registration
     BaseBlockProperties[] properties() default {};
