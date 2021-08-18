@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface FluidProvider {
     String name();
-    FluidBucketProperties[] bucketProperties() default {};
+    FluidBucketProperties[] bucket() default {};
     boolean gaseous() default false;
 }

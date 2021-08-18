@@ -14,9 +14,11 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 )
 @FluidProvider(
         name = Oil.PROVIDER_NAME,
-        bucketProperties = @FluidBucketProperties(
-                bucketName = Oil.BUCKET_NAME,
-                nameMapping = Oil.BUCKET_NAME_MAPPING
+        bucket = @FluidBucketProperties(
+                name = Oil.BUCKET_NAME,
+                lang = @LangMetadata(
+                        nameMapping = Oil.BUCKET_NAME_MAPPING
+                )
         )
 )
 public class Oil extends ForgeFlowingFluid.Source {

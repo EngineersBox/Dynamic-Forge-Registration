@@ -18,7 +18,6 @@ import net.minecraft.item.Item;
 import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class FluidProviderRegistrationResolver extends RegistrationResolver {
 
@@ -66,7 +65,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
         if (sourceFluidImpl == null) {
             throw new RuntimeException(); // TODO: Implement an exception for this
         }
-        if (sourceFluidProvider.bucketProperties().length > 0) {
+        if (sourceFluidProvider.bucket().length > 0) {
             registerBucketItem(sourceFluidProvider, group);
         }
         registerSourceFluid(name, sourceFluidImpl);
@@ -75,17 +74,17 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
     @SuppressWarnings("unchecked")
     private void registerBucketItem(final FluidProvider sourceFluidProvider,
                                     final FluidImplGrouping group) {
-        final FluidBucketProperties[] fluidBucketPropertiesArray = sourceFluidProvider.bucketProperties();
+        final FluidBucketProperties[] fluidBucketPropertiesArray = sourceFluidProvider.bucket();
         final FluidBucketProperties bucketProperties = fluidBucketPropertiesArray[0];
         final Supplier<? extends Item> bucketSupplier = () -> {
             final Supplier<? extends Fluid> fluidSupplier = () -> RegistryInjectionContext.getSourceFluid(sourceFluidProvider.name());
-            if (bucketProperties.canPlaceBucket() && FlowingFluid.class.isAssignableFrom(group.getSourceFluid())) {
+            if (bucketProperties.canPlace() && FlowingFluid.class.isAssignableFrom(group.getSourceFluid())) {
                 return this.itemDeferredRegistryShim.createBucketItem((Supplier<FlowingFluid>) fluidSupplier);
             }
             return this.itemDeferredRegistryShim.createNoPlaceBucketItem((Supplier<Fluid>) fluidSupplier);
         };
         this.itemDeferredRegistryShim.register(
-                bucketProperties.bucketName(),
+                bucketProperties.name(),
                 bucketSupplier
         );
     }

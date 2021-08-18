@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta;
 
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.ElementClassRetriever;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.MetadataProviderPair;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.ElementProvider;
@@ -81,18 +82,30 @@ public class LangMetadataProcessor {
     }
 
     public void createBucketLangEntry(final FluidProvider annotation) {
-        final FluidBucketProperties[] bucketProperties = annotation.bucketProperties();
+        final FluidBucketProperties[] bucketProperties = annotation.bucket();
         if (bucketProperties.length < 1) {
+            LOGGER.debug(String.format(
+                    "No bucket properties provided for %s, skipping bucket lang mapping",
+                    annotation.name()
+            ));
+            return;
+        }
+        final LangMetadata[] langMetadata = bucketProperties[0].lang();
+        if (langMetadata.length < 1) {
+            LOGGER.debug(String.format(
+                    "No lang metadata provided for %s, skipping bucket lang mapping",
+                    annotation.name()
+            ));
             return;
         }
         final String formattedProviderName = String.format(
                 "item.%s.%s",
                 this.modId,
-                bucketProperties[0].bucketName()
+                bucketProperties[0].name()
         );
         this.langFileResourceHandler.addLangEntryIfNotExists(
                 formattedProviderName,
-                bucketProperties[0].nameMapping()
+                langMetadata[0].nameMapping()
         );
     }
 
