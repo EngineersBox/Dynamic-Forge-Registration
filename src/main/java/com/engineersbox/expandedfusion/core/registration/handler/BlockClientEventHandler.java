@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.handler;
 
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
+import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
 import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
@@ -36,7 +37,10 @@ public class BlockClientEventHandler implements EventSubscriptionHandler {
             final ContainerType<T> containerType = (ContainerType<T>) RegistryInjectionContext.getContainerType(name);
             final Class<? extends ContainerScreen<? extends T>> screen = (Class<? extends ContainerScreen<? extends T>>) group.getScreen();
             if (screen == null) {
-                throw new RuntimeException(); // TODO: Implement an exception for this
+                throw new SubscriptionEventHandlerException(String.format(
+                        "Tile entity %s has no bound container screen",
+                        name
+                ));
             }
             final ScreenManager.IScreenFactory<T, U> factory = (final T container,
                                                                 final PlayerInventory playerInventory,
@@ -64,12 +68,15 @@ public class BlockClientEventHandler implements EventSubscriptionHandler {
                 }
         );
         if (constructors.size() < 1) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new SubscriptionEventHandlerException(String.format(
+                    "No accessible constructors could be found for %s",
+                    screen
+            ));
         }
         try {
             return (ContainerScreen<T>) new ArrayList<>(constructors).get(0).newInstance(container, playerInventory, titleIn);
         } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e); // TODO: Implement an exception for this
+            throw new SubscriptionEventHandlerException(e);
         }
     }
 

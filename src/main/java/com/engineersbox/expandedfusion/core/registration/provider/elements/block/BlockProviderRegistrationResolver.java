@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.elements.block;
 
+import com.engineersbox.expandedfusion.core.registration.exception.provider.elements.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.BlockDeferredRegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.ContainerDeferredRegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
@@ -57,11 +58,24 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                                                 @Nonnull final BlockImplGrouping group) {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
         if (blockProvider == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!blockProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    blockProvider.name()
+            ));
         }
         final Class<? extends Block> blockImpl = group.getBlock();
         if (blockImpl == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         switch (blockProvider.type()) {
             case BASE:
@@ -76,29 +90,68 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                                     @Nonnull final BlockImplGrouping group) {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
         if (blockProvider == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!blockProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    blockProvider.name()
+            ));
         }
         final Class<? extends Block> blockImpl = group.getBlock();
         if (blockImpl == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         registerBlock(name, blockProvider, blockImpl);
         final TileEntityProvider tileEntityProvider = group.getTileEntityProviderAnnotation();
         if (tileEntityProvider == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!tileEntityProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    tileEntityProvider.name()
+            ));
         }
         final Class<? extends TileEntity> tileEntityImpl = group.getTileEntity();
         if (tileEntityImpl == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         registerTileEntity(name, tileEntityImpl);
         final ContainerProvider containerProvider = group.getContainerProviderAnnotation();
         if (containerProvider == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!containerProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    containerProvider.name()
+            ));
         }
         final Class<? extends Container> containerImpl = group.getContainer();
         if (containerImpl == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         registerContainer(name, containerImpl);
         this.registryProvider.screensToBeRegistered.put(name, group);
@@ -133,12 +186,15 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                 }
         );
         if (constructors.size() < 1) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No accessible constructors could be found for %s",
+                    containerImpl
+            ));
         }
         try {
             return (T) new ArrayList<>(constructors).get(0).newInstance(id, playerInventory);
         } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(e);
         }
     }
 
@@ -146,7 +202,10 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                                     @Nonnull final Class<? extends TileEntity> tileEntityImpl) {
         final BlockRegistryObject<? extends Block> blockRegistryObject = this.registryProvider.blocks.get(name);
         if (blockRegistryObject == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Block registry has no entry for element: %s",
+                    name
+            ));
         }
         this.registryProvider.tileEntities.put(
                 name,
@@ -180,7 +239,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             try {
                 return (Material) matValue.get().get(Material.AIR);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e); // TODO: Implement exception for this
+                throw new RuntimeException(e);
             }
         }
         return Material.AIR;

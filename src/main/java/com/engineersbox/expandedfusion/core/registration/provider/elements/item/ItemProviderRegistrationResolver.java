@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.elements.item;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.exception.provider.elements.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
@@ -38,14 +39,24 @@ public class ItemProviderRegistrationResolver extends RegistrationResolver {
                                                @Nonnull final ItemImplGrouping group) {
         final ItemProvider itemProvider = group.getItemProviderAnnotation();
         if (itemProvider == null) {
-            throw new RuntimeException(); // TODO: Implement exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
         }
         if (!itemProvider.name().equals(name)) {
-            throw new RuntimeException(); // TODO: Implement exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    itemProvider.name()
+            ));
         }
         final Class<? extends Item> itemImpl = group.getItem();
         if (itemImpl == null) {
-            throw new RuntimeException(); // TODO: Implement exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         registerItem(name, itemImpl);
     }

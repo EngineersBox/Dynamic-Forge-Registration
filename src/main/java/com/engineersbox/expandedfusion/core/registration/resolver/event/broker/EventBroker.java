@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.resolver.event.broker;
 
+import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
 import com.engineersbox.expandedfusion.core.registration.resolver.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.registration.resolver.event.annotation.Subscriber;
 import net.minecraftforge.eventbus.api.Event;
@@ -62,7 +63,13 @@ public class EventBroker {
             ));
             return;
         }
-        subscriberInfos.forEach((final SubscriberInfo<? super EventSubscriptionHandler> info) -> info.invoke(event));
+        subscriberInfos.forEach((final SubscriberInfo<? super EventSubscriptionHandler> info) -> {
+            try {
+                info.invoke(event);
+            } catch (final Exception e) {
+                throw new SubscriptionEventHandlerException(e);
+            }
+        });
         LOGGER.trace(String.format(
             "Published event to %d subscribers",
             subscriberInfos.size()

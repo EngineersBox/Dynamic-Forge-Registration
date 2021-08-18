@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.contexts;
 
+import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryInjectionException;
 import com.engineersbox.expandedfusion.core.registration.registryObject.BlockRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.registryObject.ItemRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
@@ -23,7 +24,10 @@ public abstract class RegistryInjectionContext {
     public static TileEntityType<? extends TileEntity> getTileEntityType(final String provider_name) {
         final TileEntityType<? extends TileEntity> tileEntityType = registryProvider.tileEntities.get(provider_name);
         if (tileEntityType == null) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new RegistryInjectionException(String.format(
+                    "Tile entity could not be found for provider name: %s",
+                    provider_name
+            ));
         }
         return tileEntityType;
     }
@@ -31,7 +35,10 @@ public abstract class RegistryInjectionContext {
     public static BlockRegistryObject<? extends Block> getBlockRegistryObject(final String provider_name) {
         final BlockRegistryObject<? extends Block> registryObject = registryProvider.blocks.get(provider_name);
         if (registryObject == null) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new RegistryInjectionException(String.format(
+                    "Block could not be found for provider name: %s",
+                    provider_name
+            ));
         }
         return registryObject;
     }
@@ -39,7 +46,10 @@ public abstract class RegistryInjectionContext {
     public static ContainerType<? extends Container> getContainerType(final String provider_name) {
         final ContainerType<? extends Container> containerType = registryProvider.containers.get(provider_name);
         if (containerType == null) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new RegistryInjectionException(String.format(
+                    "Container could not be found for provider name: %s",
+                    provider_name
+            ));
         }
         return containerType;
     }
@@ -51,7 +61,10 @@ public abstract class RegistryInjectionContext {
     public static ItemRegistryObject<? extends Item> getItemRegistryObject(final String provider_name) {
         final ItemRegistryObject<? extends Item> registryObject = registryProvider.items.get(provider_name);
         if (registryObject == null) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new RegistryInjectionException(String.format(
+                    "Item could not be found for provider name: %s",
+                    provider_name
+            ));
         }
         return registryObject;
     }
@@ -59,7 +72,10 @@ public abstract class RegistryInjectionContext {
     public static FlowingFluid getFlowingFluid(final String provider_name) {
         final FlowingFluid flowingFluid = registryProvider.flowingFluids.get(provider_name);
         if (flowingFluid == null) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new RegistryInjectionException(String.format(
+                    "Flowing fluid could not be found for provider name: %s",
+                    provider_name
+            ));
         }
         return flowingFluid;
     }
@@ -67,7 +83,10 @@ public abstract class RegistryInjectionContext {
     public static Fluid getSourceFluid(final String provider_name) {
         final Fluid sourceFluid = registryProvider.sourceFluids.get(provider_name);
         if (sourceFluid == null) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new RegistryInjectionException(String.format(
+                    "Fluid source could not be found for provider name: %s",
+                    provider_name
+            ));
         }
         return sourceFluid;
     }

@@ -1,6 +1,8 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
+import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
+import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.elements.fluid.FluidProviderRegistrationResolver;
@@ -76,10 +78,7 @@ public class JITRegistrationResolver extends JITResolver {
         ));
         final RegistrationResolver resolver = (T) this.resolvers.get(resolverType);
         if (resolver == null) {
-            throw new RuntimeException(String.format(
-                    "Attempted to register elements of resolver that has not been instantiated: %s",
-                    resolverType
-            )); // TODO: Implement and exception for this
+            throw new UninstantiatedElementResolver(resolverType);
         }
         LOGGER.debug(String.format(
                 "Invoked registration for %s resolver",
@@ -157,12 +156,15 @@ public class JITRegistrationResolver extends JITResolver {
                             .or(Class::isInterface)
                             .test(consumer);
                     if (invalidClassConfiguration) {
-                        throw new RuntimeException("Event subscription handler must be be an interface or declared abstract"); // TODO: Implement this exception
+                        throw new ResolverBuilderException("Event subscription handler must be be an interface or declared abstract");
                     }
                     final EventSubscriptionHandler consumerInstance = consumer.newInstance();
                     eventBroker.addConsumer(consumerInstance);
                 } catch (final InstantiationException | IllegalAccessException e) {
-                    throw new RuntimeException(e); // TODO: Implement an exception for this
+                    throw new ResolverBuilderException(String.format(
+                            "Could not instantiate EventSubscriptionHandler %s",
+                            consumer.getName()
+                    ), e);
                 }
             });
             return new JITRegistrationResolver(

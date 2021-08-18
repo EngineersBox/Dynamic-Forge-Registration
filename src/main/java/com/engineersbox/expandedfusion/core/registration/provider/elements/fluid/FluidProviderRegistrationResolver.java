@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.core.functional.PredicateSplitterConsumer
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidBucketProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.exception.provider.elements.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
@@ -56,14 +57,27 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                                                       @Nonnull final FluidImplGrouping group) {
         final FluidProvider sourceFluidProvider = group.getSourceFluidProviderAnnotation();
         if (sourceFluidProvider == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!sourceFluidProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    sourceFluidProvider.name()
+            ));
         }
         if (!sourceFluidProvider.gaseous()) {
             registerFluidBlock(sourceFluidProvider.name());
         }
         final Class<? extends Fluid> sourceFluidImpl = group.getSourceFluid();
         if (sourceFluidImpl == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         if (sourceFluidProvider.bucket().length > 0) {
             registerBucketItem(sourceFluidProvider, group);
@@ -93,11 +107,24 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                                                        @Nonnull final FluidImplGrouping group) {
         final FluidProvider flowingFluidProvider = group.getFlowingFluidProviderAnnotation();
         if (flowingFluidProvider == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "Item implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!flowingFluidProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    flowingFluidProvider.name()
+            ));
         }
         final Class<? extends FlowingFluid> flowingFluidImpl = group.getFlowingFluid();
         if (flowingFluidImpl == null) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+            throw new ProviderElementRegistrationException(String.format(
+                    "No item implementation could be found with associated annotation: %s",
+                    name
+            ));
         }
         registerFlowingFluid(name, flowingFluidImpl);
     }
