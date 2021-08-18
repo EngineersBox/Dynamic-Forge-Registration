@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.shim;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -8,7 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ContainerDeferredRegistryShim extends RegistryShim<Container> {
 
     @Inject
-    public ContainerDeferredRegistryShim(final String modID) {
+    public ContainerDeferredRegistryShim(@Named("modId") final String modID) {
         this.modID = modID;
     }
 

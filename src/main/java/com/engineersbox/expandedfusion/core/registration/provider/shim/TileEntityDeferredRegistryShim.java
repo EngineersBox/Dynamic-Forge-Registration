@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.shim;
 
 import com.engineersbox.expandedfusion.core.elements.block.IBlockProvider;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -12,7 +13,7 @@ import java.util.function.Supplier;
 public class TileEntityDeferredRegistryShim extends RegistryShim<TileEntity> {
 
     @Inject
-    public TileEntityDeferredRegistryShim(final String modID) {
+    public TileEntityDeferredRegistryShim(@Named("modId") final String modID) {
         this.modID = modID;
     }
 

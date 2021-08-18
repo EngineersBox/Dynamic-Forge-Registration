@@ -23,6 +23,7 @@ public class NetworkTargetProxy implements IProxy {
     private static final JITRegistrationResolver REGISTRATION_RESOLVER = new JITRegistrationResolver.Builder()
             .withLogger(ExpandedFusion.LOGGER)
             .withPackageName("com.engineersbox.expandedfusion")
+            .withModId(ExpandedFusion.MOD_ID)
             .withEventHandlers(
                     BlockClientEventHandler.class,
                     ItemClientEventHandler.class

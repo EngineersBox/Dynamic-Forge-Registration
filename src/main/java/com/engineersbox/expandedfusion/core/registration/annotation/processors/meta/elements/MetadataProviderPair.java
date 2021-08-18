@@ -19,6 +19,10 @@ public class MetadataProviderPair<T extends Annotation> {
         this.provider = provider;
     }
 
+    public T getAnnotation() {
+        return this.provider;
+    }
+
     public String getProviderName() {
         if (BlockProvider.class.isAssignableFrom(this.provider.getClass())) {
             return ((BlockProvider) this.provider).name();

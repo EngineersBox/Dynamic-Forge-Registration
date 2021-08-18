@@ -2,6 +2,8 @@ package com.engineersbox.expandedfusion.core.registration.provider.grouping;
 
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.fluid.FluidImplClassGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.fluid.FluidImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.item.ItemImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.item.ItemImplGrouping;
 import com.google.inject.AbstractModule;
@@ -15,5 +17,7 @@ public class GroupingModule extends AbstractModule {
             .to(new TypeLiteral<BlockImplClassGrouping>(){});
         bind(new TypeLiteral<ImplClassGroupings<ItemImplGrouping>>(){})
             .to(new TypeLiteral<ItemImplClassGrouping>(){});
+        bind(new TypeLiteral<ImplClassGroupings<FluidImplGrouping>>(){})
+            .to(new TypeLiteral<FluidImplClassGrouping>(){});
     }
 }

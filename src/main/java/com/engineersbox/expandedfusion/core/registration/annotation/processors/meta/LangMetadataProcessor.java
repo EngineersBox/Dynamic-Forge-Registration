@@ -4,6 +4,8 @@ import com.engineersbox.expandedfusion.core.registration.annotation.processors.m
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.MetadataProviderPair;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangFileResourceHandler;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidBucketProperties;
+import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraftforge.fml.common.Mod;
@@ -15,22 +17,6 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 
 public class LangMetadataProcessor {
-
-    /*
-     * TODO: Implement a class to generate the en_us.json file
-     * it will need to handle checking if one exists already
-     * and amending it with write-back. Otherwise creating a
-     * new one and filling it with relevant entries.
-     *
-     * When creating entries it should be of the form:
-     * "<TYPE>.<MOD ID>.<PROVIDER NAME>": "<NAME MAPPING>"
-     *
-     * The mod ID can be retrieved with System.getProperty("lang.metadata.mod.ID")
-     * where the Mod ID is provided as JVM args: -Dlang.metadata.mod.ID
-     *
-     * It could also be inferred from an @Mod annotation from the Mod.value() property
-     */
-
 
     public static final String MOD_PACKAGE_SYSTEM_PROPERTY = "langmetadata.package_name";
 
@@ -88,7 +74,26 @@ public class LangMetadataProcessor {
                     formattedProviderName,
                     pair.getNameMapping()
             );
+            if (FluidProvider.class.isAssignableFrom(pair.getAnnotation().getClass())) {
+                createBucketLangEntry((FluidProvider) pair.getAnnotation());
+            }
         });
+    }
+
+    public void createBucketLangEntry(final FluidProvider annotation) {
+        final FluidBucketProperties[] bucketProperties = annotation.bucketProperties();
+        if (bucketProperties.length < 1) {
+            return;
+        }
+        final String formattedProviderName = String.format(
+                "item.%s.%s",
+                this.modId,
+                bucketProperties[0].bucketName()
+        );
+        this.langFileResourceHandler.addLangEntryIfNotExists(
+                formattedProviderName,
+                bucketProperties[0].nameMapping()
+        );
     }
 
     public void exportMappingsToFile() {

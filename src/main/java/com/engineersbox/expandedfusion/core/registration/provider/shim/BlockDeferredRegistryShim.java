@@ -3,6 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.shim;
 import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.BlockRegistryObject;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
@@ -32,7 +33,7 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {//extends Re
     private static final Logger LOGGER = LogManager.getLogger(BlockDeferredRegistryShim.class);
 
     @Inject
-    public BlockDeferredRegistryShim(final String modID) {
+    public BlockDeferredRegistryShim(@Named("modId") final String modID) {
         this.modID = modID;
     }
 

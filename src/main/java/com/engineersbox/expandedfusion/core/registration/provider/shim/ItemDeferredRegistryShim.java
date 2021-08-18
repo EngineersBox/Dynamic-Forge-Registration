@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.elements.item.NoPlaceBucketItem;
 import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.ItemRegistryObject;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
 public class ItemDeferredRegistryShim extends RegistryShim<Item> {
 
     @Inject
-    public ItemDeferredRegistryShim(final String modID) {
+    public ItemDeferredRegistryShim(@Named("modId") final String modID) {
         this.modID = modID;
     }
 

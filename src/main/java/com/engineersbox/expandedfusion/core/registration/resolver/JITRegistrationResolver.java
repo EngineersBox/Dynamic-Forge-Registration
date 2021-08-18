@@ -3,15 +3,18 @@ package com.engineersbox.expandedfusion.core.registration.resolver;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.elements.fluid.FluidProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.elements.item.ItemProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
 import com.engineersbox.expandedfusion.core.registration.resolver.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.registration.resolver.event.broker.EventBroker;
 import com.google.common.collect.ImmutableList;
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import com.google.inject.name.Names;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,8 +44,8 @@ public class JITRegistrationResolver extends JITResolver {
 
     private static final List<Pair<ResolverType, Class<? extends RegistrationResolver>>> resolverPairings = ImmutableList.of(
             ImmutablePair.of(ResolverType.BLOCK, BlockProviderRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.ITEM, ItemProviderRegistrationResolver.class)
-//            ImmutablePair.of(ResolverType.FLUID, FluidProviderRegistrationResolver.class),
+            ImmutablePair.of(ResolverType.ITEM, ItemProviderRegistrationResolver.class),
+            ImmutablePair.of(ResolverType.FLUID, FluidProviderRegistrationResolver.class)
 //            ImmutablePair.of(ResolverType.RECIPE, RecipeProviderRegistrationResolver.class)
     );
 
@@ -89,7 +92,7 @@ public class JITRegistrationResolver extends JITResolver {
     public void registerAll() {
         // TODO: Uncomment this after other ResolverTypes have been implemented
         // Stream.of(ResolverType.values())
-        Stream.of(ResolverType.BLOCK, ResolverType.ITEM)
+        Stream.of(ResolverType.BLOCK, ResolverType.ITEM, ResolverType.FLUID)
                 .forEach(this::registerHandledElementsOfResolver);
     }
 
@@ -117,6 +120,7 @@ public class JITRegistrationResolver extends JITResolver {
 
         private Logger logger;
         private String packageName;
+        private String modId;
         private Set<Class<? extends EventSubscriptionHandler>> subscriptionHandlers;
 
         public Builder() {
@@ -131,6 +135,11 @@ public class JITRegistrationResolver extends JITResolver {
 
         public Builder withPackageName(final String packageName) {
             this.packageName = packageName;
+            return this;
+        }
+
+        public Builder withModId(final String modId) {
+            this.modId = modId;
             return this;
         }
 
@@ -164,7 +173,17 @@ public class JITRegistrationResolver extends JITResolver {
                     new PackageReflectionsModule()
                         .withLogger(this.logger)
                         .withPackageName(this.packageName)
-                        .build()
+                        .build(),
+                    new AbstractModule() {
+                        @Override
+                        protected void configure() {
+                            if (modId != null) {
+                                bind(String.class)
+                                        .annotatedWith(Names.named("modId"))
+                                        .toInstance(modId);
+                            }
+                        }
+                    }
                 ),
                 eventBroker
             );

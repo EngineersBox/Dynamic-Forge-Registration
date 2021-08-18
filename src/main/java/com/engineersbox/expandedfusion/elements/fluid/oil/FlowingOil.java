@@ -21,14 +21,14 @@ public class FlowingOil extends ForgeFlowingFluid.Flowing {
     public FlowingOil() {
         super(
             new ForgeFlowingFluid.Properties(
-                () -> RegistryInjectionContext.getFlowingFluid(Oil.PROVIDER_NAME),
+                () -> RegistryInjectionContext.getSourceFluid(Oil.PROVIDER_NAME),
                 () -> RegistryInjectionContext.getFlowingFluid(PROVIDER_NAME),
                 FluidAttributes.builder(
                     ExpandedFusion.getId("block/" + Oil.BLOCK_NAME + "_still"),
                     ExpandedFusion.getId("block/" + Oil.BLOCK_NAME + "_flowing")
                 )
             ).block(() -> (FlowingFluidBlock) RegistryInjectionContext.getBlockRegistryObject(Oil.PROVIDER_NAME).get())
-            .bucket(() -> RegistryInjectionContext.getItemRegistryObject(Oil.PROVIDER_NAME).get())
+            .bucket(() -> RegistryInjectionContext.getItemRegistryObject(Oil.BUCKET_NAME).get())
         );
     }
 

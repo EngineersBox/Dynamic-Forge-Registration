@@ -7,6 +7,7 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.block
 import com.google.inject.Guice;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -56,11 +57,19 @@ public abstract class RegistryInjectionContext {
     }
 
     public static FlowingFluid getFlowingFluid(final String provider_name) {
-        final FlowingFluid flowingFluid = registryProvider.fluids.get(provider_name);
+        final FlowingFluid flowingFluid = registryProvider.flowingFluids.get(provider_name);
         if (flowingFluid == null) {
             throw new RuntimeException(); // TODO: Implement this
         }
         return flowingFluid;
+    }
+
+    public static Fluid getSourceFluid(final String provider_name) {
+        final Fluid sourceFluid = registryProvider.sourceFluids.get(provider_name);
+        if (sourceFluid == null) {
+            throw new RuntimeException(); // TODO: Implement this
+        }
+        return sourceFluid;
     }
 
 }
