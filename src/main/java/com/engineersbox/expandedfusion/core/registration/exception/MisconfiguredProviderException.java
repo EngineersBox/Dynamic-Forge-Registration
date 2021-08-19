@@ -16,7 +16,7 @@ public class MisconfiguredProviderException extends RuntimeException {
         final AtomicInteger index = new AtomicInteger(0);
         requires.forEach((String name, List<Class<? extends Annotation>> missing) -> {
             sb.append(String.format(
-                "[%d] Missing provider annotated resources for [%s]\nMissing providers: [%s]\n\n",
+                "[%d] Missing provider annotated resources for [%s]%nMissing providers: [%s]%n%n",
                 index.incrementAndGet(),
                 name,
                 missing.stream().map(Class::getName).collect(Collectors.joining(", "))

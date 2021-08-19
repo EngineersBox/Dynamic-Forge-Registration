@@ -12,17 +12,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 
 public final class ModFluids {
-    public static FlowingFluid FLOWING_OIL;
-    public static FlowingFluid OIL;
 
     private ModFluids() {}
 
     public static void registerFluids(final RegistryEvent.Register<Fluid> event) {
-//        ForgeFlowingFluid.Properties oilProps = properties("oil", () -> OIL, () -> FLOWING_OIL)
-//                .block(() -> ModBlocks.OIL.get())
-//                .bucket(() -> ModItems.OIL_BUCKET.get());
-//        FLOWING_OIL = register("flowing_oil", new ForgeFlowingFluid.Flowing(oilProps));
-//        OIL = register("oil", new ForgeFlowingFluid.Source(oilProps));
     }
 
     private static <T extends Fluid> T register(final String name, final T fluid) {

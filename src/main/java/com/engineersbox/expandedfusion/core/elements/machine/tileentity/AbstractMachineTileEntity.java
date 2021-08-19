@@ -63,6 +63,12 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
                 case PROCESS_TIME:
                     AbstractMachineTileEntity.this.processTime = value;
                     break;
+                default:
+                    throw new RuntimeException(String.format(
+                            "Unknown datafield when attempting to set field: %s [idx: %d]",
+                            DataField.fromInt(index),
+                            index
+                    )); // TODO: Implement exception for this
             }
         }
 

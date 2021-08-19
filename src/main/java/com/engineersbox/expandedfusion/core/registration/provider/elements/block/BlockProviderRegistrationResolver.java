@@ -170,13 +170,13 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked,raw")
     private <T extends Container> T instantiateContainerWithIFactoryParams(final int id,
                                                                            final PlayerInventory playerInventory,
                                                                            @Nonnull final Class<? extends Container> containerImpl) {
         final Set<Constructor> constructors = ReflectionUtils.getConstructors(
                 containerImpl,
-                (c) -> {
+                (final Constructor c) -> {
                     final Class<?>[] paramTypes = c.getParameterTypes();
                     if (paramTypes.length != 2) {
                         return false;
@@ -185,7 +185,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                             && PlayerInventory.class.isAssignableFrom(paramTypes[1]);
                 }
         );
-        if (constructors.size() < 1) {
+        if (constructors.isEmpty()) {
             throw new ProviderElementRegistrationException(String.format(
                     "No accessible constructors could be found for %s",
                     containerImpl
@@ -239,7 +239,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             try {
                 return (Material) matValue.get().get(Material.AIR);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new ProviderElementRegistrationException(e);
             }
         }
         return Material.AIR;

@@ -19,6 +19,10 @@ import java.util.Map;
 
 public abstract class RegistryInjectionContext {
 
+    private RegistryInjectionContext() {
+        throw new IllegalStateException("Utility Class");
+    }
+
     private static final RegistryProvider registryProvider = Guice.createInjector(new ProviderModule()).getInstance(RegistryProvider.class);
 
     public static TileEntityType<? extends TileEntity> getTileEntityType(final String provider_name) {

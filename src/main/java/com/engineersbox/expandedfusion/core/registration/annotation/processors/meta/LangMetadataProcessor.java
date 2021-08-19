@@ -84,18 +84,18 @@ public class LangMetadataProcessor {
     public void createBucketLangEntry(final FluidProvider annotation) {
         final FluidBucketProperties[] bucketProperties = annotation.bucket();
         if (bucketProperties.length < 1) {
-            LOGGER.debug(String.format(
-                    "No bucket properties provided for %s, skipping bucket lang mapping",
+            LOGGER.debug(
+                    "No bucket properties provided for {}, skipping bucket lang mapping",
                     annotation.name()
-            ));
+            );
             return;
         }
         final LangMetadata[] langMetadata = bucketProperties[0].lang();
         if (langMetadata.length < 1) {
-            LOGGER.debug(String.format(
-                    "No lang metadata provided for %s, skipping bucket lang mapping",
+            LOGGER.debug(
+                    "No lang metadata provided for {}, skipping bucket lang mapping",
                     annotation.name()
-            ));
+            );
             return;
         }
         final String formattedProviderName = String.format(

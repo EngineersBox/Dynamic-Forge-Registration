@@ -56,10 +56,10 @@ public class JITRegistrationResolver extends JITResolver {
         LOGGER.debug("Instantiated BlockProviderRegistrationResolver");
         resolverPairings.forEach((final Pair<ResolverType, Class<? extends RegistrationResolver>> resolverPair) -> {
             if (this.resolvers.containsKey(resolverPair.getLeft())) {
-                LOGGER.debug(String.format(
-                        "%s already instantiated, skipping",
+                LOGGER.debug(
+                        "{} already instantiated, skipping",
                         resolverPair.getRight().getName()
-                ));
+                );
             } else {
                 this.resolvers.put(
                         resolverPair.getLeft(),
@@ -72,18 +72,12 @@ public class JITRegistrationResolver extends JITResolver {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends RegistrationResolver> void registerHandledElementsOfResolver(final ResolverType resolverType) {
-        LOGGER.debug(String.format(
-                "Invoked registration for %s resolver",
-                resolverType
-        ));
+        LOGGER.debug("Invoked registration for {} resolver", resolverType);
         final RegistrationResolver resolver = (T) this.resolvers.get(resolverType);
         if (resolver == null) {
             throw new UninstantiatedElementResolver(resolverType);
         }
-        LOGGER.debug(String.format(
-                "Invoked registration for %s resolver",
-                resolverType
-        ));
+        LOGGER.debug("Invoked registration for {} resolver", resolverType);
         resolver.registerAll();
     }
 
@@ -102,10 +96,7 @@ public class JITRegistrationResolver extends JITResolver {
         if (resolver != null) {
             return resolver;
         }
-        LOGGER.warn(String.format(
-                "Resolver for %s does not exist, did you forget to call JITRegistrationResolver.instantiateResolvers()?",
-                resolverType
-        ));
+        LOGGER.warn("Resolver for {} does not exist, did you forget to call JITRegistrationResolver.instantiateResolvers()?", resolverType);
         return null;
     }
 

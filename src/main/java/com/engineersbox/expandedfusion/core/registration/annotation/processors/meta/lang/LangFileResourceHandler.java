@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -43,16 +44,16 @@ public class LangFileResourceHandler {
         Map<String,String> langFileMap;
         try {
             final Gson gson = new Gson();
-            LOGGER.info(String.format("Attempting to read from %s", getFormattedFilePath()));
+            LOGGER.info("Attempting to read from {}", getFormattedFilePath());
             final Reader reader = Files.newBufferedReader(Paths.get(getFormattedFilePath()));
-            langFileMap = (Map<String,String>) gson.fromJson(reader, Map.class);
+            langFileMap = gson.fromJson(reader, Map.class);
             reader.close();
         } catch (final IOException e) {
-            LOGGER.info(String.format(
-                    "Provided output directory %s did not contain existing %s file, a new file will be created",
+            LOGGER.info(
+                    "Provided output directory {} did not contain existing {} file, a new file will be created",
                     this.outputDirectory,
                     LANG_FILE_NAME
-            ));
+            );
             langFileMap = new HashMap<>();
         }
         return langFileMap;
@@ -62,27 +63,27 @@ public class LangFileResourceHandler {
                                         @NonNull final String humanReadable) {
         final String associatedHumanReadable = this.langMappings.get(providerNamespace);
         if (associatedHumanReadable != null) {
-            LOGGER.info(String.format(
-                    "Mapping for %s already exists: %s, skipping",
+            LOGGER.info(
+                    "Mapping for {} already exists: {}, skipping",
                     providerNamespace,
                     associatedHumanReadable
-            ));
+            );
             return;
         }
         this.langMappings.put(providerNamespace, humanReadable);
-        LOGGER.info(String.format(
-                "Added mapping for: \"%s\" -> \"%s\"",
+        LOGGER.info(
+                "Added mapping for: \"{}\" -> \"{}\"",
                 providerNamespace,
                 humanReadable
-        ));
+        );
     }
 
     public void exportMappingsToFile() {
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final String jsonContent = gson.toJson(this.langMappings);
 
-        LOGGER.info(String.format("Writing JSON to %s", getFormattedFilePath()));
-        try(BufferedWriter br = new BufferedWriter(new FileWriter(getFormattedFilePath()))) {
+        LOGGER.info("Writing JSON to {}", getFormattedFilePath());
+        try(BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFormattedFilePath()), StandardCharsets.UTF_8))) {
             br.write(jsonContent);
         } catch (final IOException e) {
             throw new RuntimeException(String.format(

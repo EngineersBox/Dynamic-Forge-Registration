@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.block;
 
+import com.engineersbox.expandedfusion.core.elements.DataField;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ScreenProvider;
@@ -112,6 +113,11 @@ public class BlockImplGrouping implements ImplGrouping {
                     if (this.container == null) {
                         missing.add(r.toAnnotationEquivalent());
                     }
+                default:
+                    throw new RuntimeException(String.format(
+                            "Unknown requirement type: %s",
+                            r
+                    )); // TODO: Implement exception for this
             }
         }
         return missing;

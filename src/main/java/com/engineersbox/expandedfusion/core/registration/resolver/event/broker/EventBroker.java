@@ -24,20 +24,20 @@ public class EventBroker {
             final Class<?>[] parameterTypes = method.getParameterTypes();
             final Subscriber annotation = method.getAnnotation(Subscriber.class);
             if (annotation == null) {
-                LOGGER.debug(String.format(
-                    "Missing subscription binding annotation for method [%s] in class [%s], skipping",
+                LOGGER.debug(
+                    "Missing subscription binding annotation for method [{}] in class [{}], skipping",
                     method.getName(),
                     consumerClass.getName()
-                ));
+                );
                 continue;
             }
             if (parameterTypes.length != 1 || !(Event.class.isAssignableFrom(parameterTypes[0]))) {
-                LOGGER.error(String.format(
-                    "Invalid EventSubscriptionHandler [%s] in class [%s]. Handlers annotated with @Subscriber must take 1 argument extending the base class %s",
+                LOGGER.error(
+                    "Invalid EventSubscriptionHandler [{}] in class [{}]. Handlers annotated with @Subscriber must take 1 argument extending the base class {}",
                     method.getName(),
                     consumerClass.getName(),
                     ModLifecycleEvent.class.getName()
-                ));
+                );
                 continue;
             }
             final Class<?> subscribeTo = parameterTypes[0];
@@ -57,10 +57,7 @@ public class EventBroker {
     public <T extends ModLifecycleEvent> void publishEvent(final T event) {
         List<SubscriberInfo<? super EventSubscriptionHandler>> subscriberInfos = consumers.get(event.getClass());
         if (subscriberInfos == null) {
-            LOGGER.trace(String.format(
-                "No subscribers available to accept event [%s]",
-                    event.getClass().getName()
-            ));
+            LOGGER.trace("No subscribers available to accept event [{}]", event.getClass().getName());
             return;
         }
         subscriberInfos.forEach((final SubscriberInfo<? super EventSubscriptionHandler> info) -> {
@@ -70,9 +67,6 @@ public class EventBroker {
                 throw new SubscriptionEventHandlerException(e);
             }
         });
-        LOGGER.trace(String.format(
-            "Published event to %d subscribers",
-            subscriberInfos.size()
-        ));
+        LOGGER.trace("Published event to {} subscribers", subscriberInfos.size());
     }
 }
