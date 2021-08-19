@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang;
 
+import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.lang.MissingRequiredVMArgument;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -31,10 +32,10 @@ public class LangFileResourceHandler {
     private String getOutputDirectory() {
         final String outputPath = System.getProperty(RESOURCE_OUTPUT_PROPERTY);
         if (outputPath == null) {
-            throw new RuntimeException(String.format(
+            throw new MissingRequiredVMArgument(String.format(
                     "No output directory was provided, please provide it via the \"-D%s=<DIR>\" argument",
                     RESOURCE_OUTPUT_PROPERTY
-            )); // TODO: Implement an exception for this
+            ));
         }
         return outputPath;
     }
@@ -83,14 +84,14 @@ public class LangFileResourceHandler {
         final String jsonContent = gson.toJson(this.langMappings);
 
         LOGGER.info("Writing JSON to {}", getFormattedFilePath());
-        try(BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFormattedFilePath()), StandardCharsets.UTF_8))) {
+        try(final BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFormattedFilePath()), StandardCharsets.UTF_8))) {
             br.write(jsonContent);
         } catch (final IOException e) {
             throw new RuntimeException(String.format(
                     "Could not write JSON content to file: %s%s",
                     this.outputDirectory,
                     LANG_FILE_NAME
-            ), e); // TODO: Implement exception for this
+            ), e);
         }
     }
 

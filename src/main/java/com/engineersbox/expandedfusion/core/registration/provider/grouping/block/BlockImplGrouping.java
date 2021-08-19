@@ -6,6 +6,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.provider.blo
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ScreenProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.DuplicateBlockComponentBinding;
+import com.engineersbox.expandedfusion.core.registration.exception.grouping.ImplementationGroupingException;
 import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockImplType;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplGrouping;
 import net.minecraft.block.Block;
@@ -113,11 +114,17 @@ public class BlockImplGrouping implements ImplGrouping {
                     if (this.container == null) {
                         missing.add(r.toAnnotationEquivalent());
                     }
+                    continue;
+                case SCREEN:
+                    if (this.screen == null) {
+                        missing.add(r.toAnnotationEquivalent());
+                    }
+                    continue;
                 default:
-                    throw new RuntimeException(String.format(
+                    throw new ImplementationGroupingException(String.format(
                             "Unknown requirement type: %s",
                             r
-                    )); // TODO: Implement exception for this
+                    ));
             }
         }
         return missing;

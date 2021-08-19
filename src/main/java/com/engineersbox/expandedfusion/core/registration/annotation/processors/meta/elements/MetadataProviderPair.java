@@ -5,6 +5,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.provider.blo
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.elements.InvalidMetadataDeclaration;
 
 import java.lang.annotation.Annotation;
 
@@ -33,10 +34,10 @@ public class MetadataProviderPair<T extends Annotation> {
         } else if (ContainerProvider.class.isAssignableFrom(this.provider.getClass())) {
             return ((ContainerProvider) this.provider).name();
         }
-        throw new RuntimeException(String.format(
+        throw new InvalidMetadataDeclaration(String.format(
                 "Invalid provider annotation %s, not annotated with @ProvidesElement",
                 this.provider.getClass().getName()
-        )); // TODO: Implement exception for this
+        ));
     }
 
     public String getNameMapping() {
@@ -53,7 +54,7 @@ public class MetadataProviderPair<T extends Annotation> {
         } else if (ContainerProvider.class.isAssignableFrom(this.provider.getClass())) {
             return "container";
         }
-        throw new RuntimeException(String.format(
+        throw new InvalidMetadataDeclaration(String.format(
                 "Invalid provider annotation %s, not annotated with @ProvidesElement",
                 this.provider.getClass().getName()
         )); // TODO: Implement exception for this
