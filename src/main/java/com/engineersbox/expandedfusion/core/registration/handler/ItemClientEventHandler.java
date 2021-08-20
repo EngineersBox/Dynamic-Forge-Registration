@@ -18,7 +18,7 @@ public class ItemClientEventHandler implements EventSubscriptionHandler {
     @OnlyIn(Dist.CLIENT)
     public static void registerItemColors(final ColorHandlerEvent.Item event) {
         final ItemRegistryObject<? extends Item> potentialCanister = RegistryInjectionContext.getItemRegistryObject(CanisterItem.PROVIDER_NAME);
-        if (!(potentialCanister.get() instanceof CanisterItem)) {
+        if (!(potentialCanister.asItem() instanceof CanisterItem)) {
             return;
         }
         final ItemRegistryObject<CanisterItem> canister = (ItemRegistryObject<CanisterItem>) potentialCanister;

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class Registration {
     public static final ItemGroup CREATIVE_TAB_ITEM_GROUP = new ModItemGroups.ModItemGroup(
             ExpandedFusion.MOD_ID,
-            () -> new ItemStack(RegistryInjectionContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).get())
+            () -> new ItemStack(RegistryInjectionContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
     );
     public static final DeferredRegister<Fluid> FLUIDS = create(ForgeRegistries.FLUIDS);
     public static final DeferredRegister<Block> BLOCKS = create(ForgeRegistries.BLOCKS);

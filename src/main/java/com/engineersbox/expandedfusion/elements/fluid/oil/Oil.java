@@ -37,8 +37,8 @@ public class Oil extends ForgeFlowingFluid.Source {
                     ExpandedFusion.getId("block/" + PROVIDER_NAME + "_still"),
                     ExpandedFusion.getId("block/" + PROVIDER_NAME + "_flowing")
                 )
-            ).block(() -> (FlowingFluidBlock) RegistryInjectionContext.getBlockRegistryObject(Oil.PROVIDER_NAME).get())
-            .bucket(() -> RegistryInjectionContext.getItemRegistryObject(Oil.BUCKET_NAME).get())
+            ).block(() -> (FlowingFluidBlock) RegistryInjectionContext.getBlockRegistryObject(Oil.PROVIDER_NAME).asBlock())
+            .bucket(() -> RegistryInjectionContext.getItemRegistryObject(Oil.BUCKET_NAME).asItem())
         );
     }
 
