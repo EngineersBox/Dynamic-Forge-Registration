@@ -1,6 +1,8 @@
 package com.engineersbox.expandedfusion.core.registration.provider.shim;
 
 import com.engineersbox.expandedfusion.core.elements.block.IBlockProvider;
+import com.engineersbox.expandedfusion.core.registration.registryObject.TileEntityRegistryObject;
+import com.engineersbox.expandedfusion.register.Registration;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraft.block.Block;
@@ -17,21 +19,17 @@ public class TileEntityDeferredRegistryShim extends RegistryShim<TileEntity> {
         this.modID = modID;
     }
 
-    public <T extends TileEntity> TileEntityType<T> register(final String name, final Supplier<T> tileFactory, final IBlockProvider block) {
+    public <T extends TileEntity> TileEntityRegistryObject<T> register(final String name, final Supplier<T> tileFactory, final IBlockProvider block) {
         return register(name, tileFactory, block.asBlock());
     }
 
-    public <T extends TileEntity> TileEntityType<T> register(final String name, final Supplier<T> tileFactory, final Block... blocks) {
+    public <T extends TileEntity> TileEntityRegistryObject<T> register(final String name, final Supplier<T> tileFactory, final Block... blocks) {
         final TileEntityType<T> type = TileEntityType.Builder.create(tileFactory, blocks).build(null);
-        return register(name, type);
+        return register(name, () -> type);
     }
 
-    public <T extends TileEntity> TileEntityType<T> register(final String name, final TileEntityType<T> type) {
-        if (type.getRegistryName() == null) {
-            type.setRegistryName(this.getId(name));
-        }
-        ForgeRegistries.TILE_ENTITIES.register(type);
-        return type;
+    public <T extends TileEntity> TileEntityRegistryObject<T> register(final String name, final Supplier<TileEntityType<T>> type) {
+        return new TileEntityRegistryObject<>(Registration.TILE_ENTITIES.register(name, type));
     }
 
 }

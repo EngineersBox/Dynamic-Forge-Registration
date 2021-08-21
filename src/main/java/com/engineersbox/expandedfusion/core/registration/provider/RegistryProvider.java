@@ -1,7 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider;
 
-import com.engineersbox.expandedfusion.core.registration.registryObject.BlockRegistryObject;
-import com.engineersbox.expandedfusion.core.registration.registryObject.ItemRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.*;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
 import com.google.inject.Singleton;
 import net.minecraft.block.Block;
@@ -19,10 +18,10 @@ import java.util.Map;
 @Singleton
 public class RegistryProvider {
     public final Map<String, BlockRegistryObject<? extends Block>> blocks = new HashMap<>();
-    public final Map<String, TileEntityType<? extends TileEntity>> tileEntities = new HashMap<>();
-    public final Map<String, ContainerType<? extends Container>> containers = new HashMap<>();
+    public final Map<String, TileEntityRegistryObject<? extends TileEntity>> tileEntities = new HashMap<>();
+    public final Map<String, ContainerRegistryObject<? extends Container>> containers = new HashMap<>();
     public final Map<String, BlockImplGrouping> screensToBeRegistered = new HashMap<>();
-    public final Map<String, Fluid> sourceFluids = new HashMap<>();
-    public final Map<String, FlowingFluid> flowingFluids = new HashMap<>();
+    public final Map<String, FluidRegistryObject<? extends Fluid>> sourceFluids = new HashMap<>();
+    public final Map<String, FluidRegistryObject<? extends FlowingFluid>> flowingFluids = new HashMap<>();
     public final Map<String, ItemRegistryObject<? extends Item>> items = new HashMap<>();
 }

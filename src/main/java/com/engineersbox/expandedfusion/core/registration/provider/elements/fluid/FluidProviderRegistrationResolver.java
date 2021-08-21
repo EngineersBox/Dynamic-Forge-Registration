@@ -145,7 +145,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                 name,
                 this.fluidDeferredRegistryShim.register(
                         name,
-                        super.<Fluid>instantiateWithDefaultConstructor(sourceFluidImpl)
+                        () -> super.<Fluid>instantiateWithDefaultConstructor(sourceFluidImpl)
                 )
         );
     }
@@ -156,7 +156,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                 name,
                 this.fluidDeferredRegistryShim.register(
                         name,
-                        super.<FlowingFluid>instantiateWithDefaultConstructor(fluidImpl)
+                        () -> super.<FlowingFluid>instantiateWithDefaultConstructor(fluidImpl)
                 )
         );
     }

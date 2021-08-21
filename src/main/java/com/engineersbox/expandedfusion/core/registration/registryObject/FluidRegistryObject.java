@@ -11,7 +11,7 @@ public class FluidRegistryObject<T extends Fluid> extends RegistryObjectWrapper<
     }
 
     @Override
-    public Fluid asFluid() {
+    public T asFluid() {
         return registryObject.get();
     }
 

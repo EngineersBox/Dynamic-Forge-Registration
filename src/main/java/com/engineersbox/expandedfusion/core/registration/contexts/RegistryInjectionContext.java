@@ -26,7 +26,7 @@ public abstract class RegistryInjectionContext {
     private static final RegistryProvider registryProvider = Guice.createInjector(new ProviderModule()).getInstance(RegistryProvider.class);
 
     public static TileEntityType<? extends TileEntity> getTileEntityType(final String provider_name) {
-        final TileEntityType<? extends TileEntity> tileEntityType = registryProvider.tileEntities.get(provider_name);
+        final TileEntityType<? extends TileEntity> tileEntityType = registryProvider.tileEntities.get(provider_name).asTileEntityType();
         if (tileEntityType == null) {
             throw new RegistryInjectionException(String.format(
                     "Tile entity could not be found for provider name: %s",
@@ -48,7 +48,7 @@ public abstract class RegistryInjectionContext {
     }
 
     public static ContainerType<? extends Container> getContainerType(final String provider_name) {
-        final ContainerType<? extends Container> containerType = registryProvider.containers.get(provider_name);
+        final ContainerType<? extends Container> containerType = registryProvider.containers.get(provider_name).asContainerType();
         if (containerType == null) {
             throw new RegistryInjectionException(String.format(
                     "Container could not be found for provider name: %s",
@@ -74,7 +74,7 @@ public abstract class RegistryInjectionContext {
     }
 
     public static FlowingFluid getFlowingFluid(final String provider_name) {
-        final FlowingFluid flowingFluid = registryProvider.flowingFluids.get(provider_name);
+        final FlowingFluid flowingFluid = registryProvider.flowingFluids.get(provider_name).asFluid();
         if (flowingFluid == null) {
             throw new RegistryInjectionException(String.format(
                     "Flowing fluid could not be found for provider name: %s",
@@ -85,7 +85,7 @@ public abstract class RegistryInjectionContext {
     }
 
     public static Fluid getSourceFluid(final String provider_name) {
-        final Fluid sourceFluid = registryProvider.sourceFluids.get(provider_name);
+        final Fluid sourceFluid = registryProvider.sourceFluids.get(provider_name).asFluid();
         if (sourceFluid == null) {
             throw new RegistryInjectionException(String.format(
                     "Fluid source could not be found for provider name: %s",

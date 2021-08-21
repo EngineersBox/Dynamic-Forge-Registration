@@ -40,6 +40,7 @@ public class Registration {
 
     public static void register(final JITResolver registrationResolver) {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        FLUIDS.register(modEventBus);
         BLOCKS.register(modEventBus);
         CONTAINERS.register(modEventBus);
         ITEMS.register(modEventBus);
