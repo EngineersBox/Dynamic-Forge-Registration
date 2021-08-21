@@ -2,7 +2,7 @@ package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITResolver;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class Registration {
     public static final ItemGroup CREATIVE_TAB_ITEM_GROUP = new ModItemGroups.ModItemGroup(
             ExpandedFusion.MOD_ID,
-            () -> new ItemStack(RegistryInjectionContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
+            () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
     );
     public static final DeferredRegister<Fluid> FLUIDS = create(ForgeRegistries.FLUIDS);
     public static final DeferredRegister<Block> BLOCKS = create(ForgeRegistries.BLOCKS);
@@ -49,12 +49,6 @@ public class Registration {
 
         registrationResolver.instantiateResolvers();
         registrationResolver.registerAll();
-
-//        ModBlocks.register();
-//        ModContainers.register();
-//        ModItems.register();
-//        ModRecipes.register();
-//        ModTileEntities.register();
     }
 
     @SuppressWarnings("unchecked")

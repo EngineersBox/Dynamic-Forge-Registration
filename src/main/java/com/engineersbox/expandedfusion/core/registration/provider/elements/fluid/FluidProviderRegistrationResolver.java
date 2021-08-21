@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.elements.flui
 import com.engineersbox.expandedfusion.core.functional.PredicateSplitterConsumer;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidBucketProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.elements.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
@@ -91,7 +91,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
         final FluidBucketProperties[] fluidBucketPropertiesArray = sourceFluidProvider.bucket();
         final FluidBucketProperties bucketProperties = fluidBucketPropertiesArray[0];
         final Supplier<? extends Item> bucketSupplier = () -> {
-            final Supplier<? extends Fluid> fluidSupplier = () -> RegistryInjectionContext.getSourceFluid(sourceFluidProvider.name());
+            final Supplier<? extends Fluid> fluidSupplier = () -> RegistryObjectContext.getSourceFluidRegistryObject(sourceFluidProvider.name()).asFluid();
             if (bucketProperties.canPlace() && FlowingFluid.class.isAssignableFrom(group.getSourceFluid())) {
                 return this.itemDeferredRegistryShim.createBucketItem((Supplier<FlowingFluid>) fluidSupplier);
             }
@@ -134,7 +134,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                 name,
                 this.blockDeferredRegistryShim.registerFluid(
                         name,
-                        () -> (FlowingFluid) RegistryInjectionContext.getSourceFluid(name)
+                        () -> (FlowingFluid) RegistryObjectContext.getSourceFluidRegistryObject(name).asFluid()
                 )
         );
     }

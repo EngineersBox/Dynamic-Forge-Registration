@@ -6,7 +6,7 @@ import com.engineersbox.expandedfusion.core.elements.machine.tileentity.EnergyPr
 import com.engineersbox.expandedfusion.core.elements.machine.tileentity.TransportSlotConfiguration;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<A
 
     public FusionControlComputerTileEntity() {
         super(
-            RegistryInjectionContext.getTileEntityType(FusionControlComputer.PROVIDER_NAME),
+            RegistryObjectContext.getTileEntityRegistryObject(FusionControlComputer.PROVIDER_NAME).asTileEntityType(),
             SLOT_CONFIG.slots.length,
             MachineTier.REINFORCED,
             new EnergyProperties(

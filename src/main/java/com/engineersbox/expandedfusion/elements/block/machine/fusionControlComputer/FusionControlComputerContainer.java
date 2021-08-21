@@ -6,7 +6,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMet
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
@@ -31,7 +31,7 @@ public class FusionControlComputerContainer extends AbstractMachineContainer<Fus
                                           final PlayerInventory playerInventory,
                                           final FusionControlComputerTileEntity tileEntity,
                                           final IIntArray fieldsIn) {
-        super(RegistryInjectionContext.getContainerType(FusionControlComputer.PROVIDER_NAME), id, tileEntity, fieldsIn);
+        super(RegistryObjectContext.getContainerRegistryObject(FusionControlComputer.PROVIDER_NAME).asContainerType(), id, tileEntity, fieldsIn);
 
         this.addSlot(new Slot(this.tileEntity, 0, 56, 35));
         this.addSlot(new SlotOutputOnly(this.tileEntity, 1, 117, 35));

@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.handler;
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
 import com.engineersbox.expandedfusion.register.Registration;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.resolver.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.registration.resolver.event.annotation.Subscriber;
@@ -33,8 +33,8 @@ public class BlockClientEventHandler implements EventSubscriptionHandler {
     @OnlyIn(Dist.CLIENT)
     @Subscriber
     public <T extends Container, U extends Screen & IHasContainer<T>> void registerScreens(final FMLClientSetupEvent event) {
-        RegistryInjectionContext.getScreensToBeRegistered().forEach((final String name, final BlockImplGrouping group) -> {
-            final ContainerType<T> containerType = (ContainerType<T>) RegistryInjectionContext.getContainerType(name);
+        RegistryObjectContext.getScreensToBeRegistered().forEach((final String name, final BlockImplGrouping group) -> {
+            final ContainerType<T> containerType = (ContainerType<T>) RegistryObjectContext.getContainerRegistryObject(name).asContainerType();
             final Class<? extends ContainerScreen<? extends T>> screen = (Class<? extends ContainerScreen<? extends T>>) group.getScreen();
             if (screen == null) {
                 throw new SubscriptionEventHandlerException(String.format(

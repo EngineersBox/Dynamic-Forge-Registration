@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidBucketProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryInjectionContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -31,14 +31,14 @@ public class Oil extends ForgeFlowingFluid.Source {
     public Oil() {
         super(
             new ForgeFlowingFluid.Properties(
-                () -> RegistryInjectionContext.getSourceFluid(PROVIDER_NAME),
-                () -> RegistryInjectionContext.getFlowingFluid(FlowingOil.PROVIDER_NAME),
+                () -> RegistryObjectContext.getSourceFluidRegistryObject(PROVIDER_NAME).asFluid(),
+                () -> RegistryObjectContext.getFlowingFluidRegistryObject(FlowingOil.PROVIDER_NAME).asFluid(),
                 FluidAttributes.builder(
                     ExpandedFusion.getId("block/" + PROVIDER_NAME + "_still"),
                     ExpandedFusion.getId("block/" + PROVIDER_NAME + "_flowing")
                 )
-            ).block(() -> (FlowingFluidBlock) RegistryInjectionContext.getBlockRegistryObject(Oil.PROVIDER_NAME).asBlock())
-            .bucket(() -> RegistryInjectionContext.getItemRegistryObject(Oil.BUCKET_NAME).asItem())
+            ).block(() -> (FlowingFluidBlock) RegistryObjectContext.getBlockRegistryObject(Oil.PROVIDER_NAME).asBlock())
+            .bucket(() -> RegistryObjectContext.getItemRegistryObject(Oil.BUCKET_NAME).asItem())
         );
     }
 
