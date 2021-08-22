@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.data.annotation.recipe.shapeless;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.ProvidesElement;
+import com.engineersbox.expandedfusion.core.data.annotation.recipe.ProvidesRecipeHandler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
  * Example:
  * {@code public void methodName(final Consumer<IFinishedRecipe> consumer)}
  */
-@ProvidesElement
+@ProvidesRecipeHandler
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface RecipeBuilder {
