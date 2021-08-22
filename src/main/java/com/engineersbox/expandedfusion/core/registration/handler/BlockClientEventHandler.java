@@ -5,8 +5,8 @@ import com.engineersbox.expandedfusion.core.registration.exception.handler.Subsc
 import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.resolver.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.registration.resolver.event.annotation.Subscriber;
+import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.Screen;

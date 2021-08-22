@@ -9,8 +9,8 @@ import com.engineersbox.expandedfusion.core.registration.provider.elements.fluid
 import com.engineersbox.expandedfusion.core.registration.provider.elements.item.ItemProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
-import com.engineersbox.expandedfusion.core.registration.resolver.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.registration.resolver.event.broker.EventBroker;
+import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
+import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;

@@ -1,8 +1,8 @@
-package com.engineersbox.expandedfusion.core.registration.resolver.event.broker;
+package com.engineersbox.expandedfusion.core.event.broker;
 
 import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
-import com.engineersbox.expandedfusion.core.registration.resolver.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.registration.resolver.event.annotation.Subscriber;
+import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import org.apache.logging.log4j.LogManager;

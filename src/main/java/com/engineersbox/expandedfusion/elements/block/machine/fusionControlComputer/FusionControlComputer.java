@@ -1,10 +1,18 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
+import com.engineersbox.expandedfusion.core.data.annotation.recipe.crafting.CraftingRecipe;
+import com.engineersbox.expandedfusion.core.data.annotation.recipe.crafting.PatternKey;
+import com.engineersbox.expandedfusion.core.data.annotation.recipe.crafting.PatternLine;
+import com.engineersbox.expandedfusion.core.data.annotation.recipe.crafting.UnlockCriterion;
+import com.engineersbox.expandedfusion.core.data.recipe.AccessCriterion;
+import com.engineersbox.expandedfusion.core.data.recipe.IngredientType;
 import com.engineersbox.expandedfusion.core.elements.MachineTier;
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockImplType;
+import com.engineersbox.expandedfusion.elements.block.structure.CopperBerylliumBondedShielding;
+import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +26,21 @@ import javax.annotation.Nullable;
 
 @LangMetadata(
         nameMapping = FusionControlComputer.NAME_MAPPING
+)
+@CraftingRecipe(
+        pattern = {
+                @PatternLine("INI"),
+                @PatternLine("SIS"),
+                @PatternLine("INI"),
+        },
+        keys = {
+                @PatternKey(symbol = 'I', ingredient = "iron_ingot", type = IngredientType.ITEM),
+                @PatternKey(symbol = 'N', ingredient = NiobiumTitaniumCoil.PROVIDER_NAME, type = IngredientType.ITEM),
+                @PatternKey(symbol = 'S', ingredient = CopperBerylliumBondedShielding.PROVIDER_NAME, type = IngredientType.ITEM)
+        },
+        criteria = {
+                @UnlockCriterion(key = "has_ntc", provider = NiobiumTitaniumCoil.PROVIDER_NAME, requirement = AccessCriterion.HAS_ITEM_ITEM)
+        }
 )
 @BlockProvider(
         name = FusionControlComputer.PROVIDER_NAME,

@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.resolver.event;
+package com.engineersbox.expandedfusion.core.event;
 
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 

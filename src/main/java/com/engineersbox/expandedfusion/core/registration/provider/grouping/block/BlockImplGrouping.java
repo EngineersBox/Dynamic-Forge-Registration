@@ -1,6 +1,5 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.block;
 
-import com.engineersbox.expandedfusion.core.elements.DataField;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ScreenProvider;

@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.resolver.event.annotation;
+package com.engineersbox.expandedfusion.core.event.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

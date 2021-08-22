@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class BlockDeferredRegistryShim extends RegistryShim<Block> {//extends RegistryShim<Block, BlockRegistryObject<? extends Block>> {
+public class BlockDeferredRegistryShim extends RegistryShim<Block> {
 
     private static final Logger LOGGER = LogManager.getLogger(BlockDeferredRegistryShim.class);
 
@@ -40,24 +40,6 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {//extends Re
     public <T extends Block> BlockRegistryObject<T> registerNoItem(final String name, final Supplier<T> block) {
         return new BlockRegistryObject<>(Registration.BLOCKS.register(name, block));
     }
-
-//    @Override
-//    public BlockRegistryObject<? extends Block> register(final String name,
-//                                                         final Supplier<? extends Block> block) {
-//        return register(name, block, BlockDeferredRegistryShim::defaultItem);
-//    }
-//
-//    @Override
-//    public BlockRegistryObject<? extends Block> register(final String name,
-//                                                         final Supplier<? extends Block> block,
-//                                                         final Function<
-//                                                                 BlockRegistryObject<? extends Block>,
-//                                                                 Supplier<? extends Item>
-//                                                         > item) {
-//        final BlockRegistryObject<? extends Block> ret = registerNoItem(name, block);
-//        Registration.ITEMS.register(name, item.apply(ret));
-//        return ret;
-//    }
 
     public <T extends Block> BlockRegistryObject<T> register(final String name,
                                                              final Supplier<T> block) {

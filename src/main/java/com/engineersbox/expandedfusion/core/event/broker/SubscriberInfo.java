@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.resolver.event.broker;
+package com.engineersbox.expandedfusion.core.event.broker;
 
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.event.broker.SubscriberMethodInvocationException;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
