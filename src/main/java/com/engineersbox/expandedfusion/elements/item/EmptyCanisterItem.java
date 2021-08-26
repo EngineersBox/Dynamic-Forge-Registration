@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.elements.item;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

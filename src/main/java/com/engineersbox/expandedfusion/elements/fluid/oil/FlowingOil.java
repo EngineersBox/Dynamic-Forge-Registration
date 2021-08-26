@@ -2,7 +2,7 @@ package com.engineersbox.expandedfusion.elements.fluid.oil;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraftforge.fluids.FluidAttributes;

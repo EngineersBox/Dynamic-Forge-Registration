@@ -4,9 +4,9 @@ import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockProviderRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.elements.fluid.FluidProviderRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.elements.item.ItemProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.element.fluid.FluidProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.element.item.ItemProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;

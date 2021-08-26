@@ -1,10 +1,10 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.elements.InvalidMetadataDeclaration;
 
 import java.lang.annotation.Annotation;

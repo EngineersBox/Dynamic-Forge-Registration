@@ -5,8 +5,8 @@ import com.engineersbox.expandedfusion.core.registration.annotation.processors.m
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.MetadataProviderPair;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangFileResourceHandler;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidBucketProperties;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraftforge.fml.common.Mod;

@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.core.elements.machine.tileentity.Abstract
 import com.engineersbox.expandedfusion.core.elements.machine.tileentity.EnergyProperties;
 import com.engineersbox.expandedfusion.core.elements.machine.tileentity.TransportSlotConfiguration;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.TileEntityProvider;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

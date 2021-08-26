@@ -1,9 +1,7 @@
 package com.engineersbox.expandedfusion.register;
 
-import com.engineersbox.expandedfusion.elements.item.CanisterItem;
-import com.engineersbox.expandedfusion.elements.item.EmptyCanisterItem;
 import com.engineersbox.expandedfusion.elements.item.NoPlaceBucketItem;
-import com.engineersbox.expandedfusion.core.registration.registryObject.ItemRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;

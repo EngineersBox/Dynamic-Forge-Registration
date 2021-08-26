@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBloc
 import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
 import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraft.client.gui.IHasContainer;

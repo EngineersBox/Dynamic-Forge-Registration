@@ -1,8 +1,8 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.TileEntityProvider;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;

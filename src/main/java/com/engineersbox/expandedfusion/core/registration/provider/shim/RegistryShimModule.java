@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.shim;
 
+import com.engineersbox.expandedfusion.core.registration.provider.shim.element.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import net.minecraft.block.Block;

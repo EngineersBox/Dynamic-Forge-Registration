@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.core.elements.machine.tileentity.Abstract
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.ContainerProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

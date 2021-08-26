@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMet
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.register.Registration;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

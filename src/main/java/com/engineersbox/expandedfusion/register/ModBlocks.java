@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.register;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.core.registration.registryObject.BlockRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;

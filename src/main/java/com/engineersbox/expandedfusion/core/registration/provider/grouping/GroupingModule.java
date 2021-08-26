@@ -1,11 +1,11 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping;
 
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplClassGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.block.BlockImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.fluid.FluidImplClassGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.fluid.FluidImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.item.ItemImplClassGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.grouping.item.ItemImplGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplClassGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplClassGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.item.ItemImplClassGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.item.ItemImplGrouping;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 

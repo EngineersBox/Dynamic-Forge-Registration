@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.handler;
 import com.engineersbox.expandedfusion.core.util.ColorGetter;
 import com.engineersbox.expandedfusion.elements.item.CanisterItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
-import com.engineersbox.expandedfusion.core.registration.registryObject.ItemRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraft.item.Item;

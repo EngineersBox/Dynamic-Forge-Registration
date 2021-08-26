@@ -1,8 +1,8 @@
 package com.engineersbox.expandedfusion.elements.block.structure;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
-import com.engineersbox.expandedfusion.core.registration.annotation.provider.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.provider.elements.block.BlockImplType;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockImplType;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

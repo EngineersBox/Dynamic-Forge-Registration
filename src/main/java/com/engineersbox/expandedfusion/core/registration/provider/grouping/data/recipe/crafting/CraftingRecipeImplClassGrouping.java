@@ -1,0 +1,63 @@
+package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting;
+
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.CraftingRecipe;
+import com.engineersbox.expandedfusion.core.registration.annotation.recipe.shapeless.RecipeProvider;
+import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.reflections.Reflections;
+
+import java.util.Set;
+
+public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<CraftingRecipeImplGrouping> {
+
+    private final Reflections reflections;
+
+    @Inject
+    public CraftingRecipeImplClassGrouping(@Named("packageReflections") final Reflections reflections) {
+        this.reflections = reflections;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public void collectAnnotatedResources() {
+        final Set<Class<? extends ForgeRegistryEntry>> blockProviderAnnotatedClasses = super.filterClassesBySuperType(
+                ForgeRegistryEntry.class,
+                this.reflections.getTypesAnnotatedWith(CraftingRecipe.class)
+        );
+        for (final Class<? extends ForgeRegistryEntry<?>> c : blockProviderAnnotatedClasses) {
+            final ItemProvider itemProvider = c.getAnnotation(ItemProvider.class);
+            final BlockProvider blockProvider = c.getAnnotation(BlockProvider.class);
+            if ((itemProvider == null) == (blockProvider == null)) {
+                continue;
+            }
+            final RecipeProvider[] recipeProviders = c.getAnnotationsByType(RecipeProvider.class);
+            if (recipeProviders.length == 0) {
+                continue;
+            }
+            if (itemProvider != null) {
+                addIfNotExists(itemProvider.name(), c);
+            } else {
+                addIfNotExists(blockProvider.name(), c);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addIfNotExists(final String name, final Class<?> toAdd) throws DuplicateBlockComponentBinding {
+        CraftingRecipeImplGrouping recipeImplGrouping = this.classGroupings.get(name);
+        if (recipeImplGrouping == null) {
+            recipeImplGrouping = new CraftingRecipeImplGrouping();
+        }
+        if (ForgeRegistryEntry.class.isAssignableFrom(toAdd)) {
+            recipeImplGrouping.setRegistryEntry((Class<? extends ForgeRegistryEntry<?>>) toAdd);
+        }
+        this.classGroupings.put(name, recipeImplGrouping);
+    }
+
+}
