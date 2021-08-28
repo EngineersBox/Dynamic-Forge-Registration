@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element.block;
 
+import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.BlockDeferredRegistryShim;
@@ -171,29 +172,15 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         );
     }
 
-    @SuppressWarnings("unchecked,raw")
     private <T extends Container> T instantiateContainerWithIFactoryParams(final int id,
                                                                            final PlayerInventory playerInventory,
-                                                                           @Nonnull final Class<? extends Container> containerImpl) {
-        final Set<Constructor> constructors = ReflectionUtils.getConstructors(
-                containerImpl,
-                (final Constructor c) -> {
-                    final Class<?>[] paramTypes = c.getParameterTypes();
-                    if (paramTypes.length != 2) {
-                        return false;
-                    }
-                    return int.class.isAssignableFrom(paramTypes[0])
-                            && PlayerInventory.class.isAssignableFrom(paramTypes[1]);
-                }
-        );
-        if (constructors.isEmpty()) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "No accessible constructors could be found for %s",
-                    containerImpl
-            ));
-        }
+                                                                           @Nonnull final Class<? extends T> containerImpl) {
         try {
-            return (T) new ArrayList<>(constructors).get(0).newInstance(id, playerInventory);
+            return new CheckedInstantiator<T>()
+                    .withImplementation(containerImpl)
+                    .withParameterTypes(int.class, PlayerInventory.class)
+                    .withParameters(id, playerInventory)
+                    .newInstance();
         } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new ProviderElementRegistrationException(e);
         }

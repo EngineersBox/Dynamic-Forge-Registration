@@ -1,5 +1,4 @@
 - Registry:
-      - Create DefferedRegistryContext to hold DefferedRegistry instances
       - Create DefferedRegistry instanced based on arry of enums passed to JITRegistrationResolver:
             - BLOCK
             - ITEM
@@ -7,9 +6,9 @@
             - RECIPE
             - CONATINER
             - TILE_ENTITY
+            - TAG
 - Lang Metadata:
-      - Create processor to take @LangMetadata annotations and turn them into an en_us.json file in resources/assets/<MOD ID>/lang/en_us.json
-      - This should be run as a pre-compile step with gradle and should exclude the processor from compilation
+      - Run processor as a pre-compile step with gradle and should be excluded from inclusion in final jar
 
 - Blocks:
     - Ore:
