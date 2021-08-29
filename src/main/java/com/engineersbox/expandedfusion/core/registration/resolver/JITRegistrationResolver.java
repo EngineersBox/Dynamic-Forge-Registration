@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.RecipeSerializerRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.element.fluid.FluidProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.element.item.ItemProviderRegistrationResolver;
@@ -47,8 +48,8 @@ public class JITRegistrationResolver extends JITResolver {
     private static final List<Pair<ResolverType, Class<? extends RegistrationResolver>>> resolverPairings = ImmutableList.of(
             ImmutablePair.of(ResolverType.BLOCK, BlockProviderRegistrationResolver.class),
             ImmutablePair.of(ResolverType.ITEM, ItemProviderRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.FLUID, FluidProviderRegistrationResolver.class)
-//            ImmutablePair.of(ResolverType.RECIPE, RecipeProviderRegistrationResolver.class)
+            ImmutablePair.of(ResolverType.FLUID, FluidProviderRegistrationResolver.class),
+            ImmutablePair.of(ResolverType.RECIPE_SERIALIZER, RecipeSerializerRegistrationResolver.class)
     );
 
     @Override

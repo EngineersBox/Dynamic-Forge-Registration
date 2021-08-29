@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.handler;
+package com.engineersbox.expandedfusion.core.registration.handler.element;
 
 import com.engineersbox.expandedfusion.core.util.ColorGetter;
 import com.engineersbox.expandedfusion.elements.item.CanisterItem;

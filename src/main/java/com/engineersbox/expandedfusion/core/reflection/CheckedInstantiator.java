@@ -8,13 +8,14 @@ import org.reflections.ReflectionUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+@SuppressWarnings("rawtypes")
 public class CheckedInstantiator<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(CheckedInstantiator.class);
-    private Collection<? extends Constructor<T>> constructors;
+    private Set<Constructor> constructors;
 
     private Class<? extends T> implementation;
     private Class<?>[] parameterTypes;
@@ -52,6 +53,7 @@ public class CheckedInstantiator<T> {
         return this;
     }
 
+    @SuppressWarnings("rawtypes")
     private boolean matchParamTypes(final Constructor c) {
         if (c.getDeclaringClass() != this.implementation) {
             return false;
@@ -76,7 +78,7 @@ public class CheckedInstantiator<T> {
 
     @SuppressWarnings("unchecked")
     private void filterAvailableConstructors() {
-        this.constructors = (Collection<? extends Constructor<T>>) ReflectionUtils.getConstructors(
+        this.constructors = ReflectionUtils.getConstructors(
                 this.implementation,
                 this::matchParamTypes
         );
@@ -89,12 +91,13 @@ public class CheckedInstantiator<T> {
         }
     }
 
+    @SuppressWarnings("unchecked, rawtypes")
     public T newInstance() throws InvocationTargetException, InstantiationException, IllegalAccessException {
         if (this.implementation == null) {
             throw new NullPointerException("Cannot invoke constructor of null implementation class");
         }
         filterAvailableConstructors();
-        final List<Constructor<T>> constructorsList = new ArrayList<>(this.constructors);
+        final List<Constructor> constructorsList = new ArrayList<>(this.constructors);
         int desiredConstructorIndex = 0;
         if (this.constructors.size() > 1) {
             if (this.preferVarArgs) {
@@ -119,7 +122,7 @@ public class CheckedInstantiator<T> {
                 );
             }
         }
-        return constructorsList.get(desiredConstructorIndex).newInstance(this.parameters);
+        return (T) constructorsList.get(desiredConstructorIndex).newInstance(this.parameters);
     }
 
 }

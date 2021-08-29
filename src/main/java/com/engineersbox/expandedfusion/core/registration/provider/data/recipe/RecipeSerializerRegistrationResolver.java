@@ -14,16 +14,16 @@ import com.google.inject.Inject;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 
-public class RecipeSerializerProviderRegistrationResolver extends RegistrationResolver  {
+public class RecipeSerializerRegistrationResolver extends RegistrationResolver  {
 
     private final RegistryProvider registryProvider;
     private final RecipeSerializerImplClassGrouping implClassGroupings;
     private final RecipeDeferredRegistryShim recipeDeferredRegistryShim;
 
     @Inject
-    public RecipeSerializerProviderRegistrationResolver(final RegistryProvider registryProvider,
-                                                        final ImplClassGroupings<RecipeSerializerImplGrouping> implClassGroupings,
-                                                        final RegistryShim<IRecipeSerializer<?>> recipeDeferredRegistryShim) {
+    public RecipeSerializerRegistrationResolver(final RegistryProvider registryProvider,
+                                                final ImplClassGroupings<RecipeSerializerImplGrouping> implClassGroupings,
+                                                final RegistryShim<IRecipeSerializer<?>> recipeDeferredRegistryShim) {
         this.registryProvider = registryProvider;
         this.implClassGroupings = (RecipeSerializerImplClassGrouping) implClassGroupings;
         this.recipeDeferredRegistryShim = (RecipeDeferredRegistryShim) recipeDeferredRegistryShim;
@@ -36,6 +36,12 @@ public class RecipeSerializerProviderRegistrationResolver extends RegistrationRe
 
     private void registerRecipeSerializer(final String name,
                                           final RecipeSerializerImplGrouping group) {
+        registerImplementation(name, group);
+        registerSerializer(name, group);
+    }
+
+    private void registerImplementation(final String name,
+                                        final RecipeSerializerImplGrouping group) {
         final RecipeImplementation recipeImplementation = group.getRecipeImplementationAnnotation();
         if (recipeImplementation == null) {
             throw new ProviderDataRegistrationException(String.format(
@@ -61,6 +67,10 @@ public class RecipeSerializerProviderRegistrationResolver extends RegistrationRe
                 name,
                 this.recipeDeferredRegistryShim.registerType(name)
         );
+    }
+
+    private void registerSerializer(final String name,
+                                    final RecipeSerializerImplGrouping group) {
         final RecipeSerializer recipeSerializer = group.getRecipeSerializerAnnotation();
         if (recipeSerializer == null) {
             throw new ProviderDataRegistrationException(String.format(

@@ -27,7 +27,7 @@ public class RecipeSerializerImplClassGrouping extends ImplClassGroupings<Recipe
                 IRecipe.class,
                 this.reflections.getTypesAnnotatedWith(RecipeImplementation.class)
         );
-        for (final Class<? extends IRecipe<?>> c : recipeImplementationAnnotatedClasses) {
+        for (final Class<? extends IRecipe> c : recipeImplementationAnnotatedClasses) {
             final RecipeImplementation recipeImplementation = c.getAnnotation(RecipeImplementation.class);
             if (recipeImplementation == null) {
                 continue;
@@ -38,7 +38,7 @@ public class RecipeSerializerImplClassGrouping extends ImplClassGroupings<Recipe
                 IRecipeSerializer.class,
                 this.reflections.getTypesAnnotatedWith(RecipeSerializer.class)
         );
-        for (final Class<? extends IRecipeSerializer<?>> c : recipeSerializerAnnotatedClasses) {
+        for (final Class<? extends IRecipeSerializer> c : recipeSerializerAnnotatedClasses) {
             final RecipeSerializer recipeSerializer = c.getAnnotation(RecipeSerializer.class);
             if (recipeSerializer == null) {
                 continue;

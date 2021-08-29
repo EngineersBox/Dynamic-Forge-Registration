@@ -15,7 +15,7 @@ public abstract class ImplClassGroupings<T extends ImplGrouping> {
     public <E> Set<Class<? extends E>> filterClassesBySuperType(final Class<E> superType, final Set<Class<?>> classes) {
         return classes.stream()
             .filter(superType::isAssignableFrom)
-            .map(Class.class::cast)
+            .map(c -> (Class<? extends E>) c)
             .collect(Collectors.toSet());
     }
 

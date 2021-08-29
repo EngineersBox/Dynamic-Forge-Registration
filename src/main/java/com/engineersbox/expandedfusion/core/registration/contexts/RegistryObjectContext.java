@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.contexts;
 
 import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryObjectRetrievalException;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.registryObject.*;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
@@ -24,10 +25,10 @@ public abstract class RegistryObjectContext {
 
     private static final RegistryProvider registryProvider = Guice.createInjector(new ProviderModule()).getInstance(RegistryProvider.class);
 
-    private static <T extends IForgeRegistryEntry<? super T>, E extends RegistryObjectWrapper<? extends T>> E getRegistryObject(final Class<?> clazz,
-                                                                                                                                final String provider_name,
-                                                                                                                                final Map<String, ? extends E> registryMapper) {
-        final E registryEntry = registryMapper.get(provider_name);
+    private static <T> T getRegistryObject(final Class<?> clazz,
+                                           final String provider_name,
+                                           final Map<String, T> registryMapper) {
+        final T registryEntry = registryMapper.get(provider_name);
         if (registryEntry == null) {
             throw new RegistryObjectRetrievalException(String.format(
                     "%s could not be found for provider name: %s",
@@ -66,4 +67,7 @@ public abstract class RegistryObjectContext {
         return RegistryObjectContext.getRegistryObject(FluidRegistryObject.class, provider_name, registryProvider.sourceFluids);
     }
 
+    public static Map<String, CraftingRecipeImplGrouping> getCraftingRecipesToBeRegistered() {
+        return registryProvider.craftingRecipesToBeRegistered;
+    }
 }

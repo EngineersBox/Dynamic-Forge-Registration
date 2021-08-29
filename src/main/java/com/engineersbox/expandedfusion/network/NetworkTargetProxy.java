@@ -2,8 +2,8 @@ package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.register.*;
-import com.engineersbox.expandedfusion.core.registration.handler.BlockClientEventHandler;
-import com.engineersbox.expandedfusion.core.registration.handler.ItemClientEventHandler;
+import com.engineersbox.expandedfusion.core.registration.handler.element.BlockClientEventHandler;
+import com.engineersbox.expandedfusion.core.registration.handler.element.ItemClientEventHandler;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITRegistrationResolver;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -29,7 +29,7 @@ public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<Crafting
                 ForgeRegistryEntry.class,
                 this.reflections.getTypesAnnotatedWith(CraftingRecipe.class)
         );
-        for (final Class<? extends ForgeRegistryEntry<?>> c : blockProviderAnnotatedClasses) {
+        for (final Class<? extends ForgeRegistryEntry> c : blockProviderAnnotatedClasses) {
             final ItemProvider itemProvider = c.getAnnotation(ItemProvider.class);
             final BlockProvider blockProvider = c.getAnnotation(BlockProvider.class);
             if ((itemProvider == null) == (blockProvider == null)) {

@@ -4,5 +4,6 @@ public enum ResolverType {
     BLOCK,
     ITEM,
     FLUID,
-    RECIPE
+    RECIPE_SERIALIZER,
+    RECIPE_DECLARATION
 }

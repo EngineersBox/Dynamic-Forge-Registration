@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider;
 
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.registryObject.data.recipe.RecipeSerializerRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.*;
@@ -31,4 +32,5 @@ public class RegistryProvider {
     // Data
     public final Map<String, IRecipeType<? extends IRecipe<?>>> recipeTypes = new HashMap<>();
     public final Map<String, RecipeSerializerRegistryObject<? extends IRecipe<?>>> recipeSerializers = new HashMap<>();
+    public final Map<String, CraftingRecipeImplGrouping> craftingRecipesToBeRegistered = new HashMap<>();
 }
