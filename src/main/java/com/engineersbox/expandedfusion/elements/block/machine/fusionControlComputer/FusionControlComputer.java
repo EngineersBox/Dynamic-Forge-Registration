@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
         },
         criteria = @UnlockCriterion(
                 key = "has_ntc",
-                provider = NiobiumTitaniumCoil.PROVIDER_NAME,
+                ingredient = NiobiumTitaniumCoil.PROVIDER_NAME,
                 requirement = AccessCriterion.HAS_ITEM_ITEM
         )
 )

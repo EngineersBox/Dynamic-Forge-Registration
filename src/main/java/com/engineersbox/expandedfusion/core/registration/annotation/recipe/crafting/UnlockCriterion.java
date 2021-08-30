@@ -4,6 +4,6 @@ import com.engineersbox.expandedfusion.core.registration.data.recipe.AccessCrite
 
 public @interface UnlockCriterion {
     String key();
-    String provider();
+    String ingredient();
     AccessCriterion requirement();
 }

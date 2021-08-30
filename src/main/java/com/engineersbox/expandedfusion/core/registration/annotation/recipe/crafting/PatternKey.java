@@ -4,6 +4,6 @@ import com.engineersbox.expandedfusion.core.registration.data.recipe.IngredientT
 
 public @interface PatternKey {
     char symbol();
-    String ingredient();
+    String[] ingredient();
     IngredientType type();
 }

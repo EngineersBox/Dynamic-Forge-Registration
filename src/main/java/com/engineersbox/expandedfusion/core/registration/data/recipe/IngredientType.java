@@ -6,8 +6,7 @@ import net.minecraft.util.IItemProvider;
 
 public enum IngredientType {
     TAG(ITag.class),
-    ITEM(IItemProvider.class),
-    INGREDIENT(Ingredient.class);
+    ITEM(IItemProvider.class);
 
     Class<?> clazz;
 
