@@ -1,5 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping;
 
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation.RecipeSerializerImplClassGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation.RecipeSerializerImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplClassGrouping;
@@ -14,10 +16,12 @@ public class GroupingModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(new TypeLiteral<ImplClassGroupings<BlockImplGrouping>>(){})
-            .to(new TypeLiteral<BlockImplClassGrouping>(){});
+                .to(new TypeLiteral<BlockImplClassGrouping>(){});
         bind(new TypeLiteral<ImplClassGroupings<ItemImplGrouping>>(){})
-            .to(new TypeLiteral<ItemImplClassGrouping>(){});
+                .to(new TypeLiteral<ItemImplClassGrouping>(){});
         bind(new TypeLiteral<ImplClassGroupings<FluidImplGrouping>>(){})
-            .to(new TypeLiteral<FluidImplClassGrouping>(){});
+                .to(new TypeLiteral<FluidImplClassGrouping>(){});
+        bind(new TypeLiteral<ImplClassGroupings<RecipeSerializerImplGrouping>>(){})
+                .to(new TypeLiteral<RecipeSerializerImplClassGrouping>(){});
     }
 }
