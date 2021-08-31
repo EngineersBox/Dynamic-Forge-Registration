@@ -12,6 +12,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -115,7 +117,7 @@ public class BlockImplGrouping implements ImplGrouping {
                     }
                     continue;
                 case SCREEN:
-                    if (this.screen == null) {
+                    if (this.screen == null && FMLEnvironment.dist == Dist.CLIENT) {
                         missing.add(r.toAnnotationEquivalent());
                     }
                     continue;

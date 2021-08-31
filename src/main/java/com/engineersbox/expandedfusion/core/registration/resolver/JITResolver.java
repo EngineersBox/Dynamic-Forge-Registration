@@ -11,6 +11,8 @@ public abstract class JITResolver extends RegistrationResolver {
 
     abstract <T extends RegistrationResolver> T getRegistrationResolver(final ResolverType resolverType);
 
-    abstract void publishEvent(final ModLifecycleEvent eventConsumer);
+    abstract void publishCommonEvent(final ModLifecycleEvent eventConsumer);
+    abstract void publishClientEvent(final ModLifecycleEvent eventConsumer);
+    abstract void publishServerEvent(final ModLifecycleEvent eventConsumer);
 
 }

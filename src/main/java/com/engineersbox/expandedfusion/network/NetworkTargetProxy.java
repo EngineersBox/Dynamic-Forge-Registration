@@ -24,18 +24,15 @@ public class NetworkTargetProxy implements IProxy {
             .withLogger(ExpandedFusion.LOGGER)
             .withPackageName("com.engineersbox.expandedfusion")
             .withModId(ExpandedFusion.MOD_ID)
-            .withEventHandlers(
-                    BlockClientEventHandler.class,
-                    ItemClientEventHandler.class
-            )
             .build();
 
     NetworkTargetProxy() {
         Registration.register(REGISTRATION_RESOLVER);
 
         // Add listeners for common events
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcEnqueue);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcProcess);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcPublish);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcSubscribe);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishCommonEvent);
 
         // Add listeners for registry events
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, ModFluids::registerFluids);
@@ -44,13 +41,10 @@ public class NetworkTargetProxy implements IProxy {
         MinecraftForge.EVENT_BUS.addListener(this::serverAboutToStart);
     }
 
-    @Override
-    public void tryFetchTagsHack() {}
-
-    private void imcEnqueue(final InterModEnqueueEvent event) {
+    private void imcPublish(final InterModEnqueueEvent event) {
     }
 
-    private void imcProcess(final InterModProcessEvent event) {
+    private void imcSubscribe(final InterModProcessEvent event) {
     }
 
     private void serverAboutToStart(final FMLServerAboutToStartEvent event) {
@@ -64,14 +58,9 @@ public class NetworkTargetProxy implements IProxy {
 
     public static class Client extends NetworkTargetProxy {
         public Client() {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishEvent);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishClientEvent);
 
             MinecraftForge.EVENT_BUS.addListener(this::setFog);
-        }
-
-        @Override
-        public void tryFetchTagsHack() {
-            TagRegistryManager.fetchTags();
         }
 
         public void setFog(final EntityViewRenderEvent.FogColors fog) {
@@ -93,6 +82,7 @@ public class NetworkTargetProxy implements IProxy {
 
     public static class Server extends NetworkTargetProxy {
         public Server() {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishServerEvent);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
         }
 

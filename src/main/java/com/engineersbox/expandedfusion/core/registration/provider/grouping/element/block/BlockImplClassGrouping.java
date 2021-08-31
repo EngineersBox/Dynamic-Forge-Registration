@@ -13,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
@@ -65,6 +67,22 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             }
             addIfNotExists(annotation.name(), c);
         }
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            addContainerScreens();
+        }
+        final Map<String, List<Class<? extends Annotation>>> missing = new HashMap<>();
+        classGroupings.forEach((String name, BlockImplGrouping group) -> {
+            List<Class<? extends Annotation>> requirements = group.hasRequirements(group.getBlockProviderAnnotation().type());
+            if (!requirements.isEmpty()) {
+                missing.put(name, requirements);
+            }
+        });
+        if (!missing.isEmpty()) {
+            throw new MisconfiguredProviderException(missing);
+        }
+    }
+
+    private void addContainerScreens() {
         final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = super.filterClassesBySuperType(
                 ContainerScreen.class,
                 this.reflections.getTypesAnnotatedWith(ScreenProvider.class)
@@ -75,16 +93,6 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
                 continue;
             }
             addIfNotExists(annotation.name(), c);
-        }
-        final Map<String, List<Class<? extends Annotation>>> missing = new HashMap<>();
-        classGroupings.forEach((String name, BlockImplGrouping group) -> {
-            List<Class<? extends Annotation>> requirements = group.hasRequirements(group.getBlockProviderAnnotation().type());
-            if (requirements.size() > 0) {
-                missing.put(name, requirements);
-            }
-        });
-        if (!missing.isEmpty()) {
-            throw new MisconfiguredProviderException(missing);
         }
     }
 

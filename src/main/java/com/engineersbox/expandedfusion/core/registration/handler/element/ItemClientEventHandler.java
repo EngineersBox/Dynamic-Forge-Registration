@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.handler.element;
 
+import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.util.ColorGetter;
 import com.engineersbox.expandedfusion.elements.item.CanisterItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
@@ -7,15 +8,13 @@ import com.engineersbox.expandedfusion.core.registration.registryObject.element.
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraft.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 
+@ClientEventHandler
 public class ItemClientEventHandler implements EventSubscriptionHandler {
 
     @SuppressWarnings("unchecked,unused")
     @Subscriber
-    @OnlyIn(Dist.CLIENT)
     public static void registerItemColors(final ColorHandlerEvent.Item event) {
         final ItemRegistryObject<? extends Item> potentialCanister = RegistryObjectContext.getItemRegistryObject(CanisterItem.PROVIDER_NAME);
         if (!(potentialCanister.asItem() instanceof CanisterItem)) {

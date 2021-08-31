@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.handler.element;
 
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
+import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
 import com.engineersbox.expandedfusion.register.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
@@ -17,8 +18,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.reflections.ReflectionUtils;
 
@@ -27,10 +26,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
 
+@ClientEventHandler
 public class BlockClientEventHandler implements EventSubscriptionHandler {
 
     @SuppressWarnings("unchecked, unused")
-    @OnlyIn(Dist.CLIENT)
     @Subscriber
     public <T extends Container, U extends Screen & IHasContainer<T>> void registerScreens(final FMLClientSetupEvent event) {
         RegistryObjectContext.getScreensToBeRegistered().forEach((final String name, final BlockImplGrouping group) -> {
@@ -81,7 +80,6 @@ public class BlockClientEventHandler implements EventSubscriptionHandler {
     }
 
     @SuppressWarnings("unused")
-    @OnlyIn(Dist.CLIENT)
     @Subscriber
     public static void registerRenderTypes(final FMLClientSetupEvent event) {
         Registration.getBlocks(AbstractMachineBlock.class).forEach(block ->

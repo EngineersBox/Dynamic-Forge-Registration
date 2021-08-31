@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
                 @PatternLine("INI"),
         },
         keys = {
-                @PatternKey(symbol = 'I', ingredient = "iron_ingot", type = IngredientType.ITEM),
+                @PatternKey(symbol = 'I', ingredient = "ingots/iron", type = IngredientType.TAG),
                 @PatternKey(symbol = 'N', ingredient = NiobiumTitaniumCoil.PROVIDER_NAME, type = IngredientType.ITEM),
                 @PatternKey(symbol = 'S', ingredient = CopperBerylliumBondedShielding.PROVIDER_NAME, type = IngredientType.ITEM)
         },

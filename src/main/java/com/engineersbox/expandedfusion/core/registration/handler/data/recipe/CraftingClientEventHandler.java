@@ -40,7 +40,7 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
     @Subscriber
     public void registerRecipes(final GatherDataEvent gatherEvent) {
-        gatherEvent.getGenerator().addProvider(new RecipeProvider(gatherEvent.getGenerator()){
+        gatherEvent.getGenerator().addProvider(new RecipeProvider(gatherEvent.getGenerator()) {
             @Override
             protected void registerRecipes(final Consumer<IFinishedRecipe> consumer) {
                 RegistryObjectContext.getCraftingRecipesToBeRegistered().forEach((final String name, final CraftingRecipeImplGrouping group) -> {
