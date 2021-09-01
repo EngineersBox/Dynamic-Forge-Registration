@@ -5,8 +5,8 @@ Much of this is in the form of element registration for blocks, items, fluids, e
 
 This core mod aims at removing all of that bloat from your mod and instead doing all
 the registration dynamically for you. To avoid verbose inheritance overheads, this is
-annotation driven and full configurable for you to integrate with however your preferred
-code organization works.
+annotation driven and fully configurable for you to integrate with your preferred
+code organization.
 
 ## Annotations
 
