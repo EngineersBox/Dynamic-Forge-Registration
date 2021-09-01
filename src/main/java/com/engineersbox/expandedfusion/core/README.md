@@ -10,6 +10,36 @@ code organization.
 
 ## Annotations
 
+### Providers
+
+| Annotation               | Description                                                                                                                                                                                                                                                         | Primary |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `@BlockProvider`         | Declaration of a block extending from `net.minecraft.block.Block`                                                                                                                                                                                                   | `true`  |
+| `@TileEntityProvider`    | Declaration of a tile entity from `net.minecraft.tileentity.TileEntity` associated with a `@BlockProvider` annotated block                                                                                                                                          | `true`  |
+| `@ContainerProvider`     | Declaration of a container from `net.minecraft.inventory.container.Conatiner` associated with a `@BlockProvider` annotated block                                                                                                                                    | `true`  |
+| `@ScreenProvider`        | Declaration of a container from `net.minecraft.client.gui.screen.Screen` associated with a `@BlockProvider` annotated block                                                                                                                                         | `true`  |
+| `@BaseBlockProperties`   | Used in the `properties` field of a `@BlockProvider` annotation to dynamically specify block properties to pass to a suitable constructor.<br>`@BlockProvider` annotated class must be able to accept an instance of `net.minecraft.block.AbstractBlock.Properties` | `false` |
+| `@ItemProvider`          | Declaration of a container from `net.minecraft.client.gui.screen.Screen` associated with a `@BlockProvider` annotated block                                                                                                                                         | `true`  |
+| `@FluidProvider`         | Declaration of a flowing or static fluid extending from `net.minecraftforge.fluid.ForgeFlowingFluid.Flowing` or `net.minecraftforge.fluid.ForgeFlowingFluid.static`                                                                                                 | `true`  |
+| `@FluidBucketProperties` | Used in the `bucket` field of a `@FluidProvider` annotation to provide bucket item attributes for an automatically generated bucket item.                                                                                                                           | `false` |
+
+### Events
+
+| Annotation            | Description                                                                                                                                                                                                                                                                                      |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `@ClientEventHandler` | Marks a class implementing `EventSubscriptionHandler` to accept events from the client side event bus as instances of `ModLifecylceEvent`                                                                                                                                                        |
+| `@ServerEventHandler` | Marks a class implementing `EventSubscriptionHandler` to accept events from the server side event bus as instances of `ServerLifecycleEvent`                                                                                                                                                     |
+| `@CommonEventHandler` | Marks a class implementing `EventSubscriptionHandler` to accept events from either client or server side as instances of `ModLifecycleEvent` or `GatherDataEvent`                                                                                                                                |
+| `@Subscriber`         | Marks a method within a class annotated with `@ClientEventHandler`, `@ServerEventHandler` or `@CommonEventHandler`<br>to subscribe to events published via the respective side. An annotated method should have a single parameter taking an instance of `net.minecraftforge.eventbus.api.Event` |
+
+### Meta
+
+| Annotation      | Description                                                                                                                                                                                                                                                 |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `@LangMetadata` | Describes the human readable version of the registry element to generate a mapping for in the `en_us.json` language file.<br>This should only be used on classes annotated with `@BlockProvider`, `@ContainerProvider`, `@ItemProvider` or `@FluidProvider` |
+
+## Providers
+
 TODO
 
 ### Blocks
