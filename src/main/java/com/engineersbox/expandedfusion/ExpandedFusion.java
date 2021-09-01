@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(ExpandedFusion.MOD_ID)
 public class ExpandedFusion {
     public static final String MOD_ID = "expandedfusion";

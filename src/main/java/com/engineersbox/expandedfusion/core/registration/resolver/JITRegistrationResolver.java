@@ -8,6 +8,7 @@ import com.engineersbox.expandedfusion.core.registration.exception.resolver.Reso
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.handler.data.recipe.CraftingClientEventHandler;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.CraftingRecipeRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.RecipeSerializerRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.element.fluid.FluidProviderRegistrationResolver;
@@ -23,7 +24,10 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
+import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -40,7 +44,6 @@ import org.reflections.util.ConfigurationBuilder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Singleton
@@ -69,12 +72,12 @@ public class JITRegistrationResolver extends JITResolver {
             ImmutablePair.of(ResolverType.BLOCK, BlockProviderRegistrationResolver.class),
             ImmutablePair.of(ResolverType.ITEM, ItemProviderRegistrationResolver.class),
             ImmutablePair.of(ResolverType.FLUID, FluidProviderRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.RECIPE_SERIALIZER, RecipeSerializerRegistrationResolver.class)
+            ImmutablePair.of(ResolverType.RECIPE_SERIALIZER, RecipeSerializerRegistrationResolver.class),
+            ImmutablePair.of(ResolverType.RECIPE_INLINE_DECLARATION, CraftingRecipeRegistrationResolver.class)
     );
 
     @Override
     public void instantiateResolvers() {
-        LOGGER.debug("Instantiated BlockProviderRegistrationResolver");
         resolverPairings.forEach((final Pair<ResolverType, Class<? extends RegistrationResolver>> resolverPair) -> {
             if (this.resolvers.containsKey(resolverPair.getLeft())) {
                 LOGGER.debug(
@@ -86,6 +89,7 @@ public class JITRegistrationResolver extends JITResolver {
                         resolverPair.getLeft(),
                         this.injector.getInstance(resolverPair.getRight())
                 );
+                LOGGER.debug("Instantiated {}", resolverPair.getRight().getName());
             }
         });
     }
@@ -105,8 +109,8 @@ public class JITRegistrationResolver extends JITResolver {
     @Override
     public void registerAll() {
         // TODO: Uncomment this after other ResolverTypes have been implemented
-        // Stream.of(ResolverType.values())
-        Stream.of(ResolverType.BLOCK, ResolverType.ITEM, ResolverType.FLUID)
+//         Stream.of(ResolverType.values())
+        Stream.of(ResolverType.BLOCK, ResolverType.ITEM, ResolverType.FLUID, ResolverType.RECIPE_SERIALIZER, ResolverType.RECIPE_INLINE_DECLARATION)
                 .forEach(this::registerHandledElementsOfResolver);
     }
 
@@ -128,12 +132,17 @@ public class JITRegistrationResolver extends JITResolver {
     }
 
     @Override
+    public void publishGatherDataEvent(final GatherDataEvent event) {
+        this.commonEventBroker.publishEvent(event);
+    }
+
+    @Override
     public void publishClientEvent(final ModLifecycleEvent event) {
         this.clientEventBroker.publishEvent(event);
     }
 
     @Override
-    public void publishServerEvent(final ModLifecycleEvent event) {
+    public void publishServerEvent(final ServerLifecycleEvent event) {
         this.serverEventBroker.publishEvent(event);
     }
 

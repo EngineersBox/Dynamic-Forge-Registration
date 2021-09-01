@@ -35,7 +35,7 @@ public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<Crafting
             if ((itemProvider == null) == (blockProvider == null)) {
                 continue;
             }
-            final RecipeProvider[] recipeProviders = c.getAnnotationsByType(RecipeProvider.class);
+            final CraftingRecipe[] recipeProviders = c.getAnnotationsByType(CraftingRecipe.class);
             if (recipeProviders.length == 0) {
                 continue;
             }

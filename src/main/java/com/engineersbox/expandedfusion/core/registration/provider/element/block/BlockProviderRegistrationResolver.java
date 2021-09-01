@@ -93,7 +93,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
         if (blockProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "Item implementation %s has no plausible annotation",
+                    "Block implementation %s has no plausible annotation",
                     name
             ));
         }
@@ -107,7 +107,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final Class<? extends Block> blockImpl = group.getBlock();
         if (blockImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "No item implementation could be found with associated annotation: %s",
+                    "No block implementation could be found with associated annotation: %s",
                     name
             ));
         }
@@ -115,7 +115,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final TileEntityProvider tileEntityProvider = group.getTileEntityProviderAnnotation();
         if (tileEntityProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "Item implementation %s has no plausible annotation",
+                    "Tile entity implementation %s has no plausible annotation",
                     name
             ));
         }
@@ -129,7 +129,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final Class<? extends TileEntity> tileEntityImpl = group.getTileEntity();
         if (tileEntityImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "No item implementation could be found with associated annotation: %s",
+                    "No tile entity implementation could be found with associated annotation: %s",
                     name
             ));
         }
@@ -137,7 +137,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final ContainerProvider containerProvider = group.getContainerProviderAnnotation();
         if (containerProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "Item implementation %s has no plausible annotation",
+                    "Container implementation %s has no plausible annotation",
                     name
             ));
         }
@@ -151,7 +151,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final Class<? extends Container> containerImpl = group.getContainer();
         if (containerImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "No item implementation could be found with associated annotation: %s",
+                    "No container implementation could be found with associated annotation: %s",
                     name
             ));
         }

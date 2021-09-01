@@ -117,7 +117,7 @@ public class BlockImplGrouping implements ImplGrouping {
                     }
                     continue;
                 case SCREEN:
-                    if (this.screen == null && FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.dist == Dist.CLIENT && this.screen == null) {
                         missing.add(r.toAnnotationEquivalent());
                     }
                     continue;

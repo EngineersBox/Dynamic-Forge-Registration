@@ -6,4 +6,5 @@ public @interface FluidBucketProperties {
     String name();
     boolean canPlace() default true;
     LangMetadata[] lang() default {};
+    String itemGroup() default ""; // TODO: Handle this
 }

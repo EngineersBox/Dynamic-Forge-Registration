@@ -7,7 +7,10 @@ import com.engineersbox.expandedfusion.core.registration.annotation.recipe.craft
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.PatternLine;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.UnlockCriterion;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
+import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryObjectRetrievalException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
 import net.minecraft.advancements.criterion.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -43,8 +46,10 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
         gatherEvent.getGenerator().addProvider(new RecipeProvider(gatherEvent.getGenerator()) {
             @Override
             protected void registerRecipes(final Consumer<IFinishedRecipe> consumer) {
-                RegistryObjectContext.getCraftingRecipesToBeRegistered().forEach((final String name, final CraftingRecipeImplGrouping group) -> {
-                    Arrays.stream(group.getCraftingRecipeAnnotations())
+                Map<String, CraftingRecipeImplGrouping> toRegister = RegistryObjectContext.getCraftingRecipesToBeRegistered();
+                toRegister.forEach((final String name, final CraftingRecipeImplGrouping group) -> {
+                    final CraftingRecipe[] recipes = group.getCraftingRecipeAnnotations();
+                    Arrays.stream(recipes)
                             .map((final CraftingRecipe recipe) -> registerRecipe(name, group, recipe))
                             .forEach((final ShapedRecipeBuilder builder) -> builder.build(consumer));
                 });
@@ -79,13 +84,13 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
     private ShapedRecipeBuilder addAdvancementCriterion(final ShapedRecipeBuilder builder,
                                                         final UnlockCriterion criterion) {
         switch (criterion.requirement()) {
-            case HAS_ITEM_TAG:
+            case HAS_TAG:
                 final Optional<ITag.INamedTag<Item>> tagMatch = getKeyAsINamedTag(criterion.ingredient());
                 if (tagMatch.isPresent()) {
                     return builder.addCriterion(criterion.key(), hasItem(tagMatch.get()));
                 }
                 throw new RuntimeException("No ingredient could be found for tag " + criterion.ingredient()); // TODO: Implement an exception for this
-            case HAS_ITEM_ITEM:
+            case HAS_ITEM:
                 final Optional<IItemProvider> itemProvider = getItemProvider(criterion.ingredient());
                 if (itemProvider.isPresent()) {
                     return builder.addCriterion(criterion.key(), hasItem(itemProvider.get()));
@@ -203,8 +208,24 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
     private Optional<IItemProvider> getItemProvider(final String key) {
         final Stream<Field> mergedStream = createdMergedFieldStream(key, Blocks.class, Items.class);
-        // TODO: Add stream for block and items created in this project to mergedStream
-        return filterFields(mergedStream);
+        final Optional<IItemProvider> potentialProviderFromPure = filterFields(mergedStream);
+        if (potentialProviderFromPure.isPresent()) {
+            return potentialProviderFromPure;
+        }
+        LOGGER.trace("Pure provider from {} and {} could not be found, attempting retrieval from deferred registries.", Blocks.class.getName(), Items.class.getName());
+        try {
+            final ItemRegistryObject<? extends Item> itemRegistryObject = RegistryObjectContext.getItemRegistryObject(key);
+            return Optional.of(itemRegistryObject.asItem());
+        } catch (final RegistryObjectRetrievalException e) {
+            LOGGER.trace(e);
+        }
+        try {
+            final BlockRegistryObject<? extends Block> blockRegistryObject = RegistryObjectContext.getBlockRegistryObject(key);
+            return Optional.of(blockRegistryObject.asItem());
+        } catch (final RegistryObjectRetrievalException e) {
+            LOGGER.trace(e);
+        }
+        return Optional.empty();
     }
 
     private Stream<Field> createdMergedFieldStream(final String key, final Class<?> ...classes) {

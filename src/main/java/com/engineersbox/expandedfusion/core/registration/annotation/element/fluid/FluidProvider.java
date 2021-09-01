@@ -14,4 +14,5 @@ public @interface FluidProvider {
     String name();
     FluidBucketProperties[] bucket() default {};
     boolean gaseous() default false;
+    String itemGroup() default "";  // TODO: Handle this
 }

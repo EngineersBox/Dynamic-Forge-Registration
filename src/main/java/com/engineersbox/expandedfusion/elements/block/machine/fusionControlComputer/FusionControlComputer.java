@@ -41,7 +41,7 @@ import javax.annotation.Nullable;
         criteria = @UnlockCriterion(
                 key = "has_ntc",
                 ingredient = NiobiumTitaniumCoil.PROVIDER_NAME,
-                requirement = AccessCriterion.HAS_ITEM_ITEM
+                requirement = AccessCriterion.HAS_ITEM
         )
 )
 @BlockProvider(

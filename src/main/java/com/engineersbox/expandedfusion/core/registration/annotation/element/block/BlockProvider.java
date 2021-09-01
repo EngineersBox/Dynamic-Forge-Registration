@@ -16,4 +16,5 @@ public @interface BlockProvider {
     BlockImplType type();
     boolean noItem() default false; // TODO: Handle this is provider registration
     BaseBlockProperties[] properties() default {};
+    String itemGroup() default "";  // TODO: Handle this
 }

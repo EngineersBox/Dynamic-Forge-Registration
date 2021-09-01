@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.core.registration.exception.handler.Subsc
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +37,7 @@ public class EventBroker {
                     "Invalid EventSubscriptionHandler [{}] in class [{}]. Handlers annotated with @Subscriber must take 1 argument extending the base class {}",
                     method.getName(),
                     consumerClass.getName(),
-                    ModLifecycleEvent.class.getName()
+                    Event.class.getName()
                 );
                 continue;
             }
@@ -54,7 +55,7 @@ public class EventBroker {
         }
     }
 
-    public <T extends ModLifecycleEvent> void publishEvent(final T event) {
+    public <T extends Event> void publishEvent(final T event) {
         List<SubscriberInfo<? super EventSubscriptionHandler>> subscriberInfos = consumers.get(event.getClass());
         if (subscriberInfos == null) {
             LOGGER.trace("No subscribers available to accept event [{}]", event.getClass().getName());

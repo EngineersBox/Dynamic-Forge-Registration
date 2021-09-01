@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,9 +34,7 @@ public class NetworkTargetProxy implements IProxy {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcPublish);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcSubscribe);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishCommonEvent);
-
-        // Add listeners for registry events
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Fluid.class, ModFluids::registerFluids);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishGatherDataEvent);
 
         // Other events
         MinecraftForge.EVENT_BUS.addListener(this::serverAboutToStart);

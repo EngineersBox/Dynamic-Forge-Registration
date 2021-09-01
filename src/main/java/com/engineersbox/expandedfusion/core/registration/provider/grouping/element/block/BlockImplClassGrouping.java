@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.reflections.Reflections;
 
@@ -68,7 +69,17 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             addIfNotExists(annotation.name(), c);
         }
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            addContainerScreens();
+            final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = super.filterClassesBySuperType(
+                    ContainerScreen.class,
+                    this.reflections.getTypesAnnotatedWith(ScreenProvider.class)
+            );
+            for (final Class<? extends ContainerScreen> c : screenProviderAnnotatedClasses) {
+                final ScreenProvider annotation = c.getAnnotation(ScreenProvider.class);
+                if (annotation == null) {
+                    continue;
+                }
+                addIfNotExists(annotation.name(), c);
+            }
         }
         final Map<String, List<Class<? extends Annotation>>> missing = new HashMap<>();
         classGroupings.forEach((String name, BlockImplGrouping group) -> {
@@ -79,20 +90,6 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
         });
         if (!missing.isEmpty()) {
             throw new MisconfiguredProviderException(missing);
-        }
-    }
-
-    private void addContainerScreens() {
-        final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = super.filterClassesBySuperType(
-                ContainerScreen.class,
-                this.reflections.getTypesAnnotatedWith(ScreenProvider.class)
-        );
-        for (final Class<? extends ContainerScreen> c : screenProviderAnnotatedClasses) {
-            final ScreenProvider annotation = c.getAnnotation(ScreenProvider.class);
-            if (annotation == null) {
-                continue;
-            }
-            addIfNotExists(annotation.name(), c);
         }
     }
 
@@ -109,7 +106,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             blockImplGrouping.setTileEntity((Class<? extends TileEntity>) toAdd);
         } else if (Container.class.isAssignableFrom(toAdd)) {
             blockImplGrouping.setContainer((Class<? extends Container>) toAdd);
-        } else if (ContainerScreen.class.isAssignableFrom(toAdd)) {
+        } else if (FMLEnvironment.dist == Dist.CLIENT && ContainerScreen.class.isAssignableFrom(toAdd)) {
             blockImplGrouping.setScreen((Class<? extends ContainerScreen<? extends Container>>) toAdd);
         }
         this.classGroupings.put(name, blockImplGrouping);
