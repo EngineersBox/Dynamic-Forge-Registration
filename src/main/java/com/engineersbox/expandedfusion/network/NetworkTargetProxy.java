@@ -1,40 +1,36 @@
 package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.register.*;
-import com.engineersbox.expandedfusion.core.registration.handler.element.BlockClientEventHandler;
-import com.engineersbox.expandedfusion.core.registration.handler.element.ItemClientEventHandler;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITRegistrationResolver;
+import com.engineersbox.expandedfusion.register.Registration;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tags.TagRegistryManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class NetworkTargetProxy implements IProxy {
     private MinecraftServer server = null;
-    private static final JITRegistrationResolver REGISTRATION_RESOLVER = new JITRegistrationResolver.Builder()
-            .withLogger(ExpandedFusion.LOGGER)
-            .withPackageName("com.engineersbox.expandedfusion")
-            .withModId(ExpandedFusion.MOD_ID)
-            .build();
+    private final JITRegistrationResolver registrationResolver;
 
     NetworkTargetProxy() {
-        Registration.register(REGISTRATION_RESOLVER);
+        this.registrationResolver = new JITRegistrationResolver.Builder()
+                .withLogger(ExpandedFusion.LOGGER)
+                .withPackageName("com.engineersbox.expandedfusion")
+                .withModId(ExpandedFusion.MOD_ID)
+                .build();
+        Registration.register(registrationResolver);
 
         // Add listeners for common events
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcPublish);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcSubscribe);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishCommonEvent);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishGatherDataEvent);
 
         // Other events
         MinecraftForge.EVENT_BUS.addListener(this::serverAboutToStart);
@@ -57,7 +53,6 @@ public class NetworkTargetProxy implements IProxy {
 
     public static class Client extends NetworkTargetProxy {
         public Client() {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishClientEvent);
 
             MinecraftForge.EVENT_BUS.addListener(this::setFog);
         }
@@ -81,7 +76,6 @@ public class NetworkTargetProxy implements IProxy {
 
     public static class Server extends NetworkTargetProxy {
         public Server() {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(REGISTRATION_RESOLVER::publishServerEvent);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
         }
 

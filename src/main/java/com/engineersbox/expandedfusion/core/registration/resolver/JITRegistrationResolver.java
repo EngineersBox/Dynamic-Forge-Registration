@@ -1,8 +1,12 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
+import com.engineersbox.expandedfusion.core.event.annotation.DataEventHandler;
+import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
 import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.CommonEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.ServerEventHandler;
+import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
+import com.engineersbox.expandedfusion.core.event.manager.Manager;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
@@ -24,10 +28,12 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -52,20 +58,15 @@ public class JITRegistrationResolver extends JITResolver {
     private static final Logger LOGGER = LogManager.getLogger(JITRegistrationResolver.class.getName());
 
     private final Injector injector;
-    private final EventBroker commonEventBroker;
-    private final EventBroker clientEventBroker;
-    private final EventBroker serverEventBroker;
+    private final Manager<DistEvent> brokerManager;
     private final EnumMap<ResolverType, ? super RegistrationResolver> resolvers;
 
     JITRegistrationResolver(final Injector injector,
-                            final EventBroker commonEventBroker,
-                            final EventBroker clientEventBroker,
-                            final EventBroker serverEventBroker) {
+                            final Manager<DistEvent> brokerManager) {
         this.injector = injector;
-        this.commonEventBroker = commonEventBroker;
-        this.clientEventBroker = clientEventBroker;
-        this.serverEventBroker = serverEventBroker;
+        this.brokerManager = brokerManager;
         this.resolvers = new EnumMap<>(ResolverType.class);
+        this.setupEventPublishing();
     }
 
     private static final List<Pair<ResolverType, Class<? extends RegistrationResolver>>> resolverPairings = ImmutableList.of(
@@ -102,7 +103,6 @@ public class JITRegistrationResolver extends JITResolver {
         if (resolver == null) {
             throw new UninstantiatedElementResolver(resolverType);
         }
-        LOGGER.debug("Invoked registration for {} resolver", resolverType);
         resolver.registerAll();
     }
 
@@ -125,25 +125,34 @@ public class JITRegistrationResolver extends JITResolver {
         return null;
     }
 
+    private void setupEventPublishing() {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishClientEvent);
+        } else if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishServerEvent);
+        }
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishCommonEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishGatherDataEvent);
+    }
 
     @Override
     public void publishCommonEvent(final ModLifecycleEvent event) {
-        this.commonEventBroker.publishEvent(event);
+        this.brokerManager.publishEvent(DistEvent.COMMON, event);
     }
 
     @Override
     public void publishGatherDataEvent(final GatherDataEvent event) {
-        this.commonEventBroker.publishEvent(event);
+        this.brokerManager.publishEvent(DistEvent.DATA, event);
     }
 
     @Override
     public void publishClientEvent(final ModLifecycleEvent event) {
-        this.clientEventBroker.publishEvent(event);
+        this.brokerManager.publishEvent(DistEvent.CLIENT, event);
     }
 
     @Override
     public void publishServerEvent(final ServerLifecycleEvent event) {
-        this.serverEventBroker.publishEvent(event);
+        this.brokerManager.publishEvent(DistEvent.SERVER, event);
     }
 
     public static class Builder {
@@ -212,11 +221,30 @@ public class JITRegistrationResolver extends JITResolver {
             return eventBroker;
         }
 
+        private BrokerManager<DistEvent> createBrokerManager() {
+            final EventBroker dataEventBroker = createBrokerAndReflectivelyAddHandlers(DataEventHandler.class);
+            addSubscriptionHandler(dataEventBroker, CraftingClientEventHandler.class);
+            final BrokerManager<DistEvent> eventBrokerManager = new BrokerManager<>(DistEvent.class);
+            eventBrokerManager.putMapping(
+                    DistEvent.COMMON,
+                    createBrokerAndReflectivelyAddHandlers(CommonEventHandler.class)
+            );
+            eventBrokerManager.putMapping(
+                    DistEvent.CLIENT,
+                    createBrokerAndReflectivelyAddHandlers(ClientEventHandler.class)
+            );
+            eventBrokerManager.putMapping(
+                    DistEvent.SERVER,
+                    createBrokerAndReflectivelyAddHandlers(ServerEventHandler.class)
+            );
+            eventBrokerManager.putMapping(
+                    DistEvent.DATA,
+                    dataEventBroker
+            );
+            return eventBrokerManager;
+        }
+
         public JITRegistrationResolver build() {
-            final EventBroker clientEventBroker = createBrokerAndReflectivelyAddHandlers(ClientEventHandler.class);
-            final EventBroker serverEventBroker = createBrokerAndReflectivelyAddHandlers(ServerEventHandler.class);
-            final EventBroker commonEventBroker = createBrokerAndReflectivelyAddHandlers(CommonEventHandler.class);
-            addSubscriptionHandler(commonEventBroker, CraftingClientEventHandler.class);
             return new JITRegistrationResolver(
                 Guice.createInjector(
                     new ProviderModule(),
@@ -237,9 +265,7 @@ public class JITRegistrationResolver extends JITResolver {
                         }
                     }
                 ),
-                commonEventBroker,
-                clientEventBroker,
-                serverEventBroker
+                createBrokerManager()
             );
         }
     }
