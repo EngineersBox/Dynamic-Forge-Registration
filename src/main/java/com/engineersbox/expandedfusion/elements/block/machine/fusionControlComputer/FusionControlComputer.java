@@ -46,7 +46,7 @@ import javax.annotation.Nullable;
 )
 @BlockProvider(
         name = FusionControlComputer.PROVIDER_NAME,
-        type = BlockImplType.TILE_ENTITY
+        type = BlockImplType.INTERACTIVE_TILE_ENTITY
 )
 public class FusionControlComputer extends AbstractMachineBlock {
     public static final String PROVIDER_NAME = "fusion_control_computer";

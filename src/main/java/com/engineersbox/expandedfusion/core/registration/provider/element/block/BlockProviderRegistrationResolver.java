@@ -16,14 +16,13 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplC
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
-import org.reflections.ReflectionUtils;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -61,7 +60,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
         if (blockProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
-                    "Item implementation %s has no plausible annotation",
+                    "Block implementation %s has no plausible annotation",
                     name
             ));
         }
@@ -72,24 +71,48 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                     blockProvider.name()
             ));
         }
-        final Class<? extends Block> blockImpl = group.getBlock();
-        if (blockImpl == null) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "No item implementation could be found with associated annotation: %s",
-                    name
-            ));
-        }
         switch (blockProvider.type()) {
             case BASE:
-                registerBlock(name, blockProvider, blockImpl);
+                checkedBlockRegistration(name, group);
                 return;
-            case TILE_ENTITY:
+            case INTERACTIVE_TILE_ENTITY:
                 registerTileEntity(name, group);
+                return;
+            case RENDERED_TILE_ENTITY:
+                registerRenderedTileEntity(name, group);
         }
     }
 
-    private void registerTileEntity(@Nonnull final String name,
-                                    @Nonnull final BlockImplGrouping group) {
+    private void registerRenderedTileEntity(@Nonnull final String name,
+                                            @Nonnull final BlockImplGrouping group) {
+        checkedBlockRegistration(name, group);
+        checkedTileEntityRegistration(name, group);
+        final RendererProvider rendererProvider = group.getRendererProviderAnnotation();
+        if (rendererProvider == null) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Tile entity renderer implementation %s has no plausible annotation",
+                    name
+            ));
+        }
+        if (!rendererProvider.name().equals(name)) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "Mismatched provider element name against annotation: %s != %s",
+                    name,
+                    rendererProvider.name()
+            ));
+        }
+        final Class<? extends TileEntityRenderer<? extends TileEntity>> rendererImpl = group.getRenderer();
+        if (rendererImpl == null) {
+            throw new ProviderElementRegistrationException(String.format(
+                    "No tile entity renderer implementation could be found with associated annotation: %s",
+                    name
+            ));
+        }
+        this.registryProvider.renderersToBeRegistered.put(name, group);
+    }
+
+    private void checkedBlockRegistration(@Nonnull final String name,
+                                          @Nonnull final BlockImplGrouping group) {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
         if (blockProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -112,6 +135,10 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             ));
         }
         registerBlock(name, blockProvider, blockImpl);
+    }
+
+    private void checkedTileEntityRegistration(@Nonnull final String name,
+                                               @Nonnull final BlockImplGrouping group) {
         final TileEntityProvider tileEntityProvider = group.getTileEntityProviderAnnotation();
         if (tileEntityProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -133,7 +160,13 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                     name
             ));
         }
-        registerTileEntity(name, tileEntityImpl);
+        registerTileEntityProvider(name, tileEntityImpl);
+    }
+
+    private void registerTileEntity(@Nonnull final String name,
+                                    @Nonnull final BlockImplGrouping group) {
+        checkedBlockRegistration(name, group);
+        checkedTileEntityRegistration(name, group);
         final ContainerProvider containerProvider = group.getContainerProviderAnnotation();
         if (containerProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -157,6 +190,10 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         }
         registerContainer(name, containerImpl);
         this.registryProvider.screensToBeRegistered.put(name, group);
+        final RendererProvider rendererProvider = group.getRendererProviderAnnotation();
+        if (rendererProvider != null) {
+            this.registryProvider.renderersToBeRegistered.put(name, group);
+        }
     }
 
     private void registerContainer(@Nonnull final String name,
@@ -186,8 +223,8 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         }
     }
 
-    private void registerTileEntity(@Nonnull final String name,
-                                    @Nonnull final Class<? extends TileEntity> tileEntityImpl) {
+    private void registerTileEntityProvider(@Nonnull final String name,
+                                            @Nonnull final Class<? extends TileEntity> tileEntityImpl) {
         final BlockRegistryObject<? extends Block> blockRegistryObject = this.registryProvider.blocks.get(name);
         if (blockRegistryObject == null) {
             throw new ProviderElementRegistrationException(String.format(

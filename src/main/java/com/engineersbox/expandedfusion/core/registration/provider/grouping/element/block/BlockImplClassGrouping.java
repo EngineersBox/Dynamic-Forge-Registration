@@ -1,9 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ScreenProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.exception.MisconfiguredProviderException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
@@ -11,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -81,6 +79,19 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
                 addIfNotExists(annotation.name(), c);
             }
         }
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            final Set<Class<? extends TileEntityRenderer>> rendererProviderAnnotatedClasses = super.filterClassesBySuperType(
+                    TileEntityRenderer.class,
+                    this.reflections.getTypesAnnotatedWith(RendererProvider.class)
+            );
+            for (final Class<? extends TileEntityRenderer> c : rendererProviderAnnotatedClasses) {
+                final RendererProvider annotation = c.getAnnotation(RendererProvider.class);
+                if (annotation == null) {
+                    continue;
+                }
+                addIfNotExists(annotation.name(), c);
+            }
+        }
         final Map<String, List<Class<? extends Annotation>>> missing = new HashMap<>();
         classGroupings.forEach((String name, BlockImplGrouping group) -> {
             List<Class<? extends Annotation>> requirements = group.hasRequirements(group.getBlockProviderAnnotation().type());
@@ -108,6 +119,8 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             blockImplGrouping.setContainer((Class<? extends Container>) toAdd);
         } else if (FMLEnvironment.dist == Dist.CLIENT && ContainerScreen.class.isAssignableFrom(toAdd)) {
             blockImplGrouping.setScreen((Class<? extends ContainerScreen<? extends Container>>) toAdd);
+        } else if (FMLEnvironment.dist == Dist.CLIENT && TileEntityRenderer.class.isAssignableFrom(toAdd)) {
+            blockImplGrouping.setRenderer((Class<? extends TileEntityRenderer<? extends TileEntity>>) toAdd);
         }
         this.classGroupings.put(name, blockImplGrouping);
     }

@@ -73,7 +73,7 @@ public class ProviderAnnotationProcessor extends AbstractProcessor {
             case BASE:
                 this.handleBaseBlockProvider(annotatedElement, blockProvider);
                 return;
-            case TILE_ENTITY:
+            case INTERACTIVE_TILE_ENTITY:
                 this.handleTileEntityBlockProvider(annotatedElement);
         }
     }

@@ -25,6 +25,7 @@ public class RegistryProvider {
     public final Map<String, TileEntityRegistryObject<? extends TileEntity>> tileEntities = new HashMap<>();
     public final Map<String, ContainerRegistryObject<? extends Container>> containers = new HashMap<>();
     public final Map<String, BlockImplGrouping> screensToBeRegistered = new HashMap<>();
+    public final Map<String, BlockImplGrouping> renderersToBeRegistered = new HashMap<>();
     public final Map<String, FluidRegistryObject<? extends Fluid>> sourceFluids = new HashMap<>();
     public final Map<String, FluidRegistryObject<? extends FlowingFluid>> flowingFluids = new HashMap<>();
     public final Map<String, ItemRegistryObject<? extends Item>> items = new HashMap<>();

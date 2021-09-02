@@ -1,26 +1,40 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element.block;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ScreenProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.TileEntityProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
 
 import java.lang.annotation.Annotation;
 
 public enum BlockImplType {
-    BASE(new Requirement[]{Requirement.BLOCK}),
-    TILE_ENTITY(new Requirement[]{
-        Requirement.BLOCK,
-        Requirement.TILE_ENTITY,
-        Requirement.CONTAINER,
-        Requirement.SCREEN
-    });
+    BASE(
+            new Requirement[]{Requirement.BLOCK},
+            new Requirement[]{}
+    ),
+    INTERACTIVE_TILE_ENTITY(
+            new Requirement[]{
+                    Requirement.BLOCK,
+                    Requirement.TILE_ENTITY,
+                    Requirement.CONTAINER,
+                    Requirement.SCREEN
+            },
+            new Requirement[]{
+                    Requirement.RENDERER
+            }
+    ),
+    RENDERED_TILE_ENTITY(
+            new Requirement[]{
+                    Requirement.BLOCK,
+                    Requirement.TILE_ENTITY,
+                    Requirement.RENDERER
+            },
+            new Requirement[]{}
+    );
 
     public enum Requirement {
         BLOCK,
         TILE_ENTITY,
         CONTAINER,
-        SCREEN;
+        SCREEN,
+        RENDERER;
 
         public Class<? extends Annotation> toAnnotationEquivalent() {
             switch (this) {
@@ -32,15 +46,19 @@ public enum BlockImplType {
                     return ContainerProvider.class;
                 case SCREEN:
                     return ScreenProvider.class;
+                case RENDERER:
+                    return RendererProvider.class;
             }
             return null;
         }
     }
 
-    public final Requirement[] requirements;
+    public final Requirement[] required;
+    public final Requirement[] optional;
 
-    BlockImplType(final Requirement[] requirements) {
-        this.requirements = requirements;
+    BlockImplType(final Requirement[] required, final Requirement[] optional) {
+        this.required = required;
+        this.optional = optional;
     }
 
 }

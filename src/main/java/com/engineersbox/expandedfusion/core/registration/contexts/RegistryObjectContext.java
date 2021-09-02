@@ -55,6 +55,10 @@ public abstract class RegistryObjectContext {
         return registryProvider.screensToBeRegistered;
     }
 
+    public static Map<String, BlockImplGrouping> getRenderersToBeRegistered() {
+        return registryProvider.renderersToBeRegistered;
+    }
+
     public static ItemRegistryObject<? extends Item> getItemRegistryObject(final String provider_name) {
         return RegistryObjectContext.getRegistryObject(ItemRegistryObject.class, provider_name, registryProvider.items);
     }
