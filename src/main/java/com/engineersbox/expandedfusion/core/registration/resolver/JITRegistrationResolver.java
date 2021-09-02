@@ -1,10 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
-import com.engineersbox.expandedfusion.core.event.annotation.DataEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.*;
 import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
-import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
-import com.engineersbox.expandedfusion.core.event.annotation.CommonEventHandler;
-import com.engineersbox.expandedfusion.core.event.annotation.ServerEventHandler;
 import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
 import com.engineersbox.expandedfusion.core.event.manager.Manager;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
@@ -208,7 +205,7 @@ public class JITRegistrationResolver extends JITResolver {
                 || (FMLEnvironment.dist == Dist.DEDICATED_SERVER && ClientEventHandler.class.isAssignableFrom(distAnnotation))) {
                 return eventBroker;
             }
-            final Reflections reflections = new Reflections(new ConfigurationBuilder()
+            Reflections reflections = new Reflections(new ConfigurationBuilder()
                     .setUrls(ClasspathHelper.forPackage(this.packageName))
                     .setScanners(
                             new TypeElementsScanner(),
@@ -216,11 +213,26 @@ public class JITRegistrationResolver extends JITResolver {
                             new TypeAnnotationsScanner()
                     )
             );
-            reflections.getTypesAnnotatedWith(distAnnotation)
+            final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
                     .stream()
+                    // Classes marked with @InternalEventHandler should not be used outside this lib
+                    .filter((final Class<?> clazz) -> !clazz.isAnnotationPresent(InternalEventHandler.class))
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
-                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer)
-                    .forEach((final Class<? extends EventSubscriptionHandler> consumer) -> addSubscriptionHandler(eventBroker, consumer));
+                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
+            reflections = new Reflections(new ConfigurationBuilder()
+                    .setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion.core"))
+                    .setScanners(
+                            new TypeElementsScanner(),
+                            new SubTypesScanner(),
+                            new TypeAnnotationsScanner()
+                    )
+            );
+            final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
+                    .stream()
+                    .filter((final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class))
+                    .filter(EventSubscriptionHandler.class::isAssignableFrom)
+                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
+            Stream.concat(nonInternalClasses, internalClasses).forEach((final Class<? extends EventSubscriptionHandler> consumer) -> addSubscriptionHandler(eventBroker, consumer));
             return eventBroker;
         }
 
@@ -244,6 +256,7 @@ public class JITRegistrationResolver extends JITResolver {
                     DistEvent.DATA,
                     dataEventBroker
             );
+
             return eventBrokerManager;
         }
 

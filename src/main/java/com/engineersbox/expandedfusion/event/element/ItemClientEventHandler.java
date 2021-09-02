@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.handler.element;
+package com.engineersbox.expandedfusion.event.element;
 
 import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.util.ColorGetter;
@@ -10,6 +10,7 @@ import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 
+@SuppressWarnings("unused")
 @ClientEventHandler
 public class ItemClientEventHandler implements EventSubscriptionHandler {
 

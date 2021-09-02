@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.handler.data.recipe;
 
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.DataEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.InternalEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.CraftingRecipe;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.PatternKey;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
+@InternalEventHandler
 @DataEventHandler
 public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
