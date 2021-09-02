@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.reflection;
 
-import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
+import com.engineersbox.expandedfusion.core.reflection.exception.ConstructorInstantiationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.ReflectionUtils;
@@ -83,8 +83,7 @@ public class CheckedInstantiator<T> {
                 this::matchParamTypes
         );
         if (constructors.isEmpty()) {
-            // TODO: Implement a generic exception for this
-            throw new ProviderElementRegistrationException(String.format(
+            throw new ConstructorInstantiationException(String.format(
                     "No accessible constructors could be found for %s",
                     this.implementation
             ));

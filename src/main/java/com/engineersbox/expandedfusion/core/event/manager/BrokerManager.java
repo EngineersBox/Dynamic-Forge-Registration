@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.event.manager;
 
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
+import com.engineersbox.expandedfusion.core.event.exception.manager.BrokerEventConsumerException;
 import net.minecraftforge.eventbus.api.Event;
 
 import java.util.EnumMap;
@@ -29,10 +30,10 @@ public class BrokerManager<T extends Enum<T>> implements Manager<T> {
                                                                  final E eventConsumer) {
         final EventBroker broker = get(key);
         if (broker == null) {
-            throw new RuntimeException(String.format(
+            throw new BrokerEventConsumerException(String.format(
                     "Attempted to add consumer to non-existent broker matching key %s",
                     key.name()
-            )); // TODO: Implement an exception for this
+            ));
         }
         broker.addConsumer(eventConsumer);
     }
@@ -42,10 +43,10 @@ public class BrokerManager<T extends Enum<T>> implements Manager<T> {
                                                                     final E eventConsumer) {
         final EventBroker broker = get(key);
         if (broker == null) {
-            throw new RuntimeException(String.format(
+            throw new BrokerEventConsumerException(String.format(
                     "Attempted to remove consumer to non-existent broker matching key %s",
                     key.name()
-            )); // TODO: Implement an exception for this
+            ));
         }
         broker.removeConsumer(eventConsumer);
     }
@@ -55,10 +56,10 @@ public class BrokerManager<T extends Enum<T>> implements Manager<T> {
                                                final E event) {
         final EventBroker broker = get(key);
         if (broker == null) {
-            throw new RuntimeException(String.format(
+            throw new BrokerEventConsumerException(String.format(
                     "Attempted to publish event to non-existent broker matching key %s",
                     key.name()
-            )); // TODO: Implement an exception for this
+            ));
         }
         broker.publishEvent(event);
     }

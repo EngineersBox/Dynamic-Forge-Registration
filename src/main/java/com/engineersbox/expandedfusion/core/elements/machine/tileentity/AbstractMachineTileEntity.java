@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.core.elements.DataField;
 import com.engineersbox.expandedfusion.core.elements.MachineTier;
 import com.engineersbox.expandedfusion.core.elements.capability.EnergyStorageCapability;
 import com.engineersbox.expandedfusion.core.elements.machine.IMachineInventory;
+import com.engineersbox.expandedfusion.core.elements.machine.exception.UnknownDataFieldException;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
@@ -64,11 +65,7 @@ public abstract class AbstractMachineTileEntity<R extends IRecipe<?>> extends Ab
                     AbstractMachineTileEntity.this.processTime = value;
                     break;
                 default:
-                    throw new RuntimeException(String.format(
-                            "Unknown datafield when attempting to set field: %s [idx: %d]",
-                            DataField.fromInt(index),
-                            index
-                    )); // TODO: Implement exception for this
+                    throw new UnknownDataFieldException(index);
             }
         }
 

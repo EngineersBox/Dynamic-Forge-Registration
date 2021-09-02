@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.contexts;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
+import com.engineersbox.expandedfusion.core.registration.exception.contexts.CreativeTabItemGroupRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITResolver;
 import com.google.inject.Singleton;
 import net.minecraft.block.Block;
@@ -33,10 +33,10 @@ public class Registration {
 
     public static ItemGroup getTabGroup(final String name) {
         if (!CREATIVE_TABS.containsKey(name)) {
-            throw new RuntimeException(String.format(
+            throw new CreativeTabItemGroupRegistrationException(String.format(
                     "Creative tab not present for name key %s",
                     name
-            )); // TODO: Implement an exception for this
+            ));
         }
         return CREATIVE_TABS.get(name);
     }

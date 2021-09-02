@@ -10,9 +10,11 @@ import com.engineersbox.expandedfusion.core.registration.annotation.recipe.craft
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.UnlockCriterion;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryObjectRetrievalException;
+import com.engineersbox.expandedfusion.core.registration.exception.handler.data.recipe.InvalidCraftingPatternException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
+import com.engineersbox.expandedfusion.core.util.math.MathUtils;
 import net.minecraft.advancements.criterion.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -66,13 +68,14 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
                                                final CraftingRecipe recipe) {
         ShapedRecipeBuilder builder = ShapedRecipeBuilder.shapedRecipe(retrieveRecipeResult(name, group));
         final PatternLine[] lines = recipe.pattern();
-        if (lines.length > 3) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
+        if (!MathUtils.inRangeInclusive(lines.length, 1, 3)) {
+            throw new InvalidCraftingPatternException(String.format(
+                    "Supplied crafting pattern must only be defined by 1-3 pattern lines. %d were supplied.",
+                    lines.length
+            ));
         }
         final PatternKey[] keys = recipe.keys();
-        if (!validatePatternsAndKeys(lines, keys)) {
-            throw new RuntimeException(); // TODO: Implement an exception for this
-        }
+        validatePatternsAndKeys(lines, keys);
         for (final PatternLine line : lines) {
             builder = builder.patternLine(line.value());
         }
@@ -93,21 +96,21 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
                 if (tagMatch.isPresent()) {
                     return builder.addCriterion(criterion.key(), hasItem(tagMatch.get()));
                 }
-                throw new RuntimeException("No ingredient could be found for tag " + criterion.ingredient()); // TODO: Implement an exception for this
+                throw new InvalidCraftingPatternException("No ingredient could be found for tag " + criterion.ingredient());
             case HAS_ITEM:
                 final Optional<IItemProvider> itemProvider = getItemProvider(criterion.ingredient());
                 if (itemProvider.isPresent()) {
                     return builder.addCriterion(criterion.key(), hasItem(itemProvider.get()));
                 }
-                throw new RuntimeException("No ingredient could be found for item " + criterion.ingredient()); // TODO: Implement an exception for this
+                throw new InvalidCraftingPatternException("No ingredient could be found for item " + criterion.ingredient());
             case ENTERED_BLOCK:
                 final Optional<Block> block = getBlock(criterion.ingredient());
                 if (block.isPresent()) {
                     return builder.addCriterion(criterion.key(), enteredBlock(block.get()));
                 }
-                throw new RuntimeException("No block could be found for name " + criterion.ingredient()); // TODO: Implement an exception for this
+                throw new InvalidCraftingPatternException("No block could be found for name " + criterion.ingredient());
         }
-        throw new RuntimeException("Unknown requirement type: " + criterion.requirement()); // TODO: Implement an exception for this
+        throw new InvalidCraftingPatternException("Unknown requirement type: " + criterion.requirement());
     }
 
     private Optional<Block> getBlock(final String key) {
@@ -124,20 +127,26 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
         return RegistryObjectContext.getItemRegistryObject(name).asItem();
     }
 
-    private boolean validatePatternsAndKeys(final PatternLine[] lines,
-                                            final PatternKey[] keys) {
+    private void validatePatternsAndKeys(final PatternLine[] lines,
+                                         final PatternKey[] keys) {
         final String mergedPattern = Arrays.stream(lines)
                 .map(PatternLine::value)
-                .collect(Collectors.joining());
-        return Arrays.stream(keys)
-                .map(PatternKey::symbol)
-                .allMatch((final Character key) -> mergedPattern.indexOf(key) != -1);
+                .collect(Collectors.joining("\n"));
+        for (final Character symbol : Arrays.stream(keys).map(PatternKey::symbol).collect(Collectors.toList())) {
+            if (mergedPattern.indexOf(symbol) == -1) {
+                throw new InvalidCraftingPatternException(String.format(
+                        "Unbound key %s in PatternKey definition has no usage in pattern:%n%s",
+                        symbol,
+                        mergedPattern
+                ));
+            }
+        }
     }
 
     private ShapedRecipeBuilder addKeyRecipeElement(final ShapedRecipeBuilder builder,
                                                     final PatternKey key) {
         if (key.ingredient().length < 1) {
-            throw new RuntimeException(); // TODO: Implement this
+            throw new InvalidCraftingPatternException("At least 1 ingredient must be present in @PatternKey declaration");
         }
         if (key.ingredient().length > 1) {
             return addKeyRecipeAsDestructuredIngredient(builder, key);
@@ -173,7 +182,7 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
                 builder = builder.key(patternKey.symbol(), Ingredient.fromItems(itemProvider.get()));
                 continue;
             }
-            throw new RuntimeException("No corresponding tag or item found for " + key); // TODO: Implement an exception for this
+            throw new InvalidCraftingPatternException("No corresponding tag or item found for " + key);
         }
         return builder;
     }
