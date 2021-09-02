@@ -1,11 +1,13 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
+import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.*;
-import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
+import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
 import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
+import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
 import com.engineersbox.expandedfusion.core.event.manager.Manager;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.handler.data.recipe.CraftingClientEventHandler;
@@ -17,17 +19,12 @@ import com.engineersbox.expandedfusion.core.registration.provider.element.fluid.
 import com.engineersbox.expandedfusion.core.registration.provider.element.item.ItemProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
-import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
-import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
-import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
@@ -48,7 +45,8 @@ import org.reflections.util.ConfigurationBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Singleton

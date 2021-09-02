@@ -20,13 +20,14 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class BlockDeferredRegistryShim extends RegistryShim<Block> {
@@ -43,15 +44,17 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {
     }
 
     public <T extends Block> BlockRegistryObject<T> register(final String name,
-                                                             final Supplier<T> block) {
-        return register(name, block, this::defaultItem);
+                                                             final Supplier<T> block,
+                                                             final String tabGroupName) {
+        return register(name, block, this::defaultItem, tabGroupName);
     }
 
     public <T extends Block> BlockRegistryObject<T> register(final String name,
                                                              final Supplier<T> block,
-                                                             final Function<BlockRegistryObject<T>, Supplier<? extends BlockItem>> item) {
+                                                             final BiFunction<BlockRegistryObject<T>, String, Supplier<? extends BlockItem>> item,
+                                                             final String tabGroupName) {
         final BlockRegistryObject<T> ret = registerNoItem(name, block);
-        Registration.ITEMS.register(name, item.apply(ret));
+        Registration.ITEMS.register(name, item.apply(ret, tabGroupName));
         return ret;
     }
 
@@ -60,8 +63,8 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {
                 new FlowingFluidBlock(fluid, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));
     }
 
-    public <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(Registration.getTabGroup(this.modID)));
+    public <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block, final String tabGroupName) {
+        return () -> new BlockItem(block.get(), new Item.Properties().group(Registration.getTabGroup(StringUtils.isEmpty(tabGroupName.trim()) ? this.modID : tabGroupName)));
     }
 
     @Nullable

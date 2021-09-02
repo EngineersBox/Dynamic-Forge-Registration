@@ -46,11 +46,13 @@ import javax.annotation.Nullable;
 )
 @BlockProvider(
         name = FusionControlComputer.PROVIDER_NAME,
-        type = BlockImplType.INTERACTIVE_TILE_ENTITY
+        type = BlockImplType.INTERACTIVE_TILE_ENTITY,
+        tabGroup = FusionControlComputer.TAB_GROUP
 )
 public class FusionControlComputer extends AbstractMachineBlock {
     public static final String PROVIDER_NAME = "fusion_control_computer";
     public static final String NAME_MAPPING = "Fusion Control Computer";
+    public static final String TAB_GROUP = "expandedfusion_machines";
 
     @SuppressWarnings("unused")
     public FusionControlComputer() {

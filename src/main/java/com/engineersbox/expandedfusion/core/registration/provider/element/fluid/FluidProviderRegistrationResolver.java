@@ -97,9 +97,9 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
         final Supplier<? extends Item> bucketSupplier = () -> {
             final Supplier<? extends Fluid> fluidSupplier = () -> RegistryObjectContext.getSourceFluidRegistryObject(sourceFluidProvider.name()).asFluid();
             if (bucketProperties.canPlace() && FlowingFluid.class.isAssignableFrom(group.getSourceFluid())) {
-                return this.itemDeferredRegistryShim.createBucketItem((Supplier<FlowingFluid>) fluidSupplier);
+                return this.itemDeferredRegistryShim.createBucketItem((Supplier<FlowingFluid>) fluidSupplier, bucketProperties.tabGroup());
             }
-            return this.itemDeferredRegistryShim.createNoPlaceBucketItem((Supplier<Fluid>) fluidSupplier);
+            return this.itemDeferredRegistryShim.createNoPlaceBucketItem((Supplier<Fluid>) fluidSupplier, bucketProperties.tabGroup());
         };
         this.itemDeferredRegistryShim.register(
                 bucketProperties.name(),

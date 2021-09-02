@@ -20,6 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,13 +42,15 @@ public class Registration {
         return CREATIVE_TABS.get(name);
     }
 
-    public static void addTabGroup(final String name,
-                                   final Supplier<ItemStack> iconSupplier) {
+    public static void addTabGroup(@Nonnull final String name,
+                                   @Nonnull final String nameMapping,
+                                   @Nonnull final Supplier<ItemStack> iconSupplier) {
         if (CREATIVE_TABS.containsKey(name)) {
             return;
         }
         CREATIVE_TABS.put(name, new ModItemGroups.ModItemGroup(
                 name,
+                nameMapping,
                 iconSupplier
         ));
     }

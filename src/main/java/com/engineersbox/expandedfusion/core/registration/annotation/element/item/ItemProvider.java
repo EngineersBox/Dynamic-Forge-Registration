@@ -13,5 +13,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface ItemProvider {
     String name();
-    String itemGroup() default "";  // TODO: Handle this
 }

@@ -18,7 +18,8 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
                 name = Oil.BUCKET_NAME,
                 lang = @LangMetadata(
                         nameMapping = Oil.BUCKET_NAME_MAPPING
-                )
+                ),
+                tabGroup = Oil.BUCKET_TAB_GROUP
         )
 )
 public class Oil extends ForgeFlowingFluid.Source {
@@ -26,6 +27,7 @@ public class Oil extends ForgeFlowingFluid.Source {
     public static final String NAME_MAPPING = "Oil";
     public static final String BUCKET_NAME = "oil_bucket";
     public static final String BUCKET_NAME_MAPPING = "Oil Bucket";
+    public static final String BUCKET_TAB_GROUP = "expandedfusion_machines";
     public static final String BLOCK_NAME = PROVIDER_NAME;
 
     public Oil() {

@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITRegistrationResolver;
+import com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer.FusionControlComputer;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,7 +32,13 @@ public class NetworkTargetProxy implements IProxy {
                 .build();
         Registration.addTabGroup(
                 ExpandedFusion.MOD_ID,
+                "Expanded Fusion Core",
                 () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
+        );
+        Registration.addTabGroup(
+                "expandedfusion_machines",
+                "Expanded Fusion Machines",
+                () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(FusionControlComputer.PROVIDER_NAME).asBlock())
         );
 
         // Add listeners for common events

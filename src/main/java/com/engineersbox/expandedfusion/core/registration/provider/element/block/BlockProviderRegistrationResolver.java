@@ -248,7 +248,14 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         } else {
             blockSupplier = () -> new Block(createBlockProperties(properties[0]));
         }
-        this.registryProvider.blocks.put(name, this.blockDeferredRegistryShim.register(name, blockSupplier));
+        this.registryProvider.blocks.put(
+                name,
+                this.blockDeferredRegistryShim.register(
+                        name,
+                        blockSupplier,
+                        blockProvider.tabGroup()
+                )
+        );
     }
 
     private Block.Properties createBlockProperties(final BaseBlockProperties baseProps) {
