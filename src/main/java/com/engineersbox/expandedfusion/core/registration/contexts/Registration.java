@@ -1,9 +1,9 @@
-package com.engineersbox.expandedfusion.register;
+package com.engineersbox.expandedfusion.core.registration.contexts;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITResolver;
+import com.google.inject.Singleton;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.ContainerType;
@@ -21,16 +21,37 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+@Singleton
 public class Registration {
-    public static final ItemGroup CREATIVE_TAB_ITEM_GROUP = new ModItemGroups.ModItemGroup(
-            ExpandedFusion.MOD_ID,
-            () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
-    );
+    private static final Map<String, ItemGroup> CREATIVE_TABS = new HashMap<>();
 
-    // TODO: Move these static declarations to a singleton class and reference them here
+    public static ItemGroup getTabGroup(final String name) {
+        if (!CREATIVE_TABS.containsKey(name)) {
+            throw new RuntimeException(String.format(
+                    "Creative tab not present for name key %s",
+                    name
+            )); // TODO: Implement an exception for this
+        }
+        return CREATIVE_TABS.get(name);
+    }
+
+    public static void addTabGroup(final String name,
+                                   final Supplier<ItemStack> iconSupplier) {
+        if (CREATIVE_TABS.containsKey(name)) {
+            return;
+        }
+        CREATIVE_TABS.put(name, new ModItemGroups.ModItemGroup(
+                name,
+                iconSupplier
+        ));
+    }
+
     public static final DeferredRegister<Fluid> FLUIDS = create(ForgeRegistries.FLUIDS);
     public static final DeferredRegister<Block> BLOCKS = create(ForgeRegistries.BLOCKS);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = create(ForgeRegistries.CONTAINERS);

@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
 
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
-import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -44,7 +44,7 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {
 
     public <T extends Block> BlockRegistryObject<T> register(final String name,
                                                              final Supplier<T> block) {
-        return register(name, block, BlockDeferredRegistryShim::defaultItem);
+        return register(name, block, this::defaultItem);
     }
 
     public <T extends Block> BlockRegistryObject<T> register(final String name,
@@ -60,8 +60,8 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {
                 new FlowingFluidBlock(fluid, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));
     }
 
-    public static <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP));
+    public <T extends Block> Supplier<BlockItem> defaultItem(final BlockRegistryObject<T> block) {
+        return () -> new BlockItem(block.get(), new Item.Properties().group(Registration.getTabGroup(this.modID)));
     }
 
     @Nullable

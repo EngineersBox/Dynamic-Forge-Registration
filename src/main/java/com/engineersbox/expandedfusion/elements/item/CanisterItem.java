@@ -1,10 +1,11 @@
 package com.engineersbox.expandedfusion.elements.item;
 
+import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.api.IFluidContainer;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
-import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -32,7 +33,7 @@ public class CanisterItem extends Item implements IFluidContainer {
     public static final String NAME_MAPPING = "Canister";
 
     public CanisterItem() {
-        super(new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP));
+        super(new Item.Properties().group(Registration.getTabGroup(ExpandedFusion.MOD_ID)));
     }
 
     public static ItemStack getStack(@Nullable final Fluid fluid) {

@@ -2,7 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
 
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
 import com.engineersbox.expandedfusion.elements.item.NoPlaceBucketItem;
-import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -22,11 +22,11 @@ public class ItemDeferredRegistryShim extends RegistryShim<Item> {
     }
 
     public BucketItem createBucketItem(final Supplier<FlowingFluid> fluid) {
-        return new BucketItem(fluid, new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP).maxStackSize(1).containerItem(Items.BUCKET));
+        return new BucketItem(fluid, new Item.Properties().group(Registration.getTabGroup(this.modID)).maxStackSize(1).containerItem(Items.BUCKET));
     }
 
     public NoPlaceBucketItem createNoPlaceBucketItem(final Supplier<Fluid> fluid) {
-        return new NoPlaceBucketItem(fluid, new Item.Properties().group(Registration.CREATIVE_TAB_ITEM_GROUP).maxStackSize(1).containerItem(Items.BUCKET));
+        return new NoPlaceBucketItem(fluid, new Item.Properties().group(Registration.getTabGroup(this.modID)).maxStackSize(1).containerItem(Items.BUCKET));
     }
 
     public ItemRegistryObject<? extends Item> register(final String name, final Supplier<? extends Item> item) {

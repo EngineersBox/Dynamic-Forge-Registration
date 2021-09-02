@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.handler.element;
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.registration.exception.handler.SubscriptionEventHandlerException;
-import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;

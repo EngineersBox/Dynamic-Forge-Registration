@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.register;
+package com.engineersbox.expandedfusion.core.registration.contexts;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

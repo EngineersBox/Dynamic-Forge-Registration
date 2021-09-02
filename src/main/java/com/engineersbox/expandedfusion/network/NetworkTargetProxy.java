@@ -1,10 +1,13 @@
 package com.engineersbox.expandedfusion.network;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITRegistrationResolver;
-import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,7 +29,10 @@ public class NetworkTargetProxy implements IProxy {
                 .withPackageName("com.engineersbox.expandedfusion")
                 .withModId(ExpandedFusion.MOD_ID)
                 .build();
-        Registration.register(registrationResolver);
+        Registration.addTabGroup(
+                ExpandedFusion.MOD_ID,
+                () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
+        );
 
         // Add listeners for common events
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcPublish);

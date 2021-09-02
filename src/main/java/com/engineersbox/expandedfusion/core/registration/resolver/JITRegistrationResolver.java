@@ -8,6 +8,7 @@ import com.engineersbox.expandedfusion.core.event.annotation.ServerEventHandler;
 import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
 import com.engineersbox.expandedfusion.core.event.manager.Manager;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.handler.data.recipe.CraftingClientEventHandler;
@@ -21,15 +22,16 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.Group
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
+import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
@@ -66,6 +68,7 @@ public class JITRegistrationResolver extends JITResolver {
         this.injector = injector;
         this.brokerManager = brokerManager;
         this.resolvers = new EnumMap<>(ResolverType.class);
+        Registration.register(this);
         this.setupEventPublishing();
     }
 

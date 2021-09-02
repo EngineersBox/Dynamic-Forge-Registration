@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
 import com.engineersbox.expandedfusion.core.elements.block.IBlockProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.TileEntityRegistryObject;
-import com.engineersbox.expandedfusion.register.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraft.block.Block;
