@@ -4,8 +4,6 @@ import com.engineersbox.expandedfusion.core.registration.exception.handler.Subsc
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +19,7 @@ public class EventBroker {
 
     public <T extends EventSubscriptionHandler> void addConsumer(final T eventConsumer) {
         final Class<? extends EventSubscriptionHandler> consumerClass = eventConsumer.getClass();
-        for (final Method method : consumerClass.getMethods()) {
+        for (final Method method : consumerClass.getDeclaredMethods()) {
             final Class<?>[] parameterTypes = method.getParameterTypes();
             final Subscriber annotation = method.getAnnotation(Subscriber.class);
             if (annotation == null) {

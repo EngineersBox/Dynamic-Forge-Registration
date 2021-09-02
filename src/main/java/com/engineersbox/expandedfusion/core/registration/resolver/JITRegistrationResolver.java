@@ -205,28 +205,23 @@ public class JITRegistrationResolver extends JITResolver {
                 || (FMLEnvironment.dist == Dist.DEDICATED_SERVER && ClientEventHandler.class.isAssignableFrom(distAnnotation))) {
                 return eventBroker;
             }
-            Reflections reflections = new Reflections(new ConfigurationBuilder()
+            final ConfigurationBuilder configBuilder = new ConfigurationBuilder()
                     .setUrls(ClasspathHelper.forPackage(this.packageName))
                     .setScanners(
                             new TypeElementsScanner(),
                             new SubTypesScanner(),
                             new TypeAnnotationsScanner()
-                    )
-            );
+                    );
+
+            Reflections reflections = new Reflections(configBuilder);
             final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
                     .stream()
                     // Classes marked with @InternalEventHandler should not be used outside this lib
                     .filter((final Class<?> clazz) -> !clazz.isAnnotationPresent(InternalEventHandler.class))
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
                     .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
-            reflections = new Reflections(new ConfigurationBuilder()
-                    .setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion.core"))
-                    .setScanners(
-                            new TypeElementsScanner(),
-                            new SubTypesScanner(),
-                            new TypeAnnotationsScanner()
-                    )
-            );
+
+            reflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion.core")));
             final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
                     .stream()
                     .filter((final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class))
