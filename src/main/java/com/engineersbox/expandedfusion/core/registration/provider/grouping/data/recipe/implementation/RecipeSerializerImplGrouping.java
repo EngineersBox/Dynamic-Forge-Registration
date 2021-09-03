@@ -8,6 +8,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecipeSerializerImplGrouping implements ImplGrouping {
 
     private Class<? extends IRecipe<?>> recipeImplementation;
@@ -48,6 +51,16 @@ public class RecipeSerializerImplGrouping implements ImplGrouping {
             throw new DuplicateRecipeSerializerBindingException(this.serializer, serializer);
         }
         this.serializer = serializer;
+    }
+
+    @Override
+    public List<Class<?>> getAllClasses() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public <E> E getCommonIdentifier() {
+        return null;
     }
 
 }

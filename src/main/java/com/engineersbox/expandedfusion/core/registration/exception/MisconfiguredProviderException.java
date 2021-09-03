@@ -7,6 +7,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MisconfiguredProviderException extends RuntimeException {
+
+    public MisconfiguredProviderException(final Throwable e) {
+        super(e);
+    }
+
     public MisconfiguredProviderException(final Map<String, List<Class<? extends Annotation>>> requires) {
         super(formatError(requires));
     }

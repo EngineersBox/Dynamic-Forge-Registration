@@ -70,7 +70,7 @@ public class ProviderAnnotationProcessor extends AbstractProcessor {
     private <T extends Element> void processBlockProvider(final T annotatedElement) {
         final BlockProvider blockProvider = annotatedElement.getAnnotation(BlockProvider.class);
         switch (blockProvider.type()) {
-            case BASE:
+            case STATIC:
                 this.handleBaseBlockProvider(annotatedElement, blockProvider);
                 return;
             case INTERACTIVE_TILE_ENTITY:

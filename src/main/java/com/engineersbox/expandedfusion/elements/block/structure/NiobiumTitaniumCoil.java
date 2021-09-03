@@ -11,7 +11,7 @@ import net.minecraft.block.material.Material;
 )
 @BlockProvider(
     name = NiobiumTitaniumCoil.PROVIDER_NAME,
-    type = BlockImplType.BASE
+    type = BlockImplType.STATIC
 )
 public class NiobiumTitaniumCoil extends Block {
     public static final String PROVIDER_NAME = "niobium_titanium_coil";

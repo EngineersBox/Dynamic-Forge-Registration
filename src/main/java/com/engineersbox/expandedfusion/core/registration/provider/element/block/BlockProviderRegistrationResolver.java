@@ -72,7 +72,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             ));
         }
         switch (blockProvider.type()) {
-            case BASE:
+            case STATIC:
                 checkedBlockRegistration(name, group);
                 return;
             case INTERACTIVE_TILE_ENTITY:

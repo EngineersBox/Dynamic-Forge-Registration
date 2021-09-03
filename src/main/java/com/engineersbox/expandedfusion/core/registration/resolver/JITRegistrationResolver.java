@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
+import com.engineersbox.expandedfusion.core.classifier.baked.BakedInClassifierModule;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.*;
 import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
@@ -259,6 +260,7 @@ public class JITRegistrationResolver extends JITResolver {
                     new ProviderModule(),
                     new GroupingModule(),
                     new RegistryShimModule(),
+                    new BakedInClassifierModule(),
                     new PackageReflectionsModule()
                         .withLogger(this.logger)
                         .withPackageName(this.packageName)

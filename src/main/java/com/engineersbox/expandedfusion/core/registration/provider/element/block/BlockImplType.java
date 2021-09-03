@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.element.bloc
 import java.lang.annotation.Annotation;
 
 public enum BlockImplType {
-    BASE(
+    STATIC(
             new Requirement[]{Requirement.BLOCK},
             new Requirement[]{}
     ),

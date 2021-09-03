@@ -5,6 +5,9 @@ import com.engineersbox.expandedfusion.core.registration.exception.grouping.data
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplGrouping;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CraftingRecipeImplGrouping implements ImplGrouping {
 
     private Class<? extends ForgeRegistryEntry<?>> registryEntry;
@@ -25,6 +28,16 @@ public class CraftingRecipeImplGrouping implements ImplGrouping {
             throw new DuplicateCraftingRecipeBindingException(this.registryEntry, registryEntry);
         }
         this.registryEntry = registryEntry;
+    }
+
+    @Override
+    public List<Class<?>> getAllClasses() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public <E> E getCommonIdentifier() {
+        return null;
     }
 
 }

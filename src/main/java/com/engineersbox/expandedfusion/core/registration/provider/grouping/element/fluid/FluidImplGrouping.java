@@ -6,6 +6,9 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplG
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FluidImplGrouping implements ImplGrouping {
 
     private Class<? extends Fluid> source;
@@ -47,4 +50,13 @@ public class FluidImplGrouping implements ImplGrouping {
         this.flowing = flowingFluid;
     }
 
+    @Override
+    public List<Class<?>> getAllClasses() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public <E> E getCommonIdentifier() {
+        return null;
+    }
 }

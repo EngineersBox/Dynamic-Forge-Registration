@@ -5,6 +5,9 @@ import com.engineersbox.expandedfusion.core.registration.exception.grouping.elem
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplGrouping;
 import net.minecraft.item.Item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemImplGrouping implements ImplGrouping {
     private Class<? extends Item> item;
 
@@ -24,5 +27,15 @@ public class ItemImplGrouping implements ImplGrouping {
             throw new DuplicateItemComponentBinding(this.item, item);
         }
         this.item = item;
+    }
+
+    @Override
+    public List<Class<?>> getAllClasses() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public <E> E getCommonIdentifier() {
+        return null;
     }
 }

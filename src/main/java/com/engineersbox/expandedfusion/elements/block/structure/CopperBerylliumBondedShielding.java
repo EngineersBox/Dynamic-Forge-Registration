@@ -11,7 +11,7 @@ import net.minecraft.block.material.Material;
 )
 @BlockProvider(
     name = CopperBerylliumBondedShielding.PROVIDER_NAME,
-    type = BlockImplType.BASE
+    type = BlockImplType.STATIC
 )
 public class CopperBerylliumBondedShielding extends Block {
     public static final String PROVIDER_NAME = "copper_beryllium_bonded_shielding";
