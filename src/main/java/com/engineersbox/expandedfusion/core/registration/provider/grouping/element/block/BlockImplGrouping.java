@@ -26,6 +26,17 @@ public class BlockImplGrouping implements ImplGrouping {
     private Class<? extends ContainerScreen<? extends Container>> screen;
     private Class<? extends TileEntityRenderer<? extends TileEntity>> renderer;
 
+    private BlockImplType classification;
+
+    public BlockImplType getClassification() {
+        return this.classification;
+    }
+
+    public void setClassification(final BlockImplType classification) {
+        this.classification = classification;
+    }
+
+    @Override
     public List<Class<?>> getAllClasses() {
         return Stream.of(
             this.tileEntity,

@@ -10,7 +10,7 @@ import com.engineersbox.expandedfusion.core.elements.MachineTier;
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
-import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockImplType;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
 import com.engineersbox.expandedfusion.elements.block.structure.CopperBerylliumBondedShielding;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
 import net.minecraft.block.SoundType;

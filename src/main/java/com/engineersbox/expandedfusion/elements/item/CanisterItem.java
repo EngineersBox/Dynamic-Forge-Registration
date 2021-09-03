@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.elements.item;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
-import com.engineersbox.expandedfusion.core.api.IFluidContainer;
+import com.engineersbox.expandedfusion.core.elements.fluid.IFluidContainer;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.util.TextUtil;

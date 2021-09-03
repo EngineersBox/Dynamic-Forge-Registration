@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.api;
+package com.engineersbox.expandedfusion.core.elements.fluid;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;

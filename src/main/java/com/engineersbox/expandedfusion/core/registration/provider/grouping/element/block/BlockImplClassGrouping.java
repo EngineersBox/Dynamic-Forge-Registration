@@ -69,7 +69,10 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
         }
         addDistDependentProviders();
         try {
-            classGroupings.values().forEach(this.classifier::testGrouping);
+            classGroupings.values().forEach((final BlockImplGrouping group) -> {
+                final String classification = this.classifier.testGrouping(group);
+                group.setClassification(BlockImplType.valueOf(classification));
+            });
         } catch (final GroupingClassificationException e) {
             throw new MisconfiguredProviderException(e);
         }

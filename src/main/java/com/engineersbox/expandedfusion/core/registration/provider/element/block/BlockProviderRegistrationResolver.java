@@ -71,7 +71,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                     blockProvider.name()
             ));
         }
-        switch (blockProvider.type()) {
+        switch (group.getClassification()) {
             case STATIC:
                 checkedBlockRegistration(name, group);
                 return;

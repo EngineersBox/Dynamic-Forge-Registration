@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.element.block;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.element.ProvidesElement;
-import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockImplType;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

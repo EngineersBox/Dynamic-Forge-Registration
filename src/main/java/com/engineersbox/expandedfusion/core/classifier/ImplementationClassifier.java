@@ -4,6 +4,6 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplG
 
 public interface ImplementationClassifier<T extends ImplGrouping> {
 
-    void testGrouping(final T grouping);
+    String testGrouping(final T grouping);
 
 }

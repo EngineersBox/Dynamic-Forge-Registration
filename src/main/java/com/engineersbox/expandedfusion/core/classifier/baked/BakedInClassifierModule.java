@@ -5,7 +5,7 @@ import com.engineersbox.expandedfusion.core.classifier.ImplementationClassifier;
 import com.engineersbox.expandedfusion.core.classifier.MultiClassImplementationClassifier;
 import com.engineersbox.expandedfusion.core.classifier.requirement.RequirementCondition;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
-import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockImplType;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;

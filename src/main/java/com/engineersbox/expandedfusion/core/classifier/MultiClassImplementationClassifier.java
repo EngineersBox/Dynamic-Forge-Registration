@@ -16,11 +16,11 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
             "> [%s] Annotation [Provided: @%s] [Required: @%s]%n" +
             "> [%s] Common identifier value [Provided: %s] [Required: %s]%n" +
             "> Requirement: [%s]%n%n";
-    private static final String PARTIAL_MATCH_DESCRIPTION_FORMAT = "== %s Multi-Class Implementation ==%n";
-    public static final String PARTIAL_MATCH_DESCRIPTION_FORMAT_LINE = "> [%s] Class %s:%n" +
+    private static final String PARTIAL_MATCH_HEADER_FORMAT = "== %s Multi-Class Implementation ==%n";
+    private static final String PARTIAL_MATCH_DESCRIPTION_FORMAT_LINE = "> [%s] Class %s:%n" +
             "  - Type matcher: [? extends %s] Implementation: [%s]%n" +
             "  - Annotation: [@%s]%n" +
-            "  - Requirement: [%s]%n";
+            "  - Requirement: [%s]%n%n";
 
     private final Map<String, List<ClassifierRequirement<?, ?>>> requirements;
 
@@ -29,9 +29,9 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
     }
 
     @Override
-    public void testGrouping(final T grouping) {
+    public String testGrouping(final T grouping) {
         final List<Class<?>> classes = grouping.getAllClasses();
-        final List<String> matching = new ArrayList<>();
+        String matching = null;
         final List<Pair<String, Set<Class<?>>>> subsets = new ArrayList<>();
         for (final Map.Entry<String, List<ClassifierRequirement<?, ?>>> entry : this.requirements.entrySet()) {
             final List<Class<?>> classifierClasses = entry.getValue().stream()
@@ -46,7 +46,7 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
                         return match.isPresent();
                     }).collect(Collectors.toSet());
             if (intersection.size() == classifierClasses.size() && reducibleClasses.isEmpty()) {
-                matching.add(entry.getKey());
+                matching = entry.getKey();
                 break;
             } else if (!intersection.isEmpty() && intersection.size() < classifierClasses.size()) {
                 subsets.add(ImmutablePair.of(
@@ -55,11 +55,16 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
                 ));
             }
         }
-        if (!matching.isEmpty()) {
+        if (matching != null) {
             handleMatching(grouping, classes, matching);
         } else if (!subsets.isEmpty()) {
             handleSubsets(subsets, classes);
         }
+        return matching;
+    }
+
+    private String asPresentableAlt(final boolean alt) {
+        return alt ? "X" : " ";
     }
 
     private <F> void appendErrorMessagesForClass(final StringBuilder errorString,
@@ -78,17 +83,23 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
         errorString.append(String.format(
                 REQUIREMENTS_DESCRIPTION_FORMAT,
                 index,
-                Boolean.TRUE.equals(inheritancePair.getLeft()) ? "X" : " ", inheritancePair.getRight().getLeft().getCanonicalName(), inheritancePair.getRight().getLeft().getCanonicalName(),
-                Boolean.TRUE.equals(annotationPair.getLeft()) ? "X" : " ", annotationPair.getRight().getLeft().getCanonicalName(), annotationPair.getRight().getLeft().getCanonicalName(),
-                Boolean.TRUE.equals(commonIdentifierPair.getLeft()) ? "X" : " ", commonIdentifierPair.getRight().getLeft(), commonIdentifierPair.getRight().getRight(),
+                asPresentableAlt(inheritancePair.getLeft()),
+                inheritancePair.getRight().getLeft().getCanonicalName(),
+                inheritancePair.getRight().getLeft().getCanonicalName(),
+                asPresentableAlt(annotationPair.getLeft()),
+                annotationPair.getRight().getLeft().getCanonicalName(),
+                annotationPair.getRight().getLeft().getCanonicalName(),
+                asPresentableAlt(commonIdentifierPair.getLeft()),
+                commonIdentifierPair.getRight().getLeft(),
+                commonIdentifierPair.getRight().getRight(),
                 classReq.condition
         ));
     }
 
     private void handleMatching(final T grouping,
                                 final List<Class<?>> classes,
-                                final List<String> matching) {
-        final List<ClassifierRequirement<?, ?>> reqs = this.requirements.get(matching.get(0));
+                                final String matching) {
+        final List<ClassifierRequirement<?, ?>> reqs = this.requirements.get(matching);
         final StringBuilder errorString = new StringBuilder();
         for (int i = 0; i < reqs.size(); i++) {
             final ClassifierRequirement<?, ?> classReq = reqs.get(i);
@@ -100,7 +111,7 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
         if (errorString.length() > 1) {
             throw new GroupingClassificationException(String.format(
                     "Matching multi-class implementation %s was found, but contained implementation mismatches",
-                    matching.get(0)
+                    matching
             ), errorString.toString().trim());
         }
     }
@@ -110,7 +121,7 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
         final StringBuilder errorString = new StringBuilder();
         subsets.forEach((final Pair<String, Set<Class<?>>> subset) -> {
             errorString.append(String.format(
-                    PARTIAL_MATCH_DESCRIPTION_FORMAT,
+                    PARTIAL_MATCH_HEADER_FORMAT,
                     subset.getLeft()
             ));
             final List<ClassifierRequirement<?, ?>> multiClassImplClassifiers = this.requirements.get(subset.getLeft());
@@ -118,7 +129,7 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
                 final Optional<Class<?>> implementation = classes.stream().filter((final Class<?> clazz) -> classReq.testMatchesType(clazz).getLeft()).findFirst();
                 errorString.append(String.format(
                         PARTIAL_MATCH_DESCRIPTION_FORMAT_LINE,
-                        implementation.isPresent() ? "X" : " ",
+                        asPresentableAlt(implementation.isPresent()),
                         classReq.inheritsFrom.getCanonicalName(),
                         classReq.inheritsFrom.getCanonicalName(),
                         implementation.map(Class::getCanonicalName).orElse("?"),
