@@ -139,10 +139,3 @@ TODO
 ### Recipes
 
 TODO
-
-## Matching Conditions
-
-1. Get required classes
-2. Intersect with provided classes
-3. If intersection size is 0, add to matches, else continue
-4. If intersection size is less than required classes size, add to subsets, else continue
