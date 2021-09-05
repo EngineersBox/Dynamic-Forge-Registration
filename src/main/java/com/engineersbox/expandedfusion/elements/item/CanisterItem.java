@@ -3,6 +3,8 @@ package com.engineersbox.expandedfusion.elements.item;
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.elements.fluid.IFluidContainer;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
@@ -23,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 @LangMetadata(
-        nameMapping = CanisterItem.NAME_MAPPING
+        locales = @LocaleEntry(key = LangKey.EN_US, mapping = CanisterItem.NAME_MAPPING)
 )
 @ItemProvider(
     name = CanisterItem.PROVIDER_NAME

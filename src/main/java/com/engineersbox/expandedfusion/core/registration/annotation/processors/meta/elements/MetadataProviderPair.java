@@ -5,6 +5,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.element.bloc
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.elements.InvalidMetadataDeclaration;
 
 import java.lang.annotation.Annotation;
@@ -40,8 +41,8 @@ public class MetadataProviderPair<T extends Annotation> {
         ));
     }
 
-    public String getNameMapping() {
-        return this.langMetadata.nameMapping();
+    public LocaleEntry[] getLocales() {
+        return this.langMetadata.locales();
     }
 
     public String getTypeName() {

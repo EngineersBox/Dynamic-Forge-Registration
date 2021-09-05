@@ -1,5 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping;
 
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplClassGrouping;
+import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation.RecipeSerializerImplClassGrouping;
@@ -27,5 +29,7 @@ public class GroupingModule extends AbstractModule {
                 .to(new TypeLiteral<RecipeSerializerImplClassGrouping>(){});
         bind(new TypeLiteral<ImplClassGroupings<CraftingRecipeImplGrouping>>(){})
                 .to(new TypeLiteral<CraftingRecipeImplClassGrouping>(){});
+        bind(new TypeLiteral<ImplClassGroupings<AnonymousElementImplGrouping>>(){})
+                .to(new TypeLiteral<AnonymousElementImplClassGrouping>(){});
     }
 }

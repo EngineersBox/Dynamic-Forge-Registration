@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.provider.element.fluid;
+package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.functional.PredicateSplitterConsumer;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;

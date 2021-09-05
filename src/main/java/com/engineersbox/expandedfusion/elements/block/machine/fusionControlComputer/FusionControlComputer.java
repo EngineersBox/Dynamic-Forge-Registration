@@ -1,5 +1,7 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.CraftingRecipe;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.PatternKey;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.PatternLine;
@@ -25,7 +27,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 @LangMetadata(
-        nameMapping = FusionControlComputer.NAME_MAPPING
+        locales = @LocaleEntry(key = LangKey.EN_US, mapping = FusionControlComputer.NAME_MAPPING)
 )
 @CraftingRecipe(
         pattern = {

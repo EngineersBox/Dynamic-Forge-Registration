@@ -15,9 +15,9 @@ import com.engineersbox.expandedfusion.core.registration.handler.data.recipe.Cra
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.CraftingRecipeRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.RecipeSerializerRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.element.block.BlockProviderRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.element.fluid.FluidProviderRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.element.item.ItemProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.element.BlockProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.element.FluidProviderRegistrationResolver;
+import com.engineersbox.expandedfusion.core.registration.provider.element.ItemProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
 import com.google.common.collect.ImmutableList;

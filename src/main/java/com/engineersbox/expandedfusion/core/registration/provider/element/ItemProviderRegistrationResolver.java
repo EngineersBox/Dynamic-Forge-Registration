@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.provider.element.item;
+package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;

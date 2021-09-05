@@ -4,20 +4,22 @@ import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 @LangMetadata(
-        nameMapping = Oil.NAME_MAPPING
+        locales = @LocaleEntry(key = LangKey.EN_US, mapping = Oil.NAME_MAPPING)
 )
 @FluidProvider(
         name = Oil.PROVIDER_NAME,
         bucket = @FluidBucketProperties(
                 name = Oil.BUCKET_NAME,
                 lang = @LangMetadata(
-                        nameMapping = Oil.BUCKET_NAME_MAPPING
+                        locales =  @LocaleEntry(key = LangKey.EN_US, mapping = Oil.BUCKET_NAME_MAPPING)
                 ),
                 tabGroup = Oil.BUCKET_TAB_GROUP
         )

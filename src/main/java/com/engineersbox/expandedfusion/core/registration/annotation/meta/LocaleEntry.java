@@ -1,12 +1,14 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.meta;
 
-import java.lang.annotation.ElementType;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface LangMetadata {
-    LocaleEntry[] locales();
+@Target({})
+public @interface LocaleEntry {
+    LangKey key() default LangKey.EN_US;
+    String mapping();
 }

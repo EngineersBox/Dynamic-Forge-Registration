@@ -3,6 +3,8 @@ package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComp
 import com.engineersbox.expandedfusion.core.elements.machine.container.AbstractMachineContainer;
 import com.engineersbox.expandedfusion.core.elements.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;
@@ -15,7 +17,7 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
 @LangMetadata(
-        nameMapping = FusionControlComputer.NAME_MAPPING
+        locales = @LocaleEntry(key = LangKey.EN_US, mapping = FusionControlComputer.NAME_MAPPING)
 )
 @ContainerProvider(
         name = FusionControlComputer.PROVIDER_NAME

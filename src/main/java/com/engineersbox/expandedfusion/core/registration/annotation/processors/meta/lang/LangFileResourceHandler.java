@@ -19,12 +19,13 @@ public class LangFileResourceHandler {
     private static final Logger LOGGER = LogManager.getLogger(LangFileResourceHandler.class);
 
     private static final String RESOURCE_OUTPUT_PROPERTY = "langmetadata.resource_out";
-    private static final String LANG_FILE_NAME = "en_us.json";
 
+    private final String langFileName;
     private final String outputDirectory;
     private final Map<String, String> langMappings;
 
-    public LangFileResourceHandler() {
+    public LangFileResourceHandler(final LangKey langKey) {
+        this.langFileName = langKey.name().toLowerCase() + ".json";
         this.outputDirectory = this.getOutputDirectory();
         this.langMappings = this.readFileToMapOrCreateNewMap();
     }
@@ -53,7 +54,7 @@ public class LangFileResourceHandler {
             LOGGER.info(
                     "Provided output directory {} did not contain existing {} file, a new file will be created",
                     this.outputDirectory,
-                    LANG_FILE_NAME
+                    this.langFileName
             );
             langFileMap = new HashMap<>();
         }
@@ -90,8 +91,8 @@ public class LangFileResourceHandler {
             throw new RuntimeException(String.format(
                     "Could not write JSON content to file: %s%s",
                     this.outputDirectory,
-                    LANG_FILE_NAME
-            ), e);
+                    this.langFileName
+            ), e); // TODO: Implement an exception for this
         }
     }
 
@@ -99,7 +100,7 @@ public class LangFileResourceHandler {
         return String.format(
                 "%s/%s",
                 this.outputDirectory,
-                LANG_FILE_NAME
+                this.langFileName
         );
     }
 }

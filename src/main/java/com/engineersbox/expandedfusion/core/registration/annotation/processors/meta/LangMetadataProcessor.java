@@ -1,12 +1,14 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.ElementClassRetriever;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.MetadataProviderPair;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangFileResourceHandler;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraftforge.fml.common.Mod;
@@ -15,7 +17,10 @@ import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class LangMetadataProcessor {
 
@@ -25,18 +30,17 @@ public class LangMetadataProcessor {
     private final String modId;
     private final String packageName;
     private final ElementClassRetriever elementClassRetriever;
-    private final LangFileResourceHandler langFileResourceHandler;
+    private final Map<LangKey, LangFileResourceHandler> resourceHandlers;
     private final Reflections reflections;
 
     @Inject
     public LangMetadataProcessor(@Named("packageName") final String packageName,
                                  @Named("packageReflections") final Reflections reflections,
-                                 final ElementClassRetriever elementClassRetriever,
-                                 final LangFileResourceHandler langFileResourceHandler) {
+                                 final ElementClassRetriever elementClassRetriever) {
         this.packageName = packageName;
         this.reflections = reflections;
+        resourceHandlers = new HashMap<>();
         this.elementClassRetriever = elementClassRetriever;
-        this.langFileResourceHandler = langFileResourceHandler;
         this.modId = this.getModId();
     }
 
@@ -57,7 +61,7 @@ public class LangMetadataProcessor {
             throw new RuntimeException(String.format(
                     "Could not retrieve @Mod annotation from class %s",
                     modAnnotatedClass.getName()
-            ));
+            )); // TODO: Implement an exception for this
         }
         return modAnnotation.value();
     }
@@ -71,10 +75,7 @@ public class LangMetadataProcessor {
                     this.modId,
                     pair.getProviderName()
             );
-            this.langFileResourceHandler.addLangEntryIfNotExists(
-                    formattedProviderName,
-                    pair.getNameMapping()
-            );
+            addMappingForLocales(pair.getLocales(), formattedProviderName);
             if (FluidProvider.class.isAssignableFrom(pair.getAnnotation().getClass())) {
                 createBucketLangEntry((FluidProvider) pair.getAnnotation());
             }
@@ -103,13 +104,25 @@ public class LangMetadataProcessor {
                 this.modId,
                 bucketProperties[0].name()
         );
-        this.langFileResourceHandler.addLangEntryIfNotExists(
-                formattedProviderName,
-                langMetadata[0].nameMapping()
-        );
+        addMappingForLocales(langMetadata[0].locales(), formattedProviderName);
+    }
+
+    private void addMappingForLocales(final LocaleEntry[] locales,
+                                      final String formattedProviderName) {
+        Stream.of(locales).forEach((final LocaleEntry entry) -> {
+            LangFileResourceHandler handler = this.resourceHandlers.get(entry.key());
+            if (handler == null) {
+                handler = new LangFileResourceHandler(entry.key());
+            }
+            handler.addLangEntryIfNotExists(
+                    formattedProviderName,
+                    entry.mapping()
+            );
+            this.resourceHandlers.put(entry.key(), handler);
+        });
     }
 
     public void exportMappingsToFile() {
-        this.langFileResourceHandler.exportMappingsToFile();
+        this.resourceHandlers.values().forEach(LangFileResourceHandler::exportMappingsToFile);
     }
 }

@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.provider.element.block;
+package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
@@ -52,11 +52,11 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     @Override
     public void registerAll() {
-        this.implClassGroupings.getClassGroupings().forEach(this::registerProviderAnnotatedBlock);
+        this.implClassGroupings.getClassGroupings().forEach(this::registerBlockProvider);
     }
 
-    private void registerProviderAnnotatedBlock(@Nonnull final String name,
-                                                @Nonnull final BlockImplGrouping group) {
+    private void registerBlockProvider(@Nonnull final String name,
+                                       @Nonnull final BlockImplGrouping group) {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
         if (blockProvider == null) {
             throw new ProviderElementRegistrationException(String.format(
