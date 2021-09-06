@@ -4,24 +4,24 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class DuplicateComponentBinding extends RuntimeException {
-    private DuplicateComponentBinding(final String type,
-                                      final String baseClassName,
-                                      final Class<?> current,
-                                      final Class<?> duplicate) {
+    protected DuplicateComponentBinding(final String type,
+                                        final String baseClassName,
+                                        final String current,
+                                        final String duplicate) {
         super(String.format(
                 "Binding for %s registration component [Base: %s] already exists. [Current: %s] [Duplicate: %s]",
                 type,
                 baseClassName,
-                current.getName(),
-                duplicate.getName()
+                current,
+                duplicate
         ));
     }
 
-    public <T> DuplicateComponentBinding(final String type,
-                                         final Class<? extends T> current,
-                                         final Class<? extends T> duplicate,
-                                         final List<Class<?>> assignableToCheck) {
-        this(type, getBaseClassName(current, assignableToCheck), current, duplicate);
+    protected <T> DuplicateComponentBinding(final String type,
+                                            final Class<? extends T> current,
+                                            final Class<? extends T> duplicate,
+                                            final List<Class<?>> assignableToCheck) {
+        this(type, getBaseClassName(current, assignableToCheck), current.getName(), duplicate.getName());
     }
 
     private static String getBaseClassName(final Class<?> current,

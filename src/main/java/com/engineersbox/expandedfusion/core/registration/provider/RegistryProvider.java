@@ -12,6 +12,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.HashMap;
@@ -33,4 +34,6 @@ public class RegistryProvider {
     public final Map<String, IRecipeType<? extends IRecipe<?>>> recipeTypes = new HashMap<>();
     public final Map<String, RecipeSerializerRegistryObject<? extends IRecipe<?>>> recipeSerializers = new HashMap<>();
     public final Map<String, CraftingRecipeImplGrouping> craftingRecipesToBeRegistered = new HashMap<>();
+    public final Map<String, ITag.INamedTag<Block>> blockTags = new HashMap<>();
+    public final Map<String, ITag.INamedTag<Item>> itemTags = new HashMap<>();
 }

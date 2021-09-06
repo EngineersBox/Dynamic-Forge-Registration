@@ -15,7 +15,7 @@ public class DuplicateRecipeSerializerBindingException extends DuplicateComponen
     );
 
     public <T> DuplicateRecipeSerializerBindingException(final Class<? extends T> current, final Class<? extends T> duplicate) {
-        super("item", current, duplicate, ASSIGNABLE_TO_CHECK);
+        super("recipe serializer", current, duplicate, ASSIGNABLE_TO_CHECK);
     }
 
 }

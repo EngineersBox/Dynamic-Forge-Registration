@@ -11,7 +11,7 @@ public class DuplicateCraftingRecipeBindingException extends DuplicateComponentB
     private static final List<Class<?>> ASSIGNABLE_TO_CHECK = ImmutableList.of(ForgeRegistryEntry.class);
 
     public <T> DuplicateCraftingRecipeBindingException(final Class<? extends T> current, final Class<? extends T> duplicate) {
-        super("item", current, duplicate, ASSIGNABLE_TO_CHECK);
+        super("crafting item", current, duplicate, ASSIGNABLE_TO_CHECK);
     }
 
 }

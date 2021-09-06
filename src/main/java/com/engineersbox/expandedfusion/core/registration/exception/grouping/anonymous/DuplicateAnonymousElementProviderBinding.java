@@ -14,6 +14,6 @@ public class DuplicateAnonymousElementProviderBinding extends DuplicateComponent
 
     public <T> DuplicateAnonymousElementProviderBinding(final Class<? extends T> current,
                                                         final Class<? extends T> duplicate) {
-        super("block", current, duplicate, ASSIGNABLE_TO_CHECK);
+        super("anonymous", current, duplicate, ASSIGNABLE_TO_CHECK);
     }
 }

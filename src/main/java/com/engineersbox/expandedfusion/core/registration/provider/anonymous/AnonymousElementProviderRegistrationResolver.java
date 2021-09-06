@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.anonymous;
 
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AttributedSupplier;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
@@ -59,7 +60,12 @@ public class AnonymousElementProviderRegistrationResolver extends RegistrationRe
             if (!element.flowingFluidSuppliers.isEmpty()) {
                 registerFlowingFluids(element);
             }
-            // TODO: Finish this, implement tag registration
+            if (!element.blockTags.isEmpty()) {
+                registerBlockTags(element);
+            }
+            if (!element.itemTags.isEmpty()) {
+                registerItemTags(element);
+            }
         }
     }
 
@@ -93,5 +99,13 @@ public class AnonymousElementProviderRegistrationResolver extends RegistrationRe
                         providerName,
                         this.fluidDeferredRegistryShim.register(providerName, supplier)
                 ));
+    }
+
+    private void registerBlockTags(final AnonymousElement element) {
+        element.blockTags.forEach(RegistryObjectContext::registerBlockTag);
+    }
+
+    private void registerItemTags(final AnonymousElement element) {
+        element.itemTags.forEach(RegistryObjectContext::registerItemTag);
     }
 }
