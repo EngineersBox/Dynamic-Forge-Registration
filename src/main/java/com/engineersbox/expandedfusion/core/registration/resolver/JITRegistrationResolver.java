@@ -7,6 +7,10 @@ import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
 import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
 import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
 import com.engineersbox.expandedfusion.core.event.manager.Manager;
+import com.engineersbox.expandedfusion.core.reflection.InstanceMethodInjector;
+import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
+import com.engineersbox.expandedfusion.core.reflection.annotation.TargetedInjection;
+import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
@@ -21,10 +25,8 @@ import com.engineersbox.expandedfusion.core.registration.provider.element.ItemPr
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
 import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
+import com.google.inject.*;
+import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -48,6 +50,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Singleton
@@ -57,31 +61,41 @@ public class JITRegistrationResolver extends JITResolver {
 
     private final Injector injector;
     private final Manager<DistEvent> brokerManager;
-    private final EnumMap<ResolverType, ? super RegistrationResolver> resolvers;
+    private final EnumMap<ResolverPhase, ? super RegistrationResolver> resolvers;
 
     JITRegistrationResolver(final Injector injector,
                             final Manager<DistEvent> brokerManager) {
         this.injector = injector;
         this.brokerManager = brokerManager;
-        this.resolvers = new EnumMap<>(ResolverType.class);
+        this.resolvers = new EnumMap<>(ResolverPhase.class);
         Registration.register(this);
         this.setupEventPublishing();
     }
 
-    private static final List<Pair<ResolverType, Class<? extends RegistrationResolver>>> resolverPairings = ImmutableList.of(
-            ImmutablePair.of(ResolverType.BLOCK, BlockProviderRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.ITEM, ItemProviderRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.FLUID, FluidProviderRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.RECIPE_SERIALIZER, RecipeSerializerRegistrationResolver.class),
-            ImmutablePair.of(ResolverType.RECIPE_INLINE_DECLARATION, CraftingRecipeRegistrationResolver.class)
-    );
+    @Inject
+    @TargetedInjection
+    public Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> retrieveResolvers(@Named("packageReflections") final Reflections reflections) {
+        final Set<Class<? extends RegistrationResolver>> resolverClasses = ReflectionClassFilter.filterClassesBySuperType(
+                RegistrationResolver.class,
+                reflections.getTypesAnnotatedWith(RegistrationPhaseHandler.class)
+        );
+        return resolverClasses.stream().<Pair<ResolverPhase, Class<? extends RegistrationResolver>>>map((final Class<? extends RegistrationResolver> handler) -> {
+            final RegistrationPhaseHandler annotation = handler.getAnnotation(RegistrationPhaseHandler.class);
+            return ImmutablePair.of(annotation.value(), handler);
+        }).collect(Collectors.toSet());
+    }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void instantiateResolvers() {
-        resolverPairings.forEach((final Pair<ResolverType, Class<? extends RegistrationResolver>> resolverPair) -> {
+        final Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> resolverPairings =
+                (Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>>) new InstanceMethodInjector<>(this, "retrieveResolvers")
+                        .invokeMethod(this.injector);
+        resolverPairings.forEach((final Pair<ResolverPhase, Class<? extends RegistrationResolver>> resolverPair) -> {
             if (this.resolvers.containsKey(resolverPair.getLeft())) {
                 LOGGER.debug(
-                        "{} already instantiated, skipping",
+                        "Resolver of type {} already bound to class {}, skipping",
+                        resolverPair.getLeft(),
                         resolverPair.getRight().getName()
                 );
             } else {
@@ -96,31 +110,36 @@ public class JITRegistrationResolver extends JITResolver {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends RegistrationResolver> void registerHandledElementsOfResolver(final ResolverType resolverType) {
-        LOGGER.debug("Invoked registration for {} resolver", resolverType);
-        final RegistrationResolver resolver = (T) this.resolvers.get(resolverType);
+    public <T extends RegistrationResolver> void registerHandledElementsOfResolver(final ResolverPhase resolverPhase) {
+        LOGGER.debug("Invoked registration for {} resolver", resolverPhase);
+        final RegistrationResolver resolver = (T) this.resolvers.get(resolverPhase);
         if (resolver == null) {
-            throw new UninstantiatedElementResolver(resolverType);
+            throw new UninstantiatedElementResolver(resolverPhase);
         }
         resolver.registerAll();
     }
 
     @Override
     public void registerAll() {
-        // TODO: Uncomment this after other ResolverTypes have been implemented
-//         Stream.of(ResolverType.values())
-        Stream.of(ResolverType.BLOCK, ResolverType.ITEM, ResolverType.FLUID, ResolverType.RECIPE_SERIALIZER, ResolverType.RECIPE_INLINE_DECLARATION)
-                .forEach(this::registerHandledElementsOfResolver);
+        // TODO: Refactor to Stream.of(ResolverType.values()) after other ResolverTypes have been implemented
+        Stream.of(
+                ResolverPhase.BLOCK,
+                ResolverPhase.ITEM,
+                ResolverPhase.FLUID,
+                ResolverPhase.RECIPE_SERIALIZER,
+                ResolverPhase.RECIPE_INLINE_DECLARATION,
+                ResolverPhase.ANONYMOUS_ELEMENT
+        ).forEach(this::registerHandledElementsOfResolver);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends RegistrationResolver> T getRegistrationResolver(final ResolverType resolverType) {
-        final T resolver = (T) this.resolvers.get(resolverType);
+    public <T extends RegistrationResolver> T getRegistrationResolver(final ResolverPhase resolverPhase) {
+        final T resolver = (T) this.resolvers.get(resolverPhase);
         if (resolver != null) {
             return resolver;
         }
-        LOGGER.warn("Resolver for {} does not exist, did you forget to call JITRegistrationResolver.instantiateResolvers()?", resolverType);
+        LOGGER.warn("Resolver for {} does not exist, did you forget to call JITRegistrationResolver.instantiateResolvers() or mark your resolver with @RegistrationPhaseHandler?", resolverPhase);
         return null;
     }
 

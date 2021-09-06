@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
@@ -9,12 +10,14 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.eleme
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.item.ItemImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.ItemDeferredRegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.item.Item;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
+@RegistrationPhaseHandler(ResolverPhase.ITEM)
 public class ItemProviderRegistrationResolver extends RegistrationResolver {
 
     private final ItemImplClassGrouping implClassGroupings;

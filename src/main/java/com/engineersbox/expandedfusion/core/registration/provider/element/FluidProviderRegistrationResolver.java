@@ -3,6 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.element;
 import com.engineersbox.expandedfusion.core.functional.PredicateSplitterConsumer;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
@@ -14,6 +15,7 @@ import com.engineersbox.expandedfusion.core.registration.provider.shim.*;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.BlockDeferredRegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.FluidDeferredRegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.ItemDeferredRegistryShim;
+import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.FlowingFluid;
@@ -24,6 +26,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@RegistrationPhaseHandler(ResolverPhase.FLUID)
 public class FluidProviderRegistrationResolver extends RegistrationResolver {
 
     private final FluidImplClassGrouping implClassGroupings;

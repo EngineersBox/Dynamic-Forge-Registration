@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting;
 
+import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.CraftingRecipe;
@@ -25,7 +26,7 @@ public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<Crafting
     @SuppressWarnings("rawtypes")
     @Override
     public void collectAnnotatedResources() {
-        final Set<Class<? extends ForgeRegistryEntry>> blockProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends ForgeRegistryEntry>> blockProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ForgeRegistryEntry.class,
                 this.reflections.getTypesAnnotatedWith(CraftingRecipe.class)
         );

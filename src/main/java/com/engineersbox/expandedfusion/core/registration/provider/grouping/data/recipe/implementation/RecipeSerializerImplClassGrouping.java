@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation;
 
+import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeImplementation;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeSerializer;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
@@ -23,7 +24,7 @@ public class RecipeSerializerImplClassGrouping extends ImplClassGroupings<Recipe
     @SuppressWarnings("rawtypes")
     @Override
     public void collectAnnotatedResources() {
-        final Set<Class<? extends IRecipe>> recipeImplementationAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends IRecipe>> recipeImplementationAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 IRecipe.class,
                 this.reflections.getTypesAnnotatedWith(RecipeImplementation.class)
         );
@@ -34,7 +35,7 @@ public class RecipeSerializerImplClassGrouping extends ImplClassGroupings<Recipe
             }
             addIfNotExists(recipeImplementation.name(), c);
         }
-        final Set<Class<? extends IRecipeSerializer>> recipeSerializerAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends IRecipeSerializer>> recipeSerializerAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 IRecipeSerializer.class,
                 this.reflections.getTypesAnnotatedWith(RecipeSerializer.class)
         );

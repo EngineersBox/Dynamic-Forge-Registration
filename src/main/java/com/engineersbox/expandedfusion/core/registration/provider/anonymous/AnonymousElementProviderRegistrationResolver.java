@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.anonymous;
 
+import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AttributedSupplier;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
@@ -10,6 +11,7 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.anony
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.*;
+import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.FlowingFluid;
@@ -19,6 +21,7 @@ import net.minecraft.item.Item;
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
+@RegistrationPhaseHandler(ResolverPhase.ANONYMOUS_ELEMENT)
 public class AnonymousElementProviderRegistrationResolver extends RegistrationResolver {
 
     private final AnonymousElementImplClassGrouping implClassGroupings;
@@ -38,6 +41,7 @@ public class AnonymousElementProviderRegistrationResolver extends RegistrationRe
         this.blockDeferredRegistryShim = (BlockDeferredRegistryShim) blockDeferredRegistryShim;
         this.itemDeferredRegistryShim = (ItemDeferredRegistryShim) itemDeferredRegistryShim;
         this.fluidDeferredRegistryShim = (FluidDeferredRegistryShim) fluidDeferredRegistryShim;
+        this.implClassGroupings.collectAnnotatedResources();
     }
 
     @Override

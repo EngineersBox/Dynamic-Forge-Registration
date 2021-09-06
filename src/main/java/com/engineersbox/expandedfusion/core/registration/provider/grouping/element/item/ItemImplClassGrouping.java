@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.element.item;
 
+import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
@@ -20,7 +21,7 @@ public class ItemImplClassGrouping extends ImplClassGroupings<ItemImplGrouping> 
 
     @Override
     public void collectAnnotatedResources() {
-        final Set<Class<? extends Item>> blockProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends Item>> blockProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 Item.class,
                 this.reflections.getTypesAnnotatedWith(ItemProvider.class)
         );

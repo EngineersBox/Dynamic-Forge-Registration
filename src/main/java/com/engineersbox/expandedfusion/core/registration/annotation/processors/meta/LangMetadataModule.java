@@ -1,7 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements.ElementClassRetriever;
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangFileResourceHandler;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import org.reflections.Reflections;

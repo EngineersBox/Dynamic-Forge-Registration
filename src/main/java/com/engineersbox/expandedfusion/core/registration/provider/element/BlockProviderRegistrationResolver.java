@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;
+import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.BlockDeferredRegistryShim;
@@ -13,6 +14,7 @@ import com.engineersbox.expandedfusion.core.registration.provider.RegistrationRe
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
+import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -28,6 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Supplier;
 
+@RegistrationPhaseHandler(ResolverPhase.BLOCK)
 public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     private final BlockImplClassGrouping implClassGroupings;

@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.data.recipe;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeImplementation;
 import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeSerializer;
+import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.data.ProviderDataRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistryProvider;
@@ -10,10 +11,12 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation.RecipeSerializerImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.data.recipe.RecipeDeferredRegistryShim;
+import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 
+@RegistrationPhaseHandler(ResolverPhase.RECIPE_SERIALIZER)
 public class RecipeSerializerRegistrationResolver extends RegistrationResolver  {
 
     private final RegistryProvider registryProvider;

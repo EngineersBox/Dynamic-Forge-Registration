@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid;
 
+import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
@@ -22,7 +23,7 @@ public class FluidImplClassGrouping extends ImplClassGroupings<FluidImplGrouping
 
     @Override
     public void collectAnnotatedResources() {
-        final Set<Class<? extends ForgeFlowingFluid.Flowing>> flowingFluidProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends ForgeFlowingFluid.Flowing>> flowingFluidProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ForgeFlowingFluid.Flowing.class,
                 this.reflections.getTypesAnnotatedWith(FluidProvider.class)
         );
@@ -33,7 +34,7 @@ public class FluidImplClassGrouping extends ImplClassGroupings<FluidImplGrouping
             }
             addIfNotExists(annotation.name(), c);
         }
-        final Set<Class<? extends ForgeFlowingFluid.Source>> sourceFluidProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends ForgeFlowingFluid.Source>> sourceFluidProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ForgeFlowingFluid.Source.class,
                 this.reflections.getTypesAnnotatedWith(FluidProvider.class)
         );

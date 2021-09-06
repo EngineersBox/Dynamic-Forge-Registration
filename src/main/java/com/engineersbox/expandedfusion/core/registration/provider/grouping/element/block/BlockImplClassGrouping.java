@@ -3,6 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.grouping.elem
 import com.engineersbox.expandedfusion.core.classifier.ImplementationClassifier;
 import com.engineersbox.expandedfusion.core.classifier.MultiClassImplementationClassifier;
 import com.engineersbox.expandedfusion.core.classifier.exception.GroupingClassificationException;
+import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
 import com.engineersbox.expandedfusion.core.registration.exception.MisconfiguredProviderException;
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
@@ -34,7 +35,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
 
     @Override
     public void collectAnnotatedResources() {
-        final Set<Class<? extends Block>> blockProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends Block>> blockProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 Block.class,
                 this.reflections.getTypesAnnotatedWith(BlockProvider.class)
         );
@@ -45,7 +46,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             }
             addIfNotExists(annotation.name(), c);
         }
-        final Set<Class<? extends TileEntity>> tileEntityProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends TileEntity>> tileEntityProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 TileEntity.class,
                 this.reflections.getTypesAnnotatedWith(TileEntityProvider.class)
         );
@@ -56,7 +57,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             }
             addIfNotExists(annotation.name(), c);
         }
-        final Set<Class<? extends Container>> containerProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends Container>> containerProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 Container.class,
                 this.reflections.getTypesAnnotatedWith(ContainerProvider.class)
         );
@@ -82,7 +83,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
         if (FMLEnvironment.dist != Dist.CLIENT) {
             return;
         }
-        final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ContainerScreen.class,
                 this.reflections.getTypesAnnotatedWith(ScreenProvider.class)
         );
@@ -93,7 +94,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             }
             addIfNotExists(annotation.name(), c);
         }
-        final Set<Class<? extends TileEntityRenderer>> rendererProviderAnnotatedClasses = super.filterClassesBySuperType(
+        final Set<Class<? extends TileEntityRenderer>> rendererProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 TileEntityRenderer.class,
                 this.reflections.getTypesAnnotatedWith(RendererProvider.class)
         );
