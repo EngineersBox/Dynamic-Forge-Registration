@@ -39,7 +39,8 @@ public class InstanceMethodInjector<T> {
         }
     }
 
-    public Object invokeMethod(final Injector injector) {
+    @SuppressWarnings("unchecked")
+    public <R> R invokeMethod(final Injector injector) {
         Set<Method> filteredMethods = this.methods.stream()
                 .filter((final Method method) -> method.isAnnotationPresent(TargetedInjection.class))
                 .collect(Collectors.toSet());
@@ -64,7 +65,7 @@ public class InstanceMethodInjector<T> {
             ));
         }
         try {
-            return resolvedMethod.invoke(this.instance, injectables.toArray());
+            return (R) resolvedMethod.invoke(this.instance, injectables.toArray());
         } catch (final InvocationTargetException | IllegalAccessException e) {
             throw new MethodInvocationException(String.format(
                     "Could not invoke injectable method %s",

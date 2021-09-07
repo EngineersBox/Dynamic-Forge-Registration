@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 public class BlockImplGrouping implements ImplGrouping {
 
-    public static final Logger LOGGER = LogManager.getLogger(BlockImplGrouping.class);
+    private static final Logger LOGGER = LogManager.getLogger(BlockImplGrouping.class);
 
     private Class<? extends TileEntity> tileEntity;
     private Class<? extends Block> block;

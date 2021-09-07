@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.provider;
+package com.engineersbox.expandedfusion.core.registration.contexts;
 
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
@@ -12,11 +12,10 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Singleton
 public class RegistryProvider {
@@ -34,6 +33,9 @@ public class RegistryProvider {
     public final Map<String, IRecipeType<? extends IRecipe<?>>> recipeTypes = new HashMap<>();
     public final Map<String, RecipeSerializerRegistryObject<? extends IRecipe<?>>> recipeSerializers = new HashMap<>();
     public final Map<String, CraftingRecipeImplGrouping> craftingRecipesToBeRegistered = new HashMap<>();
-    public final Map<String, ITag.INamedTag<Block>> blockTags = new HashMap<>();
-    public final Map<String, ITag.INamedTag<Item>> itemTags = new HashMap<>();
+    public final Map<ResourceLocation, Set<String>> blockTagsToBeRegistered = new HashMap<>();
+    public final Set<ResourceLocation> blockTagsToBeRegisteredAsItemTags = new HashSet<>();
+    public final Map<ResourceLocation, Set<String>> itemTagsToBeRegistered = new HashMap<>();
+    public final Map<ResourceLocation, Set<String>> sourceFluidTagsToBeRegistered = new HashMap<>();
+    public final Map<ResourceLocation, Set<String>> flowingFluidTagsToBeRegistered = new HashMap<>();
 }

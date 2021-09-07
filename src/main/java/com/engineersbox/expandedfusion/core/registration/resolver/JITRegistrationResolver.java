@@ -85,12 +85,12 @@ public class JITRegistrationResolver extends JITResolver {
         }).collect(Collectors.toSet());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void instantiateResolvers() {
-        final Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> resolverPairings =
-                (Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>>) new InstanceMethodInjector<>(this, "retrieveResolvers")
-                        .invokeMethod(this.injector);
+        final Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> resolverPairings = new InstanceMethodInjector<>(
+                this,
+                "retrieveResolvers"
+        ).invokeMethod(this.injector);
         resolverPairings.forEach((final Pair<ResolverPhase, Class<? extends RegistrationResolver>> resolverPair) -> {
             if (this.resolvers.containsKey(resolverPair.getLeft())) {
                 LOGGER.debug(
@@ -198,7 +198,7 @@ public class JITRegistrationResolver extends JITResolver {
             return this;
         }
 
-        private void addSubscriptionHandler(final EventBroker eventBroker, final Class<? extends EventSubscriptionHandler> consumer) {
+        private void addSubscriptionHandler(final EventBroker eventBroker, final Class<? extends EventSubscriptionHandler> consumer, final Injector injector) {
             try {
                 final boolean invalidClassConfiguration = ReflectionUtils.withClassModifier(Modifier.ABSTRACT)
                         .or(Class::isInterface)
@@ -206,9 +206,9 @@ public class JITRegistrationResolver extends JITResolver {
                 if (invalidClassConfiguration) {
                     throw new ResolverBuilderException("Event subscription handler must not be an interface or declared abstract");
                 }
-                final EventSubscriptionHandler consumerInstance = consumer.newInstance();
+                final EventSubscriptionHandler consumerInstance = injector.getInstance(consumer);
                 eventBroker.addConsumer(consumerInstance);
-            } catch (final InstantiationException | IllegalAccessException e) {
+            } catch (final ConfigurationException | ProvisionException e) {
                 throw new ResolverBuilderException(String.format(
                         "Could not instantiate EventSubscriptionHandler %s",
                         consumer.getName()
@@ -217,14 +217,14 @@ public class JITRegistrationResolver extends JITResolver {
         }
 
         @SuppressWarnings("unchecked")
-        private EventBroker createBrokerAndReflectivelyAddHandlers(final Class<? extends Annotation> distAnnotation) {
+        private EventBroker createBrokerAndReflectivelyAddHandlers(final Class<? extends Annotation> distAnnotation, final Injector injector) {
             final EventBroker eventBroker = new EventBroker();
             if ((FMLEnvironment.dist == Dist.CLIENT && ServerEventHandler.class.isAssignableFrom(distAnnotation))
                 || (FMLEnvironment.dist == Dist.DEDICATED_SERVER && ClientEventHandler.class.isAssignableFrom(distAnnotation))) {
                 return eventBroker;
             }
             final ConfigurationBuilder configBuilder = new ConfigurationBuilder()
-                    .setUrls(ClasspathHelper.forPackage(this.packageName))
+                    .setUrls(this.packageName != null ? ClasspathHelper.forPackage(this.packageName) : ClasspathHelper.forJavaClassPath())
                     .setScanners(
                             new TypeElementsScanner(),
                             new SubTypesScanner(),
@@ -245,45 +245,42 @@ public class JITRegistrationResolver extends JITResolver {
                     .filter((final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class))
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
                     .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
-            Stream.concat(nonInternalClasses, internalClasses).forEach((final Class<? extends EventSubscriptionHandler> consumer) -> addSubscriptionHandler(eventBroker, consumer));
+            Stream.concat(nonInternalClasses, internalClasses).forEach((final Class<? extends EventSubscriptionHandler> consumer) -> addSubscriptionHandler(eventBroker, consumer, injector));
             return eventBroker;
         }
 
-        private BrokerManager<DistEvent> createBrokerManager() {
-            final EventBroker dataEventBroker = createBrokerAndReflectivelyAddHandlers(DataEventHandler.class);
-            addSubscriptionHandler(dataEventBroker, CraftingClientEventHandler.class);
+        private BrokerManager<DistEvent> createBrokerManager(final Injector injector) {
             final BrokerManager<DistEvent> eventBrokerManager = new BrokerManager<>(DistEvent.class);
             eventBrokerManager.putMapping(
                     DistEvent.COMMON,
-                    createBrokerAndReflectivelyAddHandlers(CommonEventHandler.class)
+                    createBrokerAndReflectivelyAddHandlers(CommonEventHandler.class, injector)
             );
             eventBrokerManager.putMapping(
                     DistEvent.CLIENT,
-                    createBrokerAndReflectivelyAddHandlers(ClientEventHandler.class)
+                    createBrokerAndReflectivelyAddHandlers(ClientEventHandler.class, injector)
             );
             eventBrokerManager.putMapping(
                     DistEvent.SERVER,
-                    createBrokerAndReflectivelyAddHandlers(ServerEventHandler.class)
+                    createBrokerAndReflectivelyAddHandlers(ServerEventHandler.class, injector)
             );
             eventBrokerManager.putMapping(
                     DistEvent.DATA,
-                    dataEventBroker
+                    createBrokerAndReflectivelyAddHandlers(DataEventHandler.class, injector)
             );
 
             return eventBrokerManager;
         }
 
         public JITRegistrationResolver build() {
-            return new JITRegistrationResolver(
-                Guice.createInjector(
+            final Injector injector = Guice.createInjector(
                     new ProviderModule(),
                     new GroupingModule(),
                     new RegistryShimModule(),
                     new BakedInClassifierModule(),
                     new PackageReflectionsModule()
-                        .withLogger(this.logger)
-                        .withPackageName(this.packageName)
-                        .build(),
+                            .withLogger(this.logger)
+                            .withPackageName(this.packageName)
+                            .build(),
                     new AbstractModule() {
                         @Override
                         protected void configure() {
@@ -294,8 +291,10 @@ public class JITRegistrationResolver extends JITResolver {
                             }
                         }
                     }
-                ),
-                createBrokerManager()
+            );
+            return new JITRegistrationResolver(
+                    injector,
+                    createBrokerManager(injector)
             );
         }
     }

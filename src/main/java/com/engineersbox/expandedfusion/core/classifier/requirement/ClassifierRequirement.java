@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 public class ClassifierRequirement<T, E extends Annotation> {
 
-    public static final Logger LOGGER = LogManager.getLogger(ClassifierRequirement.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassifierRequirement.class);
 
     public final RequirementCondition condition;
     public final Class<? extends T> inheritsFrom;

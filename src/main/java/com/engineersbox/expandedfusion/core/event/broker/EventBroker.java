@@ -8,10 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EventBroker {
     private static final Logger LOGGER = LogManager.getLogger(EventBroker.class);
@@ -48,8 +45,15 @@ public class EventBroker {
     public <T extends EventSubscriptionHandler> void removeConsumer(final T eventConsumer) {
         for (final List<SubscriberInfo<? super EventSubscriptionHandler>> subscriberInfos : consumers.values()) {
             for (int i = subscriberInfos.size() - 1; i >= 0; i--)
-                if (subscriberInfos.get(i).object == eventConsumer)
+                if (subscriberInfos.get(i).getObject() == eventConsumer)
                     subscriberInfos.remove(i);
+        }
+    }
+
+    private static class SubscriberInfoComparator implements Comparator<SubscriberInfo<? super EventSubscriptionHandler>> {
+        @Override
+        public int compare(SubscriberInfo<? super EventSubscriptionHandler> a, SubscriberInfo<? super EventSubscriptionHandler> b) {
+            return Integer.compare(a.getPriority(), b.getPriority());
         }
     }
 
@@ -59,13 +63,15 @@ public class EventBroker {
             LOGGER.trace("No subscribers available to accept event [{}]", event.getClass().getName());
             return;
         }
-        subscriberInfos.forEach((final SubscriberInfo<? super EventSubscriptionHandler> info) -> {
-            try {
-                info.invoke(event);
-            } catch (final Exception e) {
-                throw new SubscriptionEventHandlerException(e);
-            }
-        });
+        subscriberInfos.stream()
+                .sorted(new SubscriberInfoComparator())
+                .forEach((final SubscriberInfo<? super EventSubscriptionHandler> info) -> {
+                    try {
+                        info.invoke(event);
+                    } catch (final Exception e) {
+                        throw new SubscriptionEventHandlerException(e);
+                    }
+                });
         LOGGER.trace("Published event to {} subscribers", subscriberInfos.size());
     }
 }

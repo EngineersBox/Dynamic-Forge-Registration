@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 @DataEventHandler
 public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
-    public static final Logger LOGGER = LogManager.getLogger(CraftingClientEventHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(CraftingClientEventHandler.class);
 
     @Subscriber
     public void registerRecipes(final GatherDataEvent gatherEvent) {
