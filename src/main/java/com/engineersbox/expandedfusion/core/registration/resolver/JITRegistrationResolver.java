@@ -8,6 +8,7 @@ import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
 import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
 import com.engineersbox.expandedfusion.core.event.manager.Manager;
 import com.engineersbox.expandedfusion.core.reflection.InstanceMethodInjector;
+import com.engineersbox.expandedfusion.core.reflection.ProxyUtils;
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.reflection.annotation.TargetedInjection;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
@@ -15,13 +16,7 @@ import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
-import com.engineersbox.expandedfusion.core.registration.handler.data.recipe.CraftingClientEventHandler;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.CraftingRecipeRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.data.recipe.RecipeSerializerRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.element.BlockProviderRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.element.FluidProviderRegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.provider.element.ItemProviderRegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
 import com.google.common.collect.ImmutableList;
@@ -29,6 +24,7 @@ import com.google.inject.*;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
@@ -47,10 +43,8 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Modifier;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.*;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -175,17 +169,17 @@ public class JITRegistrationResolver extends JITResolver {
 
     public static class Builder {
 
-        private Logger logger;
         private String packageName;
         private String modId;
 
         public Builder() {
-            this.packageName = PackageReflectionsModule.getCallerPackageName();
-        }
-
-        public Builder withLogger(final Logger logger) {
-            this.logger = logger;
-            return this;
+            this.modId = resolveModIdFromCallerPackage();
+            final List<Class<?>> topLevelClasses = PackageReflectionsModule.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
+            if (topLevelClasses.isEmpty()) {
+                this.packageName = PackageReflectionsModule.getCallerPackageName(ImmutableList.of(this.getClass().getPackage().getName()));
+            } else {
+                this.packageName = topLevelClasses.get(0).getPackage().getName();
+            }
         }
 
         public Builder withPackageName(final String packageName) {
@@ -271,14 +265,54 @@ public class JITRegistrationResolver extends JITResolver {
             return eventBrokerManager;
         }
 
+        @SuppressWarnings("java:S1872")
+        private String resolveModIdFromCallerPackage() {
+            final List<Class<?>> topLevelClasses = PackageReflectionsModule.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
+            if (topLevelClasses.isEmpty()) {
+                return null;
+            }
+            final List<String> availableModIds = topLevelClasses.stream()
+                    // Use of class name comparison here is deliberate as these are proxies, not actual classes
+                    .map((final Class<?> clazz) -> Stream.of(clazz.getDeclaredAnnotations()).filter((final Annotation annotation) -> Mod.class.getName().equals(annotation.annotationType().getName())).findFirst())
+                    .filter(Optional::isPresent)
+                    /* Since the classes in topLevelClasses are actually loaded at runtime with
+                     * Class$loadClass() this could potentially cause issues with annotation presence and metadata
+                     * retention with the internal GenericDeclaration class used to invoke
+                     * GenericDeclaration.super.isAnnotationPresent(Class<?>). As such the class metadata is
+                     * wrapped with java.lang.reflect.Proxy, so we need to reflectively unwrap this in order to make
+                     * the underlying annotations available.
+                     *
+                     * The reason we don't just cast the result of Proxy.getInvocationHandler(annotation) to
+                     * AnnotationInvocationHandler is that it has different access modifiers depending on which
+                     * distribution of JDK is used. For example, in Oracle OpenJDK is has public access, but in
+                     * AdoptOpenJDK is has package private access.
+                     */
+                    .map((final Optional<Annotation> annotation) -> ProxyUtils.getProxiedAnnotationValue(annotation.get(), "value", String.class))
+                    .distinct()
+                    .collect(Collectors.toList());
+            if (availableModIds.isEmpty()) {
+                return null;
+            } else if (availableModIds.size() > 1) {
+                LOGGER.warn("Multiple @Mod annotations present in package [{}], defaulting to first available", String.join(", ", availableModIds));
+            }
+            LOGGER.debug("Resolved mod ID as: {}", availableModIds.get(0));
+            return availableModIds.get(0);
+        }
+
         public JITRegistrationResolver build() {
+            if (this.modId == null) {
+                LOGGER.debug("Mod ID was not provided via JITRegistrationResolver.Builder.withModId(String), attempting to determine it via reflection");
+                this.modId = resolveModIdFromCallerPackage();
+                if (this.modId == null) {
+                    throw new RuntimeException("Mod ID was not provided via JITRegistrationResolver.Builder.withModId(String) and could not reflectively determine a mod ID. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
+                }
+            }
             final Injector injector = Guice.createInjector(
                     new ProviderModule(),
                     new GroupingModule(),
                     new RegistryShimModule(),
                     new BakedInClassifierModule(),
                     new PackageReflectionsModule()
-                            .withLogger(this.logger)
                             .withPackageName(this.packageName)
                             .build(),
                     new AbstractModule() {
