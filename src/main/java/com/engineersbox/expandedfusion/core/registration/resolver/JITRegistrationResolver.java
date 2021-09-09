@@ -8,6 +8,7 @@ import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
 import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
 import com.engineersbox.expandedfusion.core.event.manager.Manager;
 import com.engineersbox.expandedfusion.core.reflection.InstanceMethodInjector;
+import com.engineersbox.expandedfusion.core.reflection.PackageInspector;
 import com.engineersbox.expandedfusion.core.reflection.ProxyUtils;
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.reflection.annotation.TargetedInjection;
@@ -174,9 +175,9 @@ public class JITRegistrationResolver extends JITResolver {
 
         public Builder() {
             this.modId = resolveModIdFromCallerPackage();
-            final List<Class<?>> topLevelClasses = PackageReflectionsModule.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
+            final List<Class<?>> topLevelClasses = PackageInspector.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
             if (topLevelClasses.isEmpty()) {
-                this.packageName = PackageReflectionsModule.getCallerPackageName(ImmutableList.of(this.getClass().getPackage().getName()));
+                this.packageName = PackageInspector.getCallerPackageName(ImmutableList.of(this.getClass().getPackage().getName()));
             } else {
                 this.packageName = topLevelClasses.get(0).getPackage().getName();
             }
@@ -267,7 +268,7 @@ public class JITRegistrationResolver extends JITResolver {
 
         @SuppressWarnings("java:S1872")
         private String resolveModIdFromCallerPackage() {
-            final List<Class<?>> topLevelClasses = PackageReflectionsModule.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
+            final List<Class<?>> topLevelClasses = PackageInspector.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
             if (topLevelClasses.isEmpty()) {
                 return null;
             }

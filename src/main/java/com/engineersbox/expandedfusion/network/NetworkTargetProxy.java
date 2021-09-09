@@ -26,8 +26,8 @@ public class NetworkTargetProxy implements IProxy {
 
     NetworkTargetProxy() {
         this.registrationResolver = new JITRegistrationResolver.Builder()
-//                .withPackageName(ExpandedFusion.class.getPackage().getName())
-//                .withModId(ExpandedFusion.MOD_ID)
+                .withPackageName(ExpandedFusion.class.getPackage().getName())
+                .withModId(ExpandedFusion.MOD_ID)
                 .build();
         Registration.addTabGroup(
                 ExpandedFusion.MOD_ID,

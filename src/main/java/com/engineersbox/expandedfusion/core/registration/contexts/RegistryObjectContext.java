@@ -10,6 +10,7 @@ import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -74,23 +75,23 @@ public abstract class RegistryObjectContext {
         return REGISTRY_PROVIDER.craftingRecipesToBeRegistered;
     }
 
-    public static Map<ResourceLocation, Set<String>> getBlockTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Block>, Set<String>> getBlockTagsToBeRegistered() {
         return REGISTRY_PROVIDER.blockTagsToBeRegistered;
     }
 
-    public static Set<ResourceLocation> getBlockTagsToBeRegisteredAsItemTags() {
+    public static Map<ITag.INamedTag<Block>, ITag.INamedTag<Item>> getBlockTagsToBeRegisteredAsItemTags() {
         return REGISTRY_PROVIDER.blockTagsToBeRegisteredAsItemTags;
     }
 
-    public static Map<ResourceLocation, Set<String>> getItemTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Item>, Set<String>> getItemTagsToBeRegistered() {
         return REGISTRY_PROVIDER.itemTagsToBeRegistered;
     }
 
-    public static Map<ResourceLocation, Set<String>> getSourceFluidTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Fluid>, Set<String>> getSourceFluidTagsToBeRegistered() {
         return REGISTRY_PROVIDER.sourceFluidTagsToBeRegistered;
     }
 
-    public static Map<ResourceLocation, Set<String>> getFlowingFluidTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Fluid>, Set<String>> getFlowingFluidTagsToBeRegistered() {
         return REGISTRY_PROVIDER.flowingFluidTagsToBeRegistered;
     }
 }

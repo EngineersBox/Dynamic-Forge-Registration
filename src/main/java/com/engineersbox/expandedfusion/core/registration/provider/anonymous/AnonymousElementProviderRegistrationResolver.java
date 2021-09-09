@@ -16,7 +16,10 @@ import net.minecraft.block.Block;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -70,59 +73,89 @@ public class AnonymousElementProviderRegistrationResolver extends RegistrationRe
     }
 
     private void registerBlocks(final AnonymousElement element) {
-        element.blockSuppliers.forEach((final String providerName, final AttributedSupplier<Block> attributedSupplier) -> {
-            markTagForDeferredRegistration(providerName, attributedSupplier, this.registryProvider.blockTagsToBeRegistered);
-            if (attributedSupplier.registerBlockTagAsItemTag) {
-                this.registryProvider.blockTagsToBeRegisteredAsItemTags.add(attributedSupplier.tagResource);
+        element.blockSuppliers.forEach((final String providerName, final AttributedSupplier<Block, Block> attributedSupplier) -> {
+            ITag.INamedTag<Block> blockTag = attributedSupplier.elementTag;
+            if (blockTag == null && attributedSupplier.elementTagResource != null) {
+                blockTag = BlockTags.createOptional(attributedSupplier.elementTagResource);
+            }
+            if (blockTag != null) {
+                markTagForDeferredRegistration(providerName, blockTag, this.registryProvider.blockTagsToBeRegistered);
+                this.registryProvider.blockTags.put(blockTag.getName(), blockTag);
+                ITag.INamedTag<Item> mirrorTag = attributedSupplier.elementMirroredTag;
+                if (mirrorTag == null && attributedSupplier.elementMirroredTagResource != null) {
+                    mirrorTag = ItemTags.createOptional(attributedSupplier.elementMirroredTagResource);
+                }
+                if (mirrorTag != null) {
+                    this.registryProvider.blockTagsToBeRegisteredAsItemTags.put(blockTag, mirrorTag);
+                }
             }
             this.registryProvider.blocks.put(
                     providerName,
-                    this.blockDeferredRegistryShim.register(providerName, attributedSupplier.supplier, attributedSupplier.tabGroup)
+                    this.blockDeferredRegistryShim.register(providerName, attributedSupplier.elementSupplier, attributedSupplier.elementTabGroup)
             );
         });
     }
 
     private void registerItems(final AnonymousElement element) {
-        element.itemSuppliers.forEach((final String providerName, final AttributedSupplier<Item> attributedSupplier) -> {
-            markTagForDeferredRegistration(providerName, attributedSupplier, this.registryProvider.itemTagsToBeRegistered);
+        element.itemSuppliers.forEach((final String providerName, final AttributedSupplier<Item, Item> attributedSupplier) -> {
+            ITag.INamedTag<Item> itemTag = attributedSupplier.elementTag;
+            if (itemTag == null && attributedSupplier.elementTagResource != null) {
+                itemTag = ItemTags.createOptional(attributedSupplier.elementTagResource);
+            }
+            if (itemTag != null) {
+                this.registryProvider.itemTags.put(itemTag.getName(), itemTag);
+                markTagForDeferredRegistration(providerName, itemTag, this.registryProvider.itemTagsToBeRegistered);
+            }
             this.registryProvider.items.put(
                     providerName,
-                    this.itemDeferredRegistryShim.register(providerName, attributedSupplier.supplier)
+                    this.itemDeferredRegistryShim.register(providerName, attributedSupplier.elementSupplier)
             );
         });
     }
 
     private void registerSourceFluids(final AnonymousElement element) {
-        element.sourceFluidSuppliers.forEach((final String providerName, final AttributedSupplier<Fluid> attributedSupplier) -> {
-            markTagForDeferredRegistration(providerName, attributedSupplier, this.registryProvider.sourceFluidTagsToBeRegistered);
+        element.sourceFluidSuppliers.forEach((final String providerName, final AttributedSupplier<Fluid, Fluid> attributedSupplier) -> {
+            ITag.INamedTag<Fluid> fluidTag = attributedSupplier.elementTag;
+            if (fluidTag == null && attributedSupplier.elementTagResource != null) {
+                fluidTag = FluidTags.createOptional(attributedSupplier.elementTagResource);
+            }
+            if (fluidTag != null) {
+                this.registryProvider.fluidTags.put(fluidTag.getName(), fluidTag);
+                markTagForDeferredRegistration(providerName, fluidTag, this.registryProvider.sourceFluidTagsToBeRegistered);
+            }
             this.registryProvider.sourceFluids.put(
                     providerName,
-                    this.fluidDeferredRegistryShim.register(providerName, attributedSupplier.supplier)
+                    this.fluidDeferredRegistryShim.register(providerName, attributedSupplier.elementSupplier)
             );
         });
     }
 
     private void registerFlowingFluids(final AnonymousElement element) {
-        element.flowingFluidSuppliers.forEach((final String providerName, final AttributedSupplier<FlowingFluid> attributedSupplier) -> {
-            markTagForDeferredRegistration(providerName, attributedSupplier, this.registryProvider.flowingFluidTagsToBeRegistered);
+        element.flowingFluidSuppliers.forEach((final String providerName, final AttributedSupplier<FlowingFluid, Fluid> attributedSupplier) -> {
+            ITag.INamedTag<Fluid> fluidTag = attributedSupplier.elementTag;
+            if (fluidTag == null && attributedSupplier.elementTagResource != null) {
+                fluidTag = FluidTags.createOptional(attributedSupplier.elementTagResource);
+            }
+            if (fluidTag != null) {
+                this.registryProvider.fluidTags.put(fluidTag.getName(), fluidTag);
+                markTagForDeferredRegistration(providerName, fluidTag, this.registryProvider.flowingFluidTagsToBeRegistered);
+            }
             this.registryProvider.flowingFluids.put(
                     providerName,
-                    this.fluidDeferredRegistryShim.register(providerName, attributedSupplier.supplier)
+                    this.fluidDeferredRegistryShim.register(providerName, attributedSupplier.elementSupplier)
             );
         });
     }
 
     private <T> void markTagForDeferredRegistration(final String providerName,
-                                                    final AttributedSupplier<T> attributedSupplier,
-                                                    final Map<ResourceLocation, Set<String>> toBeRegistered) {
-        if (attributedSupplier.tagResource == null) {
-            return;
-        }
-        Set<String> tagsToBeRegistered = toBeRegistered.get(attributedSupplier.tagResource);
+                                                    final ITag.INamedTag<T> tag,
+                                                    final Map<ITag.INamedTag<T>, Set<String>> toBeRegistered) {
+
+        Set<String> tagsToBeRegistered = toBeRegistered.get(tag);
         if (tagsToBeRegistered == null) {
             tagsToBeRegistered = new HashSet<>();
         }
         tagsToBeRegistered.add(providerName);
-        this.registryProvider.itemTagsToBeRegistered.put(attributedSupplier.tagResource, tagsToBeRegistered);
+        toBeRegistered.put(tag, tagsToBeRegistered);
     }
 }

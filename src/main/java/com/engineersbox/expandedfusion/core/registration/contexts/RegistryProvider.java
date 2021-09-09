@@ -12,6 +12,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -29,13 +30,18 @@ public class RegistryProvider {
     public final Map<String, FluidRegistryObject<? extends FlowingFluid>> flowingFluids = new HashMap<>();
     public final Map<String, ItemRegistryObject<? extends Item>> items = new HashMap<>();
 
-    // Data
+    // Recipes
     public final Map<String, IRecipeType<? extends IRecipe<?>>> recipeTypes = new HashMap<>();
     public final Map<String, RecipeSerializerRegistryObject<? extends IRecipe<?>>> recipeSerializers = new HashMap<>();
     public final Map<String, CraftingRecipeImplGrouping> craftingRecipesToBeRegistered = new HashMap<>();
-    public final Map<ResourceLocation, Set<String>> blockTagsToBeRegistered = new HashMap<>();
-    public final Set<ResourceLocation> blockTagsToBeRegisteredAsItemTags = new HashSet<>();
-    public final Map<ResourceLocation, Set<String>> itemTagsToBeRegistered = new HashMap<>();
-    public final Map<ResourceLocation, Set<String>> sourceFluidTagsToBeRegistered = new HashMap<>();
-    public final Map<ResourceLocation, Set<String>> flowingFluidTagsToBeRegistered = new HashMap<>();
+
+    // Tags
+    public final Map<ResourceLocation, ITag.INamedTag<Block>> blockTags = new HashMap<>();
+    public final Map<ResourceLocation, ITag.INamedTag<Item>> itemTags = new HashMap<>();
+    public final Map<ResourceLocation, ITag.INamedTag<Fluid>> fluidTags = new HashMap<>();
+    public final Map<ITag.INamedTag<Block>, Set<String>> blockTagsToBeRegistered = new HashMap<>();
+    public final Map<ITag.INamedTag<Block>, ITag.INamedTag<Item>> blockTagsToBeRegisteredAsItemTags = new HashMap<>();
+    public final Map<ITag.INamedTag<Item>, Set<String>> itemTagsToBeRegistered = new HashMap<>();
+    public final Map<ITag.INamedTag<Fluid>, Set<String>> sourceFluidTagsToBeRegistered = new HashMap<>();
+    public final Map<ITag.INamedTag<Fluid>, Set<String>> flowingFluidTagsToBeRegistered = new HashMap<>();
 }
