@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.data.recipe;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeImplementation;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeSerializer;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeImplementation;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeSerializer;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.data.ProviderDataRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;

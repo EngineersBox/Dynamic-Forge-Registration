@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 @ClientEventHandler
 public class TileEntityRendererClientEventHandler implements EventSubscriptionHandler {
 
-    @SuppressWarnings("unused,rawtypes")
+    @SuppressWarnings({"unused","rawtypes"})
     @Subscriber
     public void registerTileEntityRenderers(final FMLClientSetupEvent event) {
         RegistryObjectContext.getRenderersToBeRegistered().forEach((final String name, final BlockImplGrouping group) -> {

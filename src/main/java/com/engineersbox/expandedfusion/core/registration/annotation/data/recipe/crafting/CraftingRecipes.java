@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation;
+package com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface RecipeImplementation {
-    String name();
+public @interface CraftingRecipes {
+    CraftingRecipe[] value();
 }

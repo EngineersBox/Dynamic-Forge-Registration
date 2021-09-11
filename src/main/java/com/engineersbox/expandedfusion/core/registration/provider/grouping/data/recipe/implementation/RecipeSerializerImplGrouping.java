@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeImplementation;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeSerializer;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeImplementation;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeSerializer;
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.data.recipe.DuplicateRecipeSerializerBindingException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplGrouping;
 import net.minecraft.item.crafting.IRecipe;

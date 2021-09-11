@@ -1,6 +1,6 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.recipe.shapeless;
+package com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.shapeless;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.ProvidesRecipeHandler;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.ProvidesRecipeHandler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting;
+package com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting;
 
 import com.engineersbox.expandedfusion.core.registration.data.recipe.IngredientType;
 

@@ -10,14 +10,10 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.function.Supplier;
 
 public class RecipeDeferredRegistryShim extends RegistryShim<IRecipeSerializer<?>> {
-
-    private static final Logger LOGGER = LogManager.getLogger(RecipeDeferredRegistryShim.class);
 
     @Inject
     public RecipeDeferredRegistryShim(@Named("modId") final String modID) {

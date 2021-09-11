@@ -28,7 +28,7 @@ import java.util.Set;
 @ClientEventHandler
 public class BlockClientEventHandler implements EventSubscriptionHandler {
 
-    @SuppressWarnings("unchecked, unused")
+    @SuppressWarnings({"unchecked","unused"})
     @Subscriber
     public <T extends Container, U extends Screen & IHasContainer<T>> void registerScreens(final FMLClientSetupEvent event) {
         RegistryObjectContext.getScreensToBeRegistered().forEach((final String name, final BlockImplGrouping group) -> {
@@ -48,7 +48,7 @@ public class BlockClientEventHandler implements EventSubscriptionHandler {
         });
     }
 
-    @SuppressWarnings("unchecked,rawtypes")
+    @SuppressWarnings({"unchecked","rawtypes"})
     private <T extends Container> ContainerScreen<T> instantiateScreenWithIScreenFactoryParams(final T container,
                                                                                                final PlayerInventory playerInventory,
                                                                                                final ITextComponent titleIn,

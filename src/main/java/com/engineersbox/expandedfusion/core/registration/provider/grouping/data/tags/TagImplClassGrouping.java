@@ -1,10 +1,10 @@
-package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting;
+package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.tags;
 
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tag;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
-import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.CraftingRecipe;
-import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -13,12 +13,12 @@ import org.reflections.Reflections;
 
 import java.util.Set;
 
-public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<CraftingRecipeImplGrouping> {
+public class TagImplClassGrouping extends ImplClassGroupings<TagImplGrouping>  {
 
     private final Reflections reflections;
 
     @Inject
-    public CraftingRecipeImplClassGrouping(@Named("packageReflections") final Reflections reflections) {
+    public TagImplClassGrouping(@Named("packageReflections") final Reflections reflections) {
         this.reflections = reflections;
     }
 
@@ -27,37 +27,39 @@ public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<Crafting
     public void collectAnnotatedResources() {
         final Set<Class<? extends ForgeRegistryEntry>> elementProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ForgeRegistryEntry.class,
-                this.reflections.getTypesAnnotatedWith(CraftingRecipe.class)
+                this.reflections.getTypesAnnotatedWith(Tag.class)
         );
         for (final Class<? extends ForgeRegistryEntry> c : elementProviderAnnotatedClasses) {
             final ItemProvider itemProvider = c.getAnnotation(ItemProvider.class);
             final BlockProvider blockProvider = c.getAnnotation(BlockProvider.class);
-            if ((itemProvider == null) == (blockProvider == null)) {
+            final FluidProvider fluidProvider = c.getAnnotation(FluidProvider.class);
+            if ((itemProvider == null) == (blockProvider == null) == (fluidProvider == null)) {
                 continue;
             }
-            final CraftingRecipe[] recipeProviders = c.getAnnotationsByType(CraftingRecipe.class);
-            if (recipeProviders.length == 0) {
+            final Tag[] tagProviders = c.getAnnotationsByType(Tag.class);
+            if (tagProviders.length == 0) {
                 continue;
             }
             if (itemProvider != null) {
                 addIfNotExists(itemProvider.name(), c);
-            } else {
+            } else if (blockProvider != null) {
                 addIfNotExists(blockProvider.name(), c);
+            } else {
+                addIfNotExists(fluidProvider.name(), c);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addIfNotExists(final String name, final Class<?> toAdd) throws DuplicateBlockComponentBinding {
-        CraftingRecipeImplGrouping recipeImplGrouping = this.classGroupings.get(name);
-        if (recipeImplGrouping == null) {
-            recipeImplGrouping = new CraftingRecipeImplGrouping();
+    public void addIfNotExists(String name, Class<?> toAdd) {
+        TagImplGrouping tagImplGrouping = this.classGroupings.get(name);
+        if (tagImplGrouping == null) {
+            tagImplGrouping = new TagImplGrouping();
         }
         if (ForgeRegistryEntry.class.isAssignableFrom(toAdd)) {
-            recipeImplGrouping.setRegistryEntry((Class<? extends ForgeRegistryEntry<?>>) toAdd);
+            tagImplGrouping.setRegistryEntry((Class<? extends ForgeRegistryEntry<?>>) toAdd);
         }
-        this.classGroupings.put(name, recipeImplGrouping);
+        this.classGroupings.put(name, tagImplGrouping);
     }
-
 }

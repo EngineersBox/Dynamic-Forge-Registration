@@ -1,8 +1,8 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation;
 
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeImplementation;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeSerializer;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeImplementation;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeSerializer;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;

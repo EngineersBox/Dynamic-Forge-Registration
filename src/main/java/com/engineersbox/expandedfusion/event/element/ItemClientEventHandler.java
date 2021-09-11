@@ -14,7 +14,9 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 @ClientEventHandler
 public class ItemClientEventHandler implements EventSubscriptionHandler {
 
-    @SuppressWarnings("unchecked,unused")
+    private ItemClientEventHandler() {}
+
+    @SuppressWarnings({"unchecked","unused"})
     @Subscriber
     public static void registerItemColors(final ColorHandlerEvent.Item event) {
         final ItemRegistryObject<? extends Item> potentialCanister = RegistryObjectContext.getItemRegistryObject(CanisterItem.PROVIDER_NAME);

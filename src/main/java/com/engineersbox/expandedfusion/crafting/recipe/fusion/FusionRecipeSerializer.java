@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.crafting.recipe.fusion;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeSerializer;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeSerializer;
 import com.google.gson.JsonObject;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;

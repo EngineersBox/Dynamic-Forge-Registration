@@ -3,6 +3,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.grouping.elem
 import com.engineersbox.expandedfusion.core.classifier.ImplementationClassifier;
 import com.engineersbox.expandedfusion.core.classifier.MultiClassImplementationClassifier;
 import com.engineersbox.expandedfusion.core.classifier.exception.GroupingClassificationException;
+import com.engineersbox.expandedfusion.core.dist.annotation.DistBound;
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
 import com.engineersbox.expandedfusion.core.registration.exception.MisconfiguredProviderException;
@@ -79,10 +80,8 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
         }
     }
 
+    @DistBound(Dist.CLIENT)
     private void addDistDependentProviders() {
-        if (FMLEnvironment.dist != Dist.CLIENT) {
-            return;
-        }
         final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ContainerScreen.class,
                 this.reflections.getTypesAnnotatedWith(ScreenProvider.class)
@@ -120,10 +119,12 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
             blockImplGrouping.setTileEntity((Class<? extends TileEntity>) toAdd);
         } else if (Container.class.isAssignableFrom(toAdd)) {
             blockImplGrouping.setContainer((Class<? extends Container>) toAdd);
-        } else if (FMLEnvironment.dist == Dist.CLIENT && ContainerScreen.class.isAssignableFrom(toAdd)) {
-            blockImplGrouping.setScreen((Class<? extends ContainerScreen<? extends Container>>) toAdd);
-        } else if (FMLEnvironment.dist == Dist.CLIENT && TileEntityRenderer.class.isAssignableFrom(toAdd)) {
-            blockImplGrouping.setRenderer((Class<? extends TileEntityRenderer<? extends TileEntity>>) toAdd);
+        } else if (FMLEnvironment.dist == Dist.CLIENT) {
+            if (ContainerScreen.class.isAssignableFrom(toAdd)) {
+                blockImplGrouping.setScreen((Class<? extends ContainerScreen<? extends Container>>) toAdd);
+            } else if (TileEntityRenderer.class.isAssignableFrom(toAdd)) {
+                blockImplGrouping.setRenderer((Class<? extends TileEntityRenderer<? extends TileEntity>>) toAdd);
+            }
         }
         this.classGroupings.put(name, blockImplGrouping);
     }

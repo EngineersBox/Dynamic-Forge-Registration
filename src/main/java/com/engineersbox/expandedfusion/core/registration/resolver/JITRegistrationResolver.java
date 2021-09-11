@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
 import com.engineersbox.expandedfusion.core.classifier.baked.BakedInClassifierModule;
+import com.engineersbox.expandedfusion.core.dist.DistInterceptorModule;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.*;
 import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
@@ -20,7 +21,6 @@ import com.engineersbox.expandedfusion.core.registration.exception.resolver.Unin
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.*;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
@@ -49,7 +49,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Singleton
 public class JITRegistrationResolver extends JITResolver {
 
     private static final Logger LOGGER = LogManager.getLogger(JITRegistrationResolver.class.getName());
@@ -82,6 +81,7 @@ public class JITRegistrationResolver extends JITResolver {
 
     @Override
     public void instantiateResolvers() {
+        // TODO: Support multiple registration resolvers for a single phase type
         final Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> resolverPairings = new InstanceMethodInjector<>(
                 this,
                 "retrieveResolvers"
@@ -116,14 +116,15 @@ public class JITRegistrationResolver extends JITResolver {
 
     @Override
     public void registerAll() {
-        // TODO: Refactor to Stream.of(ResolverType.values()) after other ResolverTypes have been implemented
+        // TODO: Refactor to Stream.of(ResolverType.values()) after other ResolverPhases have been implemented
         Stream.of(
+                ResolverPhase.TAGS,
+                ResolverPhase.ANONYMOUS_ELEMENT,
                 ResolverPhase.BLOCK,
                 ResolverPhase.ITEM,
                 ResolverPhase.FLUID,
                 ResolverPhase.RECIPE_SERIALIZER,
-                ResolverPhase.RECIPE_INLINE_DECLARATION,
-                ResolverPhase.ANONYMOUS_ELEMENT
+                ResolverPhase.RECIPE_INLINE_DECLARATION
         ).forEach(this::registerHandledElementsOfResolver);
     }
 
@@ -175,9 +176,9 @@ public class JITRegistrationResolver extends JITResolver {
 
         public Builder() {
             this.modId = resolveModIdFromCallerPackage();
-            final List<Class<?>> topLevelClasses = PackageInspector.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
+            final List<Class<?>> topLevelClasses = PackageInspector.getCallerTopLevelClasses(this.getClass().getPackage().getName());
             if (topLevelClasses.isEmpty()) {
-                this.packageName = PackageInspector.getCallerPackageName(ImmutableList.of(this.getClass().getPackage().getName()));
+                this.packageName = PackageInspector.getCallerPackageName(this.getClass().getPackage().getName());
             } else {
                 this.packageName = topLevelClasses.get(0).getPackage().getName();
             }
@@ -268,16 +269,17 @@ public class JITRegistrationResolver extends JITResolver {
 
         @SuppressWarnings("java:S1872")
         private String resolveModIdFromCallerPackage() {
-            final List<Class<?>> topLevelClasses = PackageInspector.getCallerTopLevelClasses(ImmutableList.of(this.getClass().getPackage().getName()));
+            final List<Class<?>> topLevelClasses = PackageInspector.getCallerTopLevelClasses(this.getClass().getPackage().getName());
             if (topLevelClasses.isEmpty()) {
                 return null;
             }
             final List<String> availableModIds = topLevelClasses.stream()
                     // Use of class name comparison here is deliberate as these are proxies, not actual classes
-                    .map((final Class<?> clazz) -> Stream.of(clazz.getDeclaredAnnotations()).filter((final Annotation annotation) -> Mod.class.getName().equals(annotation.annotationType().getName())).findFirst())
+                    .map((final Class<?> clazz) -> Stream.of(clazz.getDeclaredAnnotations()).filter((final Annotation annotation) ->
+                            Mod.class.getName().equals(annotation.annotationType().getName())).findFirst())
                     .filter(Optional::isPresent)
-                    /* Since the classes in topLevelClasses are actually loaded at runtime with
-                     * Class$loadClass() this could potentially cause issues with annotation presence and metadata
+                    /* The classes in topLevelClasses are actually loaded as proxies at runtime with
+                     * Class$loadClass() to avoid potentially causing issues with annotation presence and metadata
                      * retention with the internal GenericDeclaration class used to invoke
                      * GenericDeclaration.super.isAnnotationPresent(Class<?>). As such the class metadata is
                      * wrapped with java.lang.reflect.Proxy, so we need to reflectively unwrap this in order to make
@@ -305,14 +307,16 @@ public class JITRegistrationResolver extends JITResolver {
                 LOGGER.debug("Mod ID was not provided via JITRegistrationResolver.Builder.withModId(String), attempting to determine it via reflection");
                 this.modId = resolveModIdFromCallerPackage();
                 if (this.modId == null) {
-                    throw new RuntimeException("Mod ID was not provided via JITRegistrationResolver.Builder.withModId(String) and could not reflectively determine a mod ID. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
+                    throw new ResolverBuilderException("Mod ID was not provided and could not reflectively determine a mod ID. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
                 }
+                Registration.setModId(modId);
             }
             final Injector injector = Guice.createInjector(
                     new ProviderModule(),
                     new GroupingModule(),
                     new RegistryShimModule(),
                     new BakedInClassifierModule(),
+                    new DistInterceptorModule(),
                     new PackageReflectionsModule()
                             .withPackageName(this.packageName)
                             .build(),

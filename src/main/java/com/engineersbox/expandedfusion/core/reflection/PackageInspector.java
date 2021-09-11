@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class PackageInspector {
         throw new IllegalStateException("Utility Class");
     }
 
-    public static List<Class<?>> getCallerTopLevelClasses(final List<String> toIgnore) {
+    public static List<Class<?>> getCallerTopLevelClasses(final String ...toIgnore) {
         final String callerPackage = getCallerPackageName(toIgnore);
         if (callerPackage == null) {
             return Collections.emptyList();
@@ -56,7 +57,7 @@ public class PackageInspector {
                 ).toArray(String[]::new);
     }
 
-    public static String getCallerPackageName(final List<String> toIgnore) {
+    public static String getCallerPackageName(final String ...toIgnore) {
 
         final Package packageObj = getCallerPackage(toIgnore);
         return packageObj != null ? packageObj.getName() : null;
@@ -67,7 +68,7 @@ public class PackageInspector {
         return toMatchAgainst.stream().anyMatch(packageName::contains);
     }
 
-    public static Package getCallerPackage(final List<String> toIgnore) {
+    public static Package getCallerPackage(final String ...toIgnore) {
         final StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
         int startIdx = 0;
         for (int i = 0; i < stElements.length; i++) {
@@ -76,7 +77,7 @@ public class PackageInspector {
             }
         }
         for (final StackTraceElement ste : ArrayUtils.subarray(stElements, startIdx, stElements.length)) {
-            final boolean matches = matchesAsSubPackage(ste.getClassName(), toIgnore);
+            final boolean matches = matchesAsSubPackage(ste.getClassName(), Arrays.asList(toIgnore));
             if (!matches) {
                 try {
                     return Class.forName(ste.getClassName()).getPackage();

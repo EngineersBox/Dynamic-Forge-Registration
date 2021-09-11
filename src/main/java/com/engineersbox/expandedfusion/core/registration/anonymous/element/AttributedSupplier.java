@@ -8,14 +8,14 @@ import java.util.function.Supplier;
 
 public class AttributedSupplier<T, E> {
 
-    public Supplier<T> elementSupplier;
-    public String elementTabGroup;
-    public ResourceLocation elementTagResource;
-    public ITag.INamedTag<E> elementTag;
-    public ResourceLocation elementMirroredTagResource;
-    public ITag.INamedTag<Item> elementMirroredTag;
+    private Supplier<T> elementSupplier;
+    private String elementTabGroup;
+    private final TagBinding<E> tagBinding;
 
-    public AttributedSupplier() {}
+
+    public AttributedSupplier() {
+        this.tagBinding = new TagBinding<>();
+    }
 
     public AttributedSupplier<T,E> supplier(final Supplier<T> supplier) {
         this.elementSupplier = supplier;
@@ -28,22 +28,34 @@ public class AttributedSupplier<T, E> {
     }
 
     public AttributedSupplier<T,E> tagResource(final ResourceLocation tagResource) {
-        this.elementTagResource = tagResource;
+        this.tagBinding.setTagResource(tagResource);
         return this;
     }
 
     public AttributedSupplier<T,E> tag(final ITag.INamedTag<E> tag) {
-        this.elementTag = tag;
+        this.tagBinding.setTag(tag);
         return this;
     }
 
     public AttributedSupplier<T,E> mirroredTagResource(final ResourceLocation mirroredTagResource) {
-        this.elementMirroredTagResource = mirroredTagResource;
+        this.tagBinding.setMirroredTagResource(mirroredTagResource);
         return this;
     }
 
     public AttributedSupplier<T,E> mirroredTag(final ITag.INamedTag<Item> mirroredTag) {
-        this.elementMirroredTag = mirroredTag;
+        this.tagBinding.setMirroredTag(mirroredTag);
         return this;
+    }
+
+    public Supplier<T> getSupplier() {
+        return elementSupplier;
+    }
+
+    public String getTabGroup() {
+        return elementTabGroup;
+    }
+
+    public TagBinding<E> getTagBinding() {
+        return tagBinding;
     }
 }

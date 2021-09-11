@@ -7,6 +7,7 @@
             - CONATINER
             - TILE_ENTITY
             - TAG
+    - Support multiple registration resolvers for a single phase type
 - Lang Metadata:
       - Run processor as a pre-compile step with gradle and should be excluded from inclusion in final jar
 
@@ -40,7 +41,7 @@
         - Fusion control computer
         - Chemical exchanger
         - Fractional distiller
-        - Electrolyser
+        - Electrolyzer
 - Items:
     - Cell:
         - Empty
@@ -113,7 +114,7 @@
                 - H
                 - O
             - 250 FE
-    - Electrolyser:
+    - Electrolyzer:
         - Heavy water deuterium separation:
             - IN:
                 - HDO

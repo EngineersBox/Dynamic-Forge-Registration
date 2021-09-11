@@ -1,20 +1,17 @@
 package com.engineersbox.expandedfusion.core.registration.exception.grouping.data.tag;
 
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.DuplicateComponentBinding;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.tags.ITag;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+
+import java.util.List;
 
 public class DuplicateTagComponentBinding extends DuplicateComponentBinding {
 
-    public DuplicateTagComponentBinding(final ITag.INamedTag<?> current,
-                                        final ITag.INamedTag<?> duplicate) {
-        super("tag", ITag.INamedTag.class.getName(), formatTagName(current), formatTagName(duplicate));
-    }
+    private static final List<Class<?>> ASSIGNABLE_TO_CHECK = ImmutableList.of(ForgeRegistryEntry.class);
 
-    private static String formatTagName(final ITag.INamedTag<?> tag) {
-        return String.format(
-                "%s/%s",
-                tag.getName().getNamespace(),
-                tag.getName().getPath()
-        );
+    public <T> DuplicateTagComponentBinding(final Class<? extends T> current, final Class<? extends T> duplicate) {
+        super("tag", current, duplicate, ASSIGNABLE_TO_CHECK);
     }
 }

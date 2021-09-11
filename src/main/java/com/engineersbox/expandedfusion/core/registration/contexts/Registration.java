@@ -1,6 +1,5 @@
 package com.engineersbox.expandedfusion.core.registration.contexts;
 
-import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.registration.exception.contexts.CreativeTabItemGroupRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.resolver.JITResolver;
 import com.google.inject.Singleton;
@@ -30,6 +29,8 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class Registration {
+
+    private static String modId;
     private static final Map<String, ItemGroup> CREATIVE_TABS = new HashMap<>();
 
     public static ItemGroup getTabGroup(final String name) {
@@ -77,6 +78,10 @@ public class Registration {
         registrationResolver.registerAll();
     }
 
+    public static void setModId(final String newModId) {
+        modId = newModId;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends Block> Collection<T> getBlocks(final Class<T> clazz) {
         return BLOCKS.getEntries().stream()
@@ -103,6 +108,6 @@ public class Registration {
     }
 
     private static <T extends IForgeRegistryEntry<T>> DeferredRegister<T> create(final IForgeRegistry<T> registry) {
-        return DeferredRegister.create(registry, ExpandedFusion.MOD_ID);
+        return DeferredRegister.create(registry, modId);
     }
 }

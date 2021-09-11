@@ -1,11 +1,12 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
+import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tag;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.CraftingRecipe;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.PatternKey;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.PatternLine;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.crafting.UnlockCriterion;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.CraftingRecipe;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.PatternKey;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.PatternLine;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.UnlockCriterion;
 import com.engineersbox.expandedfusion.core.registration.data.recipe.AccessCriterion;
 import com.engineersbox.expandedfusion.core.registration.data.recipe.IngredientType;
 import com.engineersbox.expandedfusion.core.elements.MachineTier;
@@ -26,9 +27,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-@LangMetadata(
-        locales = @LocaleEntry(key = LangKey.EN_US, mapping = FusionControlComputer.NAME_MAPPING)
-)
+@LangMetadata(locales = @LocaleEntry(key = LangKey.EN_US, mapping = FusionControlComputer.NAME_MAPPING))
 @CraftingRecipe(
         pattern = {
                 @PatternLine("INI"),
@@ -45,6 +44,10 @@ import javax.annotation.Nullable;
                 ingredient = NiobiumTitaniumCoil.PROVIDER_NAME,
                 requirement = AccessCriterion.HAS_ITEM
         )
+)
+@Tag(
+        path = "machine/fusion_reactor",
+        mirroredItemTagPath = "machine/fusion_reactor_item"
 )
 @BlockProvider(
         name = FusionControlComputer.PROVIDER_NAME,

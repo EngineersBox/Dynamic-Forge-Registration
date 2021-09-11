@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.crafting.recipe.fusion;
 
 import com.engineersbox.expandedfusion.core.elements.machine.IMachineInventory;
-import com.engineersbox.expandedfusion.core.registration.annotation.recipe.implementation.RecipeImplementation;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeImplementation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;

@@ -9,7 +9,7 @@ import org.reflections.scanners.TypeElementsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
-public class PackageReflectionsModule extends AbstractModule {
+public final class PackageReflectionsModule extends AbstractModule {
 
     private Reflections reflections;
     private String packageName;

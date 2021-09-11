@@ -14,7 +14,7 @@ public class ProxyUtils {
         throw new IllegalStateException("Utility Class");
     }
 
-    @SuppressWarnings("java:S3011,unchecked")
+    @SuppressWarnings({"unchecked", "java:S3011"})
     public static <T> T getProxiedAnnotationValue(final Annotation annotation, final String attributeName, final Class<T> typeImpl) {
         final InvocationHandler handler = Proxy.getInvocationHandler(annotation);
         final Field memberValuesField;
