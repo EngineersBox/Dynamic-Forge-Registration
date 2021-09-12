@@ -84,7 +84,7 @@ public class TagsClientEventHandler implements EventSubscriptionHandler {
 
             @SuppressWarnings("java:S3011")
             private void copyBlockTagsToItemTags(ITag.INamedTag<Block> blockTag, ITag.INamedTag<Item> itemTag) {
-                LOGGER.warn("{} => {}", blockTag.getName().getPath(), itemTag.getName().getPath());
+                LOGGER.debug("Mirroring {} => {}", blockTag.getName().getPath(), itemTag.getName().getPath());
                 final Method method;
                 try {
                     method = ItemTagsProvider.class.getDeclaredMethod("copy", ITag.INamedTag.class, ITag.INamedTag.class);

@@ -34,6 +34,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
                                            final RegistryShim<ITag.INamedTag<?>> tagDeferredRegistryShim) {
         this.implClassGroupings = (TagImplClassGrouping) implClassGroupings;
         this.tagDeferredRegistryShim = (TagDeferredRegistryShim) tagDeferredRegistryShim;
+        this.implClassGroupings.collectAnnotatedResources();
     }
 
     @Override
@@ -43,7 +44,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerTag(@Nonnull final String name,
                              @Nonnull final TagImplGrouping group) {
-        final Class<? extends ForgeRegistryEntry<?>> registryEntry = group.getRegistryEntry();
+        final Class<?> registryEntry = group.getRegistryEntry();
         if (Block.class.isAssignableFrom(registryEntry)) {
             registerBlockTag(name, group);
         } else if (Item.class.isAssignableFrom(registryEntry)) {
@@ -52,11 +53,12 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
             registerFlowingFluidTag(name, group);
         } else if (ForgeFlowingFluid.Source.class.isAssignableFrom(registryEntry)) {
             registerSourceFluidTag(name, group);
+        } else {
+            throw new ProviderDataRegistrationException(String.format(
+                    "Class with @Tag annotation was not of taggable registry entry type: %s",
+                    registryEntry.getName()
+            ));
         }
-        throw new ProviderDataRegistrationException(String.format(
-                "Registry entry with @Tag annotation was not of taggable class %s",
-                registryEntry.getName()
-        ));
     }
 
     private void registerBlockTag(final String name,

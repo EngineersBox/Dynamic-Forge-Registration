@@ -309,8 +309,8 @@ public class JITRegistrationResolver extends JITResolver {
                 if (this.modId == null) {
                     throw new ResolverBuilderException("Mod ID was not provided and could not reflectively determine a mod ID. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
                 }
-                Registration.setModId(modId);
             }
+            Registration.setModId(modId);
             final Injector injector = Guice.createInjector(
                     new ProviderModule(),
                     new GroupingModule(),

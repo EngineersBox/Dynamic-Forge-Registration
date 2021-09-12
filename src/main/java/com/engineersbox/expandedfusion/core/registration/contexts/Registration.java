@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class Registration {
+    // TODO: Clean up this steaming pile of garbage of a class. Too much static!
 
     private static String modId;
     private static final Map<String, ItemGroup> CREATIVE_TABS = new HashMap<>();
@@ -56,16 +57,26 @@ public class Registration {
         ));
     }
 
-    public static final DeferredRegister<Fluid> FLUIDS = create(ForgeRegistries.FLUIDS);
-    public static final DeferredRegister<Block> BLOCKS = create(ForgeRegistries.BLOCKS);
-    public static final DeferredRegister<ContainerType<?>> CONTAINERS = create(ForgeRegistries.CONTAINERS);
-    public static final DeferredRegister<Item> ITEMS = create(ForgeRegistries.ITEMS);
-    public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = create(ForgeRegistries.RECIPE_SERIALIZERS);
-    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = create(ForgeRegistries.TILE_ENTITIES);
+    public static DeferredRegister<Fluid> FLUIDS;
+    public static DeferredRegister<Block> BLOCKS;
+    public static DeferredRegister<ContainerType<?>> CONTAINERS;
+    public static DeferredRegister<Item> ITEMS;
+    public static DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS;
+    public static DeferredRegister<TileEntityType<?>> TILE_ENTITIES;
 
     private Registration() {throw new IllegalAccessError("Utility class");}
 
+    private static void configureDeferredRegistries() {
+        FLUIDS = create(ForgeRegistries.FLUIDS);
+        BLOCKS = create(ForgeRegistries.BLOCKS);
+        CONTAINERS = create(ForgeRegistries.CONTAINERS);
+        ITEMS = create(ForgeRegistries.ITEMS);
+        RECIPE_SERIALIZERS = create(ForgeRegistries.RECIPE_SERIALIZERS);
+        TILE_ENTITIES = create(ForgeRegistries.TILE_ENTITIES);
+    }
+
     public static void register(final JITResolver registrationResolver) {
+        configureDeferredRegistries();
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         FLUIDS.register(modEventBus);
         BLOCKS.register(modEventBus);

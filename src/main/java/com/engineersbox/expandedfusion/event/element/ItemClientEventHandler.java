@@ -14,8 +14,6 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 @ClientEventHandler
 public class ItemClientEventHandler implements EventSubscriptionHandler {
 
-    private ItemClientEventHandler() {}
-
     @SuppressWarnings({"unchecked","unused"})
     @Subscriber
     public static void registerItemColors(final ColorHandlerEvent.Item event) {
