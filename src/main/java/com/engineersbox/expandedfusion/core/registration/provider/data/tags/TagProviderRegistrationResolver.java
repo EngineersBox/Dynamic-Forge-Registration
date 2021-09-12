@@ -19,7 +19,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 
@@ -44,7 +44,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerTag(@Nonnull final String name,
                              @Nonnull final TagImplGrouping group) {
-        final Class<?> registryEntry = group.getRegistryEntry();
+        final Class<? extends ForgeRegistryEntry<?>> registryEntry = group.getRegistryEntry();
         if (Block.class.isAssignableFrom(registryEntry)) {
             registerBlockTag(name, group);
         } else if (Item.class.isAssignableFrom(registryEntry)) {
