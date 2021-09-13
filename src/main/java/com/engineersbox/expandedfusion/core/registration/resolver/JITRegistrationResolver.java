@@ -135,7 +135,15 @@ public class JITRegistrationResolver extends JITResolver {
 
     @Override
     public void registerAll() {
-        Stream.of(ResolverPhase.values()).forEach(this::registerHandledElementsOfResolver);
+        Stream.of(
+                ResolverPhase.TAGS,
+                ResolverPhase.ANONYMOUS_ELEMENT,
+                ResolverPhase.BLOCK,
+                ResolverPhase.ITEM,
+                ResolverPhase.FLUID,
+                ResolverPhase.RECIPE_SERIALIZER,
+                ResolverPhase.RECIPE_INLINE_DECLARATION
+        ).forEach(this::registerHandledElementsOfResolver);
     }
 
     @SuppressWarnings("unchecked")
