@@ -52,10 +52,11 @@ import java.util.stream.Stream;
 public class JITRegistrationResolver extends JITResolver {
 
     private static final Logger LOGGER = LogManager.getLogger(JITRegistrationResolver.class.getName());
+    private static final String INTERNAL_CORE_PACKAGE = "com.engineersbox.expandedfusion.core";
 
     private final Injector injector;
     private final Manager<DistEvent> brokerManager;
-    private final EnumMap<ResolverPhase, ? super RegistrationResolver> resolvers;
+    private final EnumMap<ResolverPhase, Set<RegistrationResolver>> resolvers;
 
     JITRegistrationResolver(final Injector injector,
                             final Manager<DistEvent> brokerManager) {
@@ -68,64 +69,73 @@ public class JITRegistrationResolver extends JITResolver {
 
     @Inject
     @TargetedInjection
-    public Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> retrieveResolvers(@Named("packageReflections") final Reflections reflections) {
-        final Set<Class<? extends RegistrationResolver>> resolverClasses = ReflectionClassFilter.filterClassesBySuperType(
-                RegistrationResolver.class,
-                reflections.getTypesAnnotatedWith(RegistrationPhaseHandler.class)
+    public Map<ResolverPhase, Set<Class<? extends RegistrationResolver>>> retrieveResolvers(@Named("packageReflections") final Reflections externalReflections) {
+        final Reflections internalReflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE))
+                .setScanners(
+                        new TypeElementsScanner(),
+                        new SubTypesScanner(),
+                        new TypeAnnotationsScanner()
+                )
         );
-        return resolverClasses.stream().<Pair<ResolverPhase, Class<? extends RegistrationResolver>>>map((final Class<? extends RegistrationResolver> handler) -> {
+        final Set<Class<? extends RegistrationResolver>> internalResolverClasses = ReflectionClassFilter.filterClassesBySuperType(
+                RegistrationResolver.class,
+                internalReflections.getTypesAnnotatedWith(RegistrationPhaseHandler.class)
+        );
+        LOGGER.debug("Found {} internal resolvers", internalResolverClasses.size());
+        final Set<Class<? extends RegistrationResolver>> externalResolverClasses = ReflectionClassFilter.filterClassesBySuperType(
+                RegistrationResolver.class,
+                externalReflections.getTypesAnnotatedWith(RegistrationPhaseHandler.class)
+        );
+        LOGGER.debug("Found {} external resolvers", externalResolverClasses.size());
+        final Map<ResolverPhase, Set<Class<? extends RegistrationResolver>>> phaseResolvers = new EnumMap<>(ResolverPhase.class);
+        Stream.concat(
+                internalResolverClasses.stream(),
+                externalResolverClasses.stream()
+        ).forEach((final Class<? extends RegistrationResolver> handler) -> {
             final RegistrationPhaseHandler annotation = handler.getAnnotation(RegistrationPhaseHandler.class);
-            return ImmutablePair.of(annotation.value(), handler);
-        }).collect(Collectors.toSet());
+            Set<Class<? extends RegistrationResolver>> phaseMapping = phaseResolvers.get(annotation.value());
+            if (phaseMapping == null) {
+                phaseMapping = new HashSet<>();
+            }
+            phaseMapping.add(handler);
+            phaseResolvers.put(annotation.value(), phaseMapping);
+        });
+        return phaseResolvers;
     }
 
     @Override
     public void instantiateResolvers() {
-        // TODO: Support multiple registration resolvers for a single phase type
-        final Set<Pair<ResolverPhase, Class<? extends RegistrationResolver>>> resolverPairings = new InstanceMethodInjector<>(
+        final Map<ResolverPhase, Set<Class<? extends RegistrationResolver>>> resolverPairings = new InstanceMethodInjector<>(
                 this,
                 "retrieveResolvers"
         ).invokeMethod(this.injector);
-        resolverPairings.forEach((final Pair<ResolverPhase, Class<? extends RegistrationResolver>> resolverPair) -> {
-            if (this.resolvers.containsKey(resolverPair.getLeft())) {
-                LOGGER.debug(
-                        "Resolver of type {} already bound to class {}, skipping",
-                        resolverPair.getLeft(),
-                        resolverPair.getRight().getName()
-                );
-            } else {
-                this.resolvers.put(
-                        resolverPair.getLeft(),
-                        this.injector.getInstance(resolverPair.getRight())
-                );
-                LOGGER.debug("Instantiated {}", resolverPair.getRight().getName());
+        resolverPairings.forEach((final ResolverPhase phase, Set<Class<? extends RegistrationResolver>> handlers) -> {
+            Set<RegistrationResolver> phaseMapping = this.resolvers.get(phase);
+            if (phaseMapping == null) {
+                phaseMapping = new HashSet<>();
             }
+            for (final Class<? extends RegistrationResolver> handler : handlers) {
+                phaseMapping.add(this.injector.getInstance(handler));
+                LOGGER.debug("[Phase: {}] Instantiated resolver {}", phase.name(), handler.getName());
+            }
+            this.resolvers.put(phase, phaseMapping);
         });
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends RegistrationResolver> void registerHandledElementsOfResolver(final ResolverPhase resolverPhase) {
+    public void registerHandledElementsOfResolver(final ResolverPhase resolverPhase) {
         LOGGER.debug("Invoked registration for {} resolver", resolverPhase);
-        final RegistrationResolver resolver = (T) this.resolvers.get(resolverPhase);
-        if (resolver == null) {
+        final Set<? extends RegistrationResolver> handlers = this.resolvers.get(resolverPhase);
+        if (handlers == null) {
             throw new UninstantiatedElementResolver(resolverPhase);
         }
-        resolver.registerAll();
+        handlers.forEach(RegistrationResolver::registerAll);
     }
 
     @Override
     public void registerAll() {
-        // TODO: Refactor to Stream.of(ResolverType.values()) after other ResolverPhases have been implemented
-        Stream.of(
-                ResolverPhase.TAGS,
-                ResolverPhase.ANONYMOUS_ELEMENT,
-                ResolverPhase.BLOCK,
-                ResolverPhase.ITEM,
-                ResolverPhase.FLUID,
-                ResolverPhase.RECIPE_SERIALIZER,
-                ResolverPhase.RECIPE_INLINE_DECLARATION
-        ).forEach(this::registerHandledElementsOfResolver);
+        Stream.of(ResolverPhase.values()).forEach(this::registerHandledElementsOfResolver);
     }
 
     @SuppressWarnings("unchecked")
@@ -235,7 +245,7 @@ public class JITRegistrationResolver extends JITResolver {
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
                     .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
 
-            reflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage("com.engineersbox.expandedfusion.core")));
+            reflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)));
             final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
                     .stream()
                     .filter((final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class))

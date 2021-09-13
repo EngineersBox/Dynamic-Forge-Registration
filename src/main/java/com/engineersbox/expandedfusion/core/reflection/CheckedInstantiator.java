@@ -98,7 +98,7 @@ public class CheckedInstantiator<T> {
         filterAvailableConstructors();
         final List<Constructor> constructorsList = new ArrayList<>(this.constructors);
         int desiredConstructorIndex = 0;
-        if (this.constructors.size() > 1) {
+        if (!this.constructors.isEmpty()) {
             if (this.preferVarArgs) {
                 for (int i = 0; i < constructorsList.size(); i++) {
                     final Class<?>[] constructorParamTypes = constructorsList.get(i).getParameterTypes();

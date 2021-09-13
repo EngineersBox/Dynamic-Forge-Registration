@@ -85,16 +85,22 @@ public class InstanceMethodInjector<T> {
                 try {
                     binding = injector.getBinding(paramTypes[i]);
                 } catch (final ConfigurationException ignored) {
-                    LOGGER.trace(String.format(
-                            "Could not find a binding for %s with pure class key, attempting to find it with annotations included",
+                    LOGGER.trace(
+                            "Could not find a binding for {} with pure class key, attempting to find it with annotations included",
                             paramTypes[i].getName()
-                    ));
+                    );
                 }
             } else {
                 for (final Annotation annotation : annotations) {
+                    final Key<?> key = Key.get(paramTypes[i], annotation);
                     try {
-                        binding = injector.getBinding(Key.get(paramTypes[i], annotation));
-                    } catch (final ConfigurationException ignored) {}
+                        binding = injector.getBinding(key);
+                    } catch (final ConfigurationException ignored) {
+                        LOGGER.trace(
+                                "No binding available for {}, skipping",
+                                key
+                        );
+                    }
                 }
             }
             if (binding == null) {
