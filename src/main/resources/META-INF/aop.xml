@@ -1,0 +1,8 @@
+<aspectj>
+    <aspects>
+        <aspect name="com.engineersbox.expandedfusion.core.dist.DistProxyAspect"/>
+        <weaver options="-verbose -showWeaveInfo">
+            <include within="com.engineersbox.expandedfusion.*"/>
+        </weaver>
+    </aspects>
+</aspectj>

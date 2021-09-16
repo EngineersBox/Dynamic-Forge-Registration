@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.resolver;
 
 import com.engineersbox.expandedfusion.core.classifier.baked.BakedInClassifierModule;
 import com.engineersbox.expandedfusion.core.dist.DistInterceptorModule;
+import com.engineersbox.expandedfusion.core.dist.annotation.DistBound;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.*;
 import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
@@ -31,8 +32,6 @@ import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.ReflectionUtils;
@@ -44,14 +43,14 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JITRegistrationResolver extends JITResolver {
 
-    private static final Logger LOGGER = LogManager.getLogger(JITRegistrationResolver.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(JITRegistrationResolver.class);
     private static final String INTERNAL_CORE_PACKAGE = "com.engineersbox.expandedfusion.core";
 
     private final Injector injector;
@@ -158,13 +157,22 @@ public class JITRegistrationResolver extends JITResolver {
     }
 
     private void setupEventPublishing() {
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishClientEvent);
-        } else if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishServerEvent);
-        }
+//        configureClientEventListeners();
+//        configureServerEventListeners();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishCommonEvent);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishGatherDataEvent);
+    }
+
+    @DistBound(value = Dist.CLIENT, throwError = true)
+    public void configureClientEventListeners() {
+        LOGGER.warn("CALL TO CLIENT");
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishClientEvent);
+    }
+
+    @DistBound(value = Dist.DEDICATED_SERVER, throwError = true)
+    public void configureServerEventListeners() {
+        LOGGER.warn("CALL TO DEDICATED SERVER");
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishServerEvent);
     }
 
     @Override
@@ -349,10 +357,13 @@ public class JITRegistrationResolver extends JITResolver {
                         }
                     }
             );
-            return new JITRegistrationResolver(
+            final JITRegistrationResolver resolver =  new JITRegistrationResolver(
                     injector,
                     createBrokerManager(injector)
             );
+            resolver.configureClientEventListeners();
+            resolver.configureServerEventListeners();
+            return resolver;
         }
     }
 }

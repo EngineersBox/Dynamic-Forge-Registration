@@ -1,16 +1,36 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath "io.freefair.gradle:aspectj-plugin:5.3.3.3"
     }
 }
+
+project.ext {
+    aspectjVersion = '1.9.7'
+}
+
+configurations {
+    runtimeAgent
+    ajc
+    aspects
+    aspectCompile
+    compile {
+        extendsFrom aspects
+    }
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: "io.freefair.aspectj.post-compile-weaving"
 
 version = '1.0'
 group = 'com.engineersbox.expandedfusion' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -19,7 +39,16 @@ archivesBaseName = 'expandedfusion'
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
 compileJava {
-    options.compilerArgs += ["-XprintRounds", "-XprintProcessorInfo"]
+    options.compilerArgs += [
+            "-XprintRounds",
+            "-XprintProcessorInfo"
+    ]
+    ajc {
+        options.compilerArgs += [
+                "-showWeaveInfo",
+                "-verbose"
+        ]
+    }
 }
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
@@ -153,7 +182,14 @@ dependencies {
     implementation group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '4.4.0'
     // ClassGraph
     implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.115'
-
+    // AspectJ Runtime
+    implementation group: 'org.aspectj', name: 'aspectjrt', version: '1.9.7'
+    // AspectJ Weaver
+    implementation group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.7'
+    // AspectJ Tools
+    ajc group: 'org.aspectj', name: 'aspectjtools', version: "1.9.7"
+    // Hook weaver agent into classloading
+    runtimeAgent group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.7'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -185,6 +221,9 @@ repositories {
     maven {
         url 'https://repo.maven.apache.org/maven2'
         name 'Maven Central'
+    }
+    maven {
+        url "https://plugins.gradle.org/m2/"
     }
 }
 
