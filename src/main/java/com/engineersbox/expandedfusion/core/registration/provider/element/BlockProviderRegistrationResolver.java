@@ -60,20 +60,6 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerBlockProvider(@Nonnull final String name,
                                        @Nonnull final BlockImplGrouping group) {
-        final BlockProvider blockProvider = group.getBlockProviderAnnotation();
-        if (blockProvider == null) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Block implementation %s has no plausible annotation",
-                    name
-            ));
-        }
-        if (!blockProvider.name().equals(name)) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Mismatched provider element name against annotation: %s != %s",
-                    name,
-                    blockProvider.name()
-            ));
-        }
         switch (group.getClassification()) {
             case STATIC:
                 checkedBlockRegistration(name, group);
@@ -90,20 +76,6 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                                             @Nonnull final BlockImplGrouping group) {
         checkedBlockRegistration(name, group);
         checkedTileEntityRegistration(name, group);
-        final RendererProvider rendererProvider = group.getRendererProviderAnnotation();
-        if (rendererProvider == null) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Tile entity renderer implementation %s has no plausible annotation",
-                    name
-            ));
-        }
-        if (!rendererProvider.name().equals(name)) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Mismatched provider element name against annotation: %s != %s",
-                    name,
-                    rendererProvider.name()
-            ));
-        }
         final Class<? extends TileEntityRenderer<? extends TileEntity>> rendererImpl = group.getRenderer();
         if (rendererImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -117,19 +89,6 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
     private void checkedBlockRegistration(@Nonnull final String name,
                                           @Nonnull final BlockImplGrouping group) {
         final BlockProvider blockProvider = group.getBlockProviderAnnotation();
-        if (blockProvider == null) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Block implementation %s has no plausible annotation",
-                    name
-            ));
-        }
-        if (!blockProvider.name().equals(name)) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Mismatched provider element name against annotation: %s != %s",
-                    name,
-                    blockProvider.name()
-            ));
-        }
         final Class<? extends Block> blockImpl = group.getBlock();
         if (blockImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -142,20 +101,6 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     private void checkedTileEntityRegistration(@Nonnull final String name,
                                                @Nonnull final BlockImplGrouping group) {
-        final TileEntityProvider tileEntityProvider = group.getTileEntityProviderAnnotation();
-        if (tileEntityProvider == null) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Tile entity implementation %s has no plausible annotation",
-                    name
-            ));
-        }
-        if (!tileEntityProvider.name().equals(name)) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Mismatched provider element name against annotation: %s != %s",
-                    name,
-                    tileEntityProvider.name()
-            ));
-        }
         final Class<? extends TileEntity> tileEntityImpl = group.getTileEntity();
         if (tileEntityImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -170,20 +115,6 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                                     @Nonnull final BlockImplGrouping group) {
         checkedBlockRegistration(name, group);
         checkedTileEntityRegistration(name, group);
-        final ContainerProvider containerProvider = group.getContainerProviderAnnotation();
-        if (containerProvider == null) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Container implementation %s has no plausible annotation",
-                    name
-            ));
-        }
-        if (!containerProvider.name().equals(name)) {
-            throw new ProviderElementRegistrationException(String.format(
-                    "Mismatched provider element name against annotation: %s != %s",
-                    name,
-                    containerProvider.name()
-            ));
-        }
         final Class<? extends Container> containerImpl = group.getContainer();
         if (containerImpl == null) {
             throw new ProviderElementRegistrationException(String.format(
@@ -251,16 +182,26 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         } else {
             blockSupplier = () -> new Block(createBlockProperties(properties[0]));
         }
+        BlockRegistryObject<Block> blockRegistryObject;
+        if (blockProvider.noItem()) {
+            blockRegistryObject = this.blockDeferredRegistryShim.registerNoItem(
+                    name,
+                    blockSupplier
+            );
+        } else {
+            blockRegistryObject = this.blockDeferredRegistryShim.register(
+                    name,
+                    blockSupplier,
+                    blockProvider.tabGroup()
+            );
+        }
         this.elementRegistryProvider.blocks.put(
                 name,
-                this.blockDeferredRegistryShim.register(
-                        name,
-                        blockSupplier,
-                        blockProvider.tabGroup()
-                )
+                blockRegistryObject
         );
     }
 
+    @SuppressWarnings("java:S3252")
     private Block.Properties createBlockProperties(final BaseBlockProperties baseProps) {
         return Block.Properties.create(getMaterialForString(baseProps.material()));
     }

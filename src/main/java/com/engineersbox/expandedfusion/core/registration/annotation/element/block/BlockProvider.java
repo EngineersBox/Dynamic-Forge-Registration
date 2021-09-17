@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 public @interface BlockProvider {
     String name();
     BlockImplType type();
-    boolean noItem() default false; // TODO: Handle this is provider registration
+    boolean noItem() default false;
     BaseBlockProperties[] properties() default {};
     String tabGroup() default "";
 }
