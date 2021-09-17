@@ -82,9 +82,6 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
 
     @DistBound(Dist.CLIENT)
     private void addDistDependentProviders() {
-        if (FMLEnvironment.dist != Dist.CLIENT) {
-            return;
-        }
         final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ContainerScreen.class,
                 this.reflections.getTypesAnnotatedWith(ScreenProvider.class)

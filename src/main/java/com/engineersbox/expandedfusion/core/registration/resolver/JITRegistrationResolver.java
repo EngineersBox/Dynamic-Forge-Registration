@@ -157,21 +157,19 @@ public class JITRegistrationResolver extends JITResolver {
     }
 
     private void setupEventPublishing() {
-//        configureClientEventListeners();
-//        configureServerEventListeners();
+        configureClientEventListeners();
+        configureServerEventListeners();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishCommonEvent);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishGatherDataEvent);
     }
 
-    @DistBound(value = Dist.CLIENT, throwError = true)
-    public void configureClientEventListeners() {
-        LOGGER.warn("CALL TO CLIENT");
+    @DistBound(Dist.CLIENT)
+    private void configureClientEventListeners() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishClientEvent);
     }
 
-    @DistBound(value = Dist.DEDICATED_SERVER, throwError = true)
-    public void configureServerEventListeners() {
-        LOGGER.warn("CALL TO DEDICATED SERVER");
+    @DistBound(Dist.DEDICATED_SERVER)
+    private void configureServerEventListeners() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishServerEvent);
     }
 
@@ -357,13 +355,10 @@ public class JITRegistrationResolver extends JITResolver {
                         }
                     }
             );
-            final JITRegistrationResolver resolver =  new JITRegistrationResolver(
+            return new JITRegistrationResolver(
                     injector,
                     createBrokerManager(injector)
             );
-            resolver.configureClientEventListeners();
-            resolver.configureServerEventListeners();
-            return resolver;
         }
     }
 }
