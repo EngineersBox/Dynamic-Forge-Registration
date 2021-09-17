@@ -14,9 +14,13 @@ import java.util.function.Supplier;
 
 public class TileEntityDeferredRegistryShim extends RegistryShim<TileEntity> {
 
+    private final Registration registration;
+
     @Inject
-    public TileEntityDeferredRegistryShim(@Named("modId") final String modID) {
+    public TileEntityDeferredRegistryShim(@Named("modId") final String modID,
+                                          final Registration registration) {
         this.modID = modID;
+        this.registration = registration;
     }
 
     public <T extends TileEntity> TileEntityRegistryObject<T> register(final String name, final Supplier<T> tileFactory, final IBlockProvider block) {
@@ -29,7 +33,7 @@ public class TileEntityDeferredRegistryShim extends RegistryShim<TileEntity> {
     }
 
     public <T extends TileEntity> TileEntityRegistryObject<T> register(final String name, final Supplier<TileEntityType<T>> type) {
-        return new TileEntityRegistryObject<>(Registration.TILE_ENTITIES.register(name, type));
+        return new TileEntityRegistryObject<>(this.registration.getTileEntityRegister().register(name, type));
     }
 
 }

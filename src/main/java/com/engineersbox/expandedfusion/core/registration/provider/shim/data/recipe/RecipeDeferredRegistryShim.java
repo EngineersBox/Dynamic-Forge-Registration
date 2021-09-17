@@ -15,14 +15,18 @@ import java.util.function.Supplier;
 
 public class RecipeDeferredRegistryShim extends RegistryShim<IRecipeSerializer<?>> {
 
+    private final Registration registration;
+
     @Inject
-    public RecipeDeferredRegistryShim(@Named("modId") final String modID) {
+    public RecipeDeferredRegistryShim(@Named("modId") final String modID,
+                                      final Registration registration) {
         this.modID = modID;
+        this.registration = registration;
     }
 
     public <T extends IRecipe<?>> RecipeSerializerRegistryObject<T> registerSerializer(final String name,
                                                                                        final Supplier<IRecipeSerializer<T>> serializer) {
-        return new RecipeSerializerRegistryObject<>(Registration.RECIPE_SERIALIZERS.register(new ResourceLocation(this.modID, name).getPath(), serializer));
+        return new RecipeSerializerRegistryObject<>(this.registration.getRecipeSerializerRegister().register(new ResourceLocation(this.modID, name).getPath(), serializer));
     }
 
     public <T extends IRecipe<?>> IRecipeType<T> registerType(final String name) {

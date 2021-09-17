@@ -17,9 +17,13 @@ import java.util.function.Supplier;
 
 public class ItemDeferredRegistryShim extends RegistryShim<Item> {
 
+    private final Registration registration;
+
     @Inject
-    public ItemDeferredRegistryShim(@Named("modId") final String modID) {
+    public ItemDeferredRegistryShim(@Named("modId") final String modID,
+                                    final Registration registration) {
         this.modID = modID;
+        this.registration = registration;
     }
 
     public BucketItem createBucketItem(final Supplier<FlowingFluid> fluid,
@@ -45,7 +49,7 @@ public class ItemDeferredRegistryShim extends RegistryShim<Item> {
     }
 
     public ItemRegistryObject<? extends Item> register(final String name, final Supplier<? extends Item> item) {
-        return new ItemRegistryObject<>(Registration.ITEMS.register(name, item));
+        return new ItemRegistryObject<>(this.registration.getItemRegister().register(name, item));
     }
 
 }

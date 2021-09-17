@@ -12,9 +12,13 @@ import java.util.function.Supplier;
 
 public class ContainerDeferredRegistryShim extends RegistryShim<Container> {
 
+    private final Registration registration;
+
     @Inject
-    public ContainerDeferredRegistryShim(@Named("modId") final String modID) {
+    public ContainerDeferredRegistryShim(@Named("modId") final String modID,
+                                         final Registration registration) {
         this.modID = modID;
+        this.registration = registration;
     }
 
     public <C extends Container> ContainerRegistryObject<C> register(final String name, final ContainerType.IFactory<C> containerFactory) {
@@ -23,7 +27,7 @@ public class ContainerDeferredRegistryShim extends RegistryShim<Container> {
     }
 
     public <C extends Container> ContainerRegistryObject<C> register(final String name, final Supplier<ContainerType<C>> containerType) {
-        return new ContainerRegistryObject<>(Registration.CONTAINERS.register(name, containerType));
+        return new ContainerRegistryObject<>(this.registration.getContainerRegister().register(name, containerType));
     }
 
 }

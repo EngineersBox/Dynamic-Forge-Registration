@@ -33,14 +33,17 @@ import java.util.function.Supplier;
 public class BlockDeferredRegistryShim extends RegistryShim<Block> {
 
     private static final Logger LOGGER = LogManager.getLogger(BlockDeferredRegistryShim.class);
+    final Registration registration;
 
     @Inject
-    public BlockDeferredRegistryShim(@Named("modId") final String modID) {
+    public BlockDeferredRegistryShim(@Named("modId") final String modID,
+                                     final Registration registration) {
         this.modID = modID;
+        this.registration = registration;
     }
 
     public <T extends Block> BlockRegistryObject<T> registerNoItem(final String name, final Supplier<T> block) {
-        return new BlockRegistryObject<>(Registration.BLOCKS.register(name, block));
+        return new BlockRegistryObject<>(this.registration.getBlockRegister().register(name, block));
     }
 
     public <T extends Block> BlockRegistryObject<T> register(final String name,
@@ -54,7 +57,7 @@ public class BlockDeferredRegistryShim extends RegistryShim<Block> {
                                                              final BiFunction<BlockRegistryObject<T>, String, Supplier<? extends BlockItem>> item,
                                                              final String tabGroupName) {
         final BlockRegistryObject<T> ret = registerNoItem(name, block);
-        Registration.ITEMS.register(name, item.apply(ret, tabGroupName));
+        this.registration.getItemRegister().register(name, item.apply(ret, tabGroupName));
         return ret;
     }
 

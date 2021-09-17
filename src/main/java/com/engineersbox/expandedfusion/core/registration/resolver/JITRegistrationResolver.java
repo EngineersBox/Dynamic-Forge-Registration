@@ -16,6 +16,7 @@ import com.engineersbox.expandedfusion.core.reflection.annotation.TargetedInject
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistrationModule;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.ResolverBuilderException;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
@@ -61,7 +62,7 @@ public class JITRegistrationResolver extends JITResolver {
         this.injector = injector;
         this.brokerManager = brokerManager;
         this.resolvers = new EnumMap<>(ResolverPhase.class);
-        Registration.register(this);
+        this.injector.getInstance(Registration.class).register(this);
         this.setupEventPublishing();
     }
 
@@ -333,8 +334,8 @@ public class JITRegistrationResolver extends JITResolver {
                     throw new ResolverBuilderException("Mod ID was not provided and could not be determined reflectively. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
                 }
             }
-            Registration.setModId(modId);
             final Injector injector = Guice.createInjector(
+                    new RegistrationModule(modId),
                     new ProviderModule(),
                     new GroupingModule(),
                     new RegistryShimModule(),
@@ -345,11 +346,9 @@ public class JITRegistrationResolver extends JITResolver {
                     new AbstractModule() {
                         @Override
                         protected void configure() {
-                            if (modId != null) {
-                                bind(String.class)
-                                        .annotatedWith(Names.named("modId"))
-                                        .toInstance(modId);
-                            }
+                            bind(String.class)
+                                    .annotatedWith(Names.named("modId"))
+                                    .toInstance(modId);
                         }
                     }
             );

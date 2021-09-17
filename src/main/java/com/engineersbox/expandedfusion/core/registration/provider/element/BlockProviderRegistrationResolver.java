@@ -209,12 +209,12 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
     private Material getMaterialForString(final String material) {
         final Field[] fields = Material.class.getDeclaredFields();
         final Optional<Field> matValue = Arrays.stream(fields)
-                .filter(f -> f.getType().isAssignableFrom(Material.class) && f.getName().equals(material))
+                .filter((final Field field) -> field.getType().isAssignableFrom(Material.class) && field.getName().equals(material))
                 .findFirst();
         if (matValue.isPresent()) {
             try {
                 return (Material) matValue.get().get(Material.AIR);
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 throw new ProviderElementRegistrationException(e);
             }
         }

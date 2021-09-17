@@ -29,10 +29,95 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class Registration {
-    // TODO: Clean up this steaming pile of garbage of a class. Too much static!
-
-    private static String modId;
+    private String modID;
     private static final Map<String, ItemGroup> CREATIVE_TABS = new HashMap<>();
+
+    private DeferredRegister<Fluid> fluids;
+    private DeferredRegister<Block> blocks;
+    private DeferredRegister<ContainerType<?>> containers;
+    private DeferredRegister<Item> items;
+    private DeferredRegister<IRecipeSerializer<?>> recipeSerializers;
+    private DeferredRegister<TileEntityType<?>> tileEntities;
+
+    public Registration(final String modID) {
+        this.modID = modID;
+    }
+
+    private void configureDeferredRegistries() {
+        fluids = createRegister(ForgeRegistries.FLUIDS);
+        blocks = createRegister(ForgeRegistries.BLOCKS);
+        containers = createRegister(ForgeRegistries.CONTAINERS);
+        items = createRegister(ForgeRegistries.ITEMS);
+        recipeSerializers = createRegister(ForgeRegistries.RECIPE_SERIALIZERS);
+        tileEntities = createRegister(ForgeRegistries.TILE_ENTITIES);
+    }
+
+    public void register(final JITResolver registrationResolver) {
+        configureDeferredRegistries();
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        fluids.register(modEventBus);
+        blocks.register(modEventBus);
+        containers.register(modEventBus);
+        items.register(modEventBus);
+        recipeSerializers.register(modEventBus);
+        tileEntities.register(modEventBus);
+
+        registrationResolver.instantiateResolvers();
+        registrationResolver.registerAll();
+    }
+
+    public DeferredRegister<Fluid> getFluidRegister() {
+        return fluids;
+    }
+
+    public DeferredRegister<Block> getBlockRegister() {
+        return blocks;
+    }
+
+    public DeferredRegister<ContainerType<?>> getContainerRegister() {
+        return containers;
+    }
+
+    public DeferredRegister<Item> getItemRegister() {
+        return items;
+    }
+
+    public DeferredRegister<IRecipeSerializer<?>> getRecipeSerializerRegister() {
+        return recipeSerializers;
+    }
+
+    public DeferredRegister<TileEntityType<?>> getTileEntityRegister() {
+        return tileEntities;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Block> Collection<T> getBlocksByClass(final Class<T> clazz) {
+        return getBlockRegister().getEntries().stream()
+                .map(RegistryObject::get)
+                .filter(clazz::isInstance)
+                .map(block -> (T) block)
+                .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Item> Collection<T> getItemsByClass(final Class<T> clazz) {
+        return getItemRegister().getEntries().stream()
+                .map(RegistryObject::get)
+                .filter(clazz::isInstance)
+                .map(item -> (T) item)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<Item> getItemsByClass(final Predicate<Item> predicate) {
+        return getItemRegister().getEntries().stream()
+                .map(RegistryObject::get)
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
+    private <T extends IForgeRegistryEntry<T>> DeferredRegister<T> createRegister(final IForgeRegistry<T> registry) {
+        return DeferredRegister.create(registry, this.modID);
+    }
 
     public static ItemGroup getTabGroup(final String name) {
         if (!CREATIVE_TABS.containsKey(name)) {
@@ -55,70 +140,5 @@ public class Registration {
                 nameMapping,
                 iconSupplier
         ));
-    }
-
-    public static DeferredRegister<Fluid> FLUIDS;
-    public static DeferredRegister<Block> BLOCKS;
-    public static DeferredRegister<ContainerType<?>> CONTAINERS;
-    public static DeferredRegister<Item> ITEMS;
-    public static DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS;
-    public static DeferredRegister<TileEntityType<?>> TILE_ENTITIES;
-
-    private Registration() {throw new IllegalAccessError("Utility class");}
-
-    private static void configureDeferredRegistries() {
-        FLUIDS = create(ForgeRegistries.FLUIDS);
-        BLOCKS = create(ForgeRegistries.BLOCKS);
-        CONTAINERS = create(ForgeRegistries.CONTAINERS);
-        ITEMS = create(ForgeRegistries.ITEMS);
-        RECIPE_SERIALIZERS = create(ForgeRegistries.RECIPE_SERIALIZERS);
-        TILE_ENTITIES = create(ForgeRegistries.TILE_ENTITIES);
-    }
-
-    public static void register(final JITResolver registrationResolver) {
-        configureDeferredRegistries();
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        FLUIDS.register(modEventBus);
-        BLOCKS.register(modEventBus);
-        CONTAINERS.register(modEventBus);
-        ITEMS.register(modEventBus);
-        RECIPE_SERIALIZERS.register(modEventBus);
-        TILE_ENTITIES.register(modEventBus);
-
-        registrationResolver.instantiateResolvers();
-        registrationResolver.registerAll();
-    }
-
-    public static void setModId(final String newModId) {
-        modId = newModId;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends Block> Collection<T> getBlocks(final Class<T> clazz) {
-        return BLOCKS.getEntries().stream()
-                .map(RegistryObject::get)
-                .filter(clazz::isInstance)
-                .map(block -> (T) block)
-                .collect(Collectors.toList());
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends Item> Collection<T> getItems(final Class<T> clazz) {
-        return ITEMS.getEntries().stream()
-                .map(RegistryObject::get)
-                .filter(clazz::isInstance)
-                .map(item -> (T) item)
-                .collect(Collectors.toList());
-    }
-
-    public static Collection<Item> getItems(final Predicate<Item> predicate) {
-        return ITEMS.getEntries().stream()
-                .map(RegistryObject::get)
-                .filter(predicate)
-                .collect(Collectors.toList());
-    }
-
-    private static <T extends IForgeRegistryEntry<T>> DeferredRegister<T> create(final IForgeRegistry<T> registry) {
-        return DeferredRegister.create(registry, modId);
     }
 }
