@@ -1,10 +1,14 @@
 package com.engineersbox.expandedfusion.core.registration.contexts;
 
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.RecipeRegistryProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.TagRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryObjectRetrievalException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.crafting.CraftingRecipeImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.*;
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
@@ -12,7 +16,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +26,10 @@ public abstract class RegistryObjectContext {
         throw new IllegalStateException("Utility Class");
     }
 
-    private static final RegistryProvider REGISTRY_PROVIDER = Guice.createInjector(new ProviderModule()).getInstance(RegistryProvider.class);
+    private static final Injector INJECTOR = Guice.createInjector(new ProviderModule());
+    private static final ElementRegistryProvider ELEMENT_REGISTRY_PROVIDER = INJECTOR.getInstance(ElementRegistryProvider.class);
+    private static final RecipeRegistryProvider RECIPE_REGISTRY_PROVIDER = INJECTOR.getInstance(RecipeRegistryProvider.class);
+    private static final TagRegistryProvider TAG_REGISTRY_PROVIDER = INJECTOR.getInstance(TagRegistryProvider.class);
 
     private static <T> T getRegistryObject(final Class<?> clazz,
                                            final String provider_name,
@@ -40,58 +46,58 @@ public abstract class RegistryObjectContext {
     }
 
     public static TileEntityRegistryObject<? extends TileEntity> getTileEntityRegistryObject(final String provider_name) {
-        return RegistryObjectContext.getRegistryObject(TileEntityRegistryObject.class, provider_name, REGISTRY_PROVIDER.tileEntities);
+        return RegistryObjectContext.getRegistryObject(TileEntityRegistryObject.class, provider_name, ELEMENT_REGISTRY_PROVIDER.tileEntities);
     }
 
     public static BlockRegistryObject<? extends Block> getBlockRegistryObject(final String provider_name) {
-        return RegistryObjectContext.getRegistryObject(BlockRegistryObject.class, provider_name, REGISTRY_PROVIDER.blocks);
+        return RegistryObjectContext.getRegistryObject(BlockRegistryObject.class, provider_name, ELEMENT_REGISTRY_PROVIDER.blocks);
     }
 
     public static ContainerRegistryObject<? extends Container> getContainerRegistryObject(final String provider_name) {
-        return RegistryObjectContext.getRegistryObject(ContainerRegistryObject.class, provider_name, REGISTRY_PROVIDER.containers);
+        return RegistryObjectContext.getRegistryObject(ContainerRegistryObject.class, provider_name, ELEMENT_REGISTRY_PROVIDER.containers);
     }
 
     public static Map<String, BlockImplGrouping> getScreensToBeRegistered() {
-        return REGISTRY_PROVIDER.screensToBeRegistered;
+        return ELEMENT_REGISTRY_PROVIDER.screensToBeRegistered;
     }
 
     public static Map<String, BlockImplGrouping> getRenderersToBeRegistered() {
-        return REGISTRY_PROVIDER.renderersToBeRegistered;
+        return ELEMENT_REGISTRY_PROVIDER.renderersToBeRegistered;
     }
 
     public static ItemRegistryObject<? extends Item> getItemRegistryObject(final String provider_name) {
-        return RegistryObjectContext.getRegistryObject(ItemRegistryObject.class, provider_name, REGISTRY_PROVIDER.items);
+        return RegistryObjectContext.getRegistryObject(ItemRegistryObject.class, provider_name, ELEMENT_REGISTRY_PROVIDER.items);
     }
 
     public static FluidRegistryObject<? extends FlowingFluid> getFlowingFluidRegistryObject(final String provider_name) {
-        return RegistryObjectContext.getRegistryObject(FluidRegistryObject.class, provider_name, REGISTRY_PROVIDER.flowingFluids);
+        return RegistryObjectContext.getRegistryObject(FluidRegistryObject.class, provider_name, ELEMENT_REGISTRY_PROVIDER.flowingFluids);
     }
 
     public static FluidRegistryObject<? extends Fluid> getSourceFluidRegistryObject(final String provider_name) {
-        return RegistryObjectContext.getRegistryObject(FluidRegistryObject.class, provider_name, REGISTRY_PROVIDER.sourceFluids);
+        return RegistryObjectContext.getRegistryObject(FluidRegistryObject.class, provider_name, ELEMENT_REGISTRY_PROVIDER.sourceFluids);
     }
 
     public static Map<String, CraftingRecipeImplGrouping> getCraftingRecipesToBeRegistered() {
-        return REGISTRY_PROVIDER.craftingRecipesToBeRegistered;
+        return RECIPE_REGISTRY_PROVIDER.craftingRecipesToBeRegistered;
     }
 
     public static Map<ITag.INamedTag<Block>, Set<String>> getBlockTagsToBeRegistered() {
-        return REGISTRY_PROVIDER.blockTagsToBeRegistered;
+        return TAG_REGISTRY_PROVIDER.blockTagsToBeRegistered;
     }
 
     public static Map<ITag.INamedTag<Block>, ITag.INamedTag<Item>> getBlockTagsToBeRegisteredAsItemTags() {
-        return REGISTRY_PROVIDER.blockTagsToBeRegisteredAsItemTags;
+        return TAG_REGISTRY_PROVIDER.blockTagsToBeRegisteredAsItemTags;
     }
 
     public static Map<ITag.INamedTag<Item>, Set<String>> getItemTagsToBeRegistered() {
-        return REGISTRY_PROVIDER.itemTagsToBeRegistered;
+        return TAG_REGISTRY_PROVIDER.itemTagsToBeRegistered;
     }
 
     public static Map<ITag.INamedTag<Fluid>, Set<String>> getSourceFluidTagsToBeRegistered() {
-        return REGISTRY_PROVIDER.sourceFluidTagsToBeRegistered;
+        return TAG_REGISTRY_PROVIDER.sourceFluidTagsToBeRegistered;
     }
 
     public static Map<ITag.INamedTag<Fluid>, Set<String>> getFlowingFluidTagsToBeRegistered() {
-        return REGISTRY_PROVIDER.flowingFluidTagsToBeRegistered;
+        return TAG_REGISTRY_PROVIDER.flowingFluidTagsToBeRegistered;
     }
 }

@@ -3,9 +3,9 @@ package com.engineersbox.expandedfusion.core.registration.provider.data.recipe;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeImplementation;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.implementation.RecipeSerializer;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.RecipeRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.data.ProviderDataRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation.RecipeSerializerImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.recipe.implementation.RecipeSerializerImplGrouping;
@@ -19,15 +19,15 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 @RegistrationPhaseHandler(ResolverPhase.RECIPE_SERIALIZER)
 public class RecipeSerializerRegistrationResolver extends RegistrationResolver  {
 
-    private final RegistryProvider registryProvider;
+    private final RecipeRegistryProvider recipeRegistryProvider;
     private final RecipeSerializerImplClassGrouping implClassGroupings;
     private final RecipeDeferredRegistryShim recipeDeferredRegistryShim;
 
     @Inject
-    public RecipeSerializerRegistrationResolver(final RegistryProvider registryProvider,
+    public RecipeSerializerRegistrationResolver(final RecipeRegistryProvider recipeRegistryProvider,
                                                 final ImplClassGroupings<RecipeSerializerImplGrouping> implClassGroupings,
                                                 final RegistryShim<IRecipeSerializer<?>> recipeDeferredRegistryShim) {
-        this.registryProvider = registryProvider;
+        this.recipeRegistryProvider = recipeRegistryProvider;
         this.implClassGroupings = (RecipeSerializerImplClassGrouping) implClassGroupings;
         this.recipeDeferredRegistryShim = (RecipeDeferredRegistryShim) recipeDeferredRegistryShim;
     }
@@ -66,7 +66,7 @@ public class RecipeSerializerRegistrationResolver extends RegistrationResolver  
                     name
             ));
         }
-        this.registryProvider.recipeTypes.put(
+        this.recipeRegistryProvider.recipeTypes.put(
                 name,
                 this.recipeDeferredRegistryShim.registerType(name)
         );
@@ -95,7 +95,7 @@ public class RecipeSerializerRegistrationResolver extends RegistrationResolver  
                     name
             ));
         }
-        this.registryProvider.recipeSerializers.put(
+        this.recipeRegistryProvider.recipeSerializers.put(
                 name,
                 this.recipeDeferredRegistryShim.registerSerializer(
                         name,

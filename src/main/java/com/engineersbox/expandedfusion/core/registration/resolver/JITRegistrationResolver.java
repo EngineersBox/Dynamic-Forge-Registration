@@ -1,7 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
 import com.engineersbox.expandedfusion.core.classifier.baked.BakedInClassifierModule;
-import com.engineersbox.expandedfusion.core.dist.DistInterceptorModule;
 import com.engineersbox.expandedfusion.core.dist.annotation.DistBound;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.*;
@@ -152,7 +151,7 @@ public class JITRegistrationResolver extends JITResolver {
         if (resolver != null) {
             return resolver;
         }
-        LOGGER.warn("Resolver for {} does not exist, did you forget to call JITRegistrationResolver.instantiateResolvers() or mark your resolver with @RegistrationPhaseHandler?", resolverPhase);
+        LOGGER.warn("Resolver(s) for {} phase does not exist, did you forget to call JITRegistrationResolver.instantiateResolvers() or mark your resolver with @RegistrationPhaseHandler?", resolverPhase);
         return null;
     }
 
@@ -328,10 +327,10 @@ public class JITRegistrationResolver extends JITResolver {
 
         public JITRegistrationResolver build() {
             if (this.modId == null) {
-                LOGGER.debug("Mod ID was not provided via JITRegistrationResolver.Builder.withModId(String), attempting to determine it via reflection");
+                LOGGER.warn("Mod ID was not provided via JITRegistrationResolver.Builder.withModId(String), attempting to determine it via reflection");
                 this.modId = resolveModIdFromCallerPackage();
                 if (this.modId == null) {
-                    throw new ResolverBuilderException("Mod ID was not provided and could not reflectively determine a mod ID. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
+                    throw new ResolverBuilderException("Mod ID was not provided and could not be determined reflectively. Please provide it with JITRegistrationResolver.Builder.withModId(String)");
                 }
             }
             Registration.setModId(modId);
@@ -340,7 +339,6 @@ public class JITRegistrationResolver extends JITResolver {
                     new GroupingModule(),
                     new RegistryShimModule(),
                     new BakedInClassifierModule(),
-                    new DistInterceptorModule(),
                     new PackageReflectionsModule()
                             .withPackageName(this.packageName)
                             .build(),

@@ -2,6 +2,7 @@ package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.element.BlockDeferredRegistryShim;
@@ -11,7 +12,6 @@ import com.engineersbox.expandedfusion.core.registration.provider.shim.element.T
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
@@ -37,15 +37,15 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
     private final BlockDeferredRegistryShim blockDeferredRegistryShim;
     private final ContainerDeferredRegistryShim containerDeferredRegistryShim;
     private final TileEntityDeferredRegistryShim tileEntityDeferredRegistryShim;
-    private final RegistryProvider registryProvider;
+    private final ElementRegistryProvider elementRegistryProvider;
 
     @Inject
-    public BlockProviderRegistrationResolver(final RegistryProvider registryProvider,
+    public BlockProviderRegistrationResolver(final ElementRegistryProvider elementRegistryProvider,
                                              final ImplClassGroupings<BlockImplGrouping> implClassGroupings,
                                              final RegistryShim<Block> blockDeferredRegistryShim,
                                              final RegistryShim<Container> containerDeferredRegistryShim,
                                              final RegistryShim<TileEntity> tileEntityDeferredRegistryShim) {
-        this.registryProvider = registryProvider;
+        this.elementRegistryProvider = elementRegistryProvider;
         this.blockDeferredRegistryShim = (BlockDeferredRegistryShim) blockDeferredRegistryShim;
         this.containerDeferredRegistryShim = (ContainerDeferredRegistryShim) containerDeferredRegistryShim;
         this.tileEntityDeferredRegistryShim = (TileEntityDeferredRegistryShim) tileEntityDeferredRegistryShim;
@@ -111,7 +111,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                     name
             ));
         }
-        this.registryProvider.renderersToBeRegistered.put(name, group);
+        this.elementRegistryProvider.renderersToBeRegistered.put(name, group);
     }
 
     private void checkedBlockRegistration(@Nonnull final String name,
@@ -192,10 +192,10 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
             ));
         }
         registerContainer(name, containerImpl);
-        this.registryProvider.screensToBeRegistered.put(name, group);
+        this.elementRegistryProvider.screensToBeRegistered.put(name, group);
         final RendererProvider rendererProvider = group.getRendererProviderAnnotation();
         if (rendererProvider != null) {
-            this.registryProvider.renderersToBeRegistered.put(name, group);
+            this.elementRegistryProvider.renderersToBeRegistered.put(name, group);
         }
     }
 
@@ -203,7 +203,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
                                    @Nonnull final Class<? extends Container> containerImpl) {
         final ContainerType.IFactory<? extends Container> containerFactory = (final int id, final PlayerInventory playerInventory) ->
                 this.instantiateContainerWithIFactoryParams(id, playerInventory, containerImpl);
-        this.registryProvider.containers.put(
+        this.elementRegistryProvider.containers.put(
             name,
             this.containerDeferredRegistryShim.register(
                 name,
@@ -228,14 +228,14 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerTileEntityProvider(@Nonnull final String name,
                                             @Nonnull final Class<? extends TileEntity> tileEntityImpl) {
-        final BlockRegistryObject<? extends Block> blockRegistryObject = this.registryProvider.blocks.get(name);
+        final BlockRegistryObject<? extends Block> blockRegistryObject = this.elementRegistryProvider.blocks.get(name);
         if (blockRegistryObject == null) {
             throw new ProviderElementRegistrationException(String.format(
                     "Block registry has no entry for element: %s",
                     name
             ));
         }
-        this.registryProvider.tileEntities.put(
+        this.elementRegistryProvider.tileEntities.put(
                 name,
                 this.tileEntityDeferredRegistryShim.register(name, () -> super.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
         );
@@ -251,7 +251,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         } else {
             blockSupplier = () -> new Block(createBlockProperties(properties[0]));
         }
-        this.registryProvider.blocks.put(
+        this.elementRegistryProvider.blocks.put(
                 name,
                 this.blockDeferredRegistryShim.register(
                         name,

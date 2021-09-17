@@ -1,10 +1,9 @@
 package com.engineersbox.expandedfusion.core.registration.provider.shim.data.tags;
 
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.TagBinding;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.TagRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -19,11 +18,11 @@ import java.util.Set;
 
 public class TagDeferredRegistryShim extends RegistryShim<ITag.INamedTag<?>> {
 
-    private final RegistryProvider registryProvider;
+    private final TagRegistryProvider tagRegistryProvider;
 
     @Inject
-    public TagDeferredRegistryShim(final RegistryProvider registryProvider) {
-        this.registryProvider = registryProvider;
+    public TagDeferredRegistryShim(final TagRegistryProvider tagRegistryProvider) {
+        this.tagRegistryProvider = tagRegistryProvider;
     }
 
     public void bindBlockTag(final String providerName,
@@ -33,14 +32,14 @@ public class TagDeferredRegistryShim extends RegistryShim<ITag.INamedTag<?>> {
             blockTag = BlockTags.createOptional(tagBinding.getTagResource());
         }
         if (blockTag != null) {
-            markTagForDeferredRegistration(providerName, blockTag, this.registryProvider.blockTagsToBeRegistered);
-            this.registryProvider.blockTags.put(blockTag.getName(), blockTag);
+            markTagForDeferredRegistration(providerName, blockTag, this.tagRegistryProvider.blockTagsToBeRegistered);
+            this.tagRegistryProvider.blockTags.put(blockTag.getName(), blockTag);
             ITag.INamedTag<Item> mirrorTag = tagBinding.getMirroredTag();
             if (mirrorTag == null && tagBinding.getMirroredTagResource() != null) {
                 mirrorTag = ItemTags.createOptional(tagBinding.getMirroredTagResource());
             }
             if (mirrorTag != null) {
-                this.registryProvider.blockTagsToBeRegisteredAsItemTags.put(blockTag, mirrorTag);
+                this.tagRegistryProvider.blockTagsToBeRegisteredAsItemTags.put(blockTag, mirrorTag);
             }
         }
     }
@@ -52,8 +51,8 @@ public class TagDeferredRegistryShim extends RegistryShim<ITag.INamedTag<?>> {
             itemTag = ItemTags.createOptional(tagBinding.getTagResource());
         }
         if (itemTag != null) {
-            this.registryProvider.itemTags.put(itemTag.getName(), itemTag);
-            markTagForDeferredRegistration(providerName, itemTag, this.registryProvider.itemTagsToBeRegistered);
+            this.tagRegistryProvider.itemTags.put(itemTag.getName(), itemTag);
+            markTagForDeferredRegistration(providerName, itemTag, this.tagRegistryProvider.itemTagsToBeRegistered);
         }
     }
 
@@ -63,8 +62,8 @@ public class TagDeferredRegistryShim extends RegistryShim<ITag.INamedTag<?>> {
             fluidTag = FluidTags.createOptional(tagBinding.getTagResource());
         }
         if (fluidTag != null) {
-            this.registryProvider.fluidTags.put(fluidTag.getName(), fluidTag);
-            markTagForDeferredRegistration(providerName, fluidTag, this.registryProvider.sourceFluidTagsToBeRegistered);
+            this.tagRegistryProvider.fluidTags.put(fluidTag.getName(), fluidTag);
+            markTagForDeferredRegistration(providerName, fluidTag, this.tagRegistryProvider.sourceFluidTagsToBeRegistered);
         }
     }
 
@@ -74,8 +73,8 @@ public class TagDeferredRegistryShim extends RegistryShim<ITag.INamedTag<?>> {
             fluidTag = FluidTags.createOptional(tagBinding.getTagResource());
         }
         if (fluidTag != null) {
-            this.registryProvider.fluidTags.put(fluidTag.getName(), fluidTag);
-            markTagForDeferredRegistration(providerName, fluidTag, this.registryProvider.flowingFluidTagsToBeRegistered);
+            this.tagRegistryProvider.fluidTags.put(fluidTag.getName(), fluidTag);
+            markTagForDeferredRegistration(providerName, fluidTag, this.tagRegistryProvider.flowingFluidTagsToBeRegistered);
         }
     }
 

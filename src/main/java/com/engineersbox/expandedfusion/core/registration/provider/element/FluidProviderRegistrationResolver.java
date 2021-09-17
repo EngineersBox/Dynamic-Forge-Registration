@@ -5,9 +5,9 @@ import com.engineersbox.expandedfusion.core.registration.annotation.element.flui
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplGrouping;
@@ -33,15 +33,15 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
     private final FluidDeferredRegistryShim fluidDeferredRegistryShim;
     private final BlockDeferredRegistryShim blockDeferredRegistryShim;
     private final ItemDeferredRegistryShim itemDeferredRegistryShim;
-    final RegistryProvider registryProvider;
+    final ElementRegistryProvider elementRegistryProvider;
 
     @Inject
-    public FluidProviderRegistrationResolver(final RegistryProvider registryProvider,
+    public FluidProviderRegistrationResolver(final ElementRegistryProvider elementRegistryProvider,
                                              final ImplClassGroupings<FluidImplGrouping> implClassGroupings,
                                              final RegistryShim<Fluid> fluidDeferredRegistryShim,
                                              final RegistryShim<Block> blockDeferredRegistryShim,
                                              final RegistryShim<Item> itemDeferredRegistryShim) {
-        this.registryProvider = registryProvider;
+        this.elementRegistryProvider = elementRegistryProvider;
         this.fluidDeferredRegistryShim = (FluidDeferredRegistryShim) fluidDeferredRegistryShim;
         this.blockDeferredRegistryShim = (BlockDeferredRegistryShim) blockDeferredRegistryShim;
         this.itemDeferredRegistryShim = (ItemDeferredRegistryShim) itemDeferredRegistryShim;
@@ -137,7 +137,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
     }
 
     private void registerFluidBlock(final String name) {
-        this.registryProvider.blocks.put(
+        this.elementRegistryProvider.blocks.put(
                 name,
                 this.blockDeferredRegistryShim.registerFluid(
                         name,
@@ -148,7 +148,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerSourceFluid(final String name,
                                      final Class<? extends Fluid> sourceFluidImpl) {
-        this.registryProvider.sourceFluids.put(
+        this.elementRegistryProvider.sourceFluids.put(
                 name,
                 this.fluidDeferredRegistryShim.register(
                         name,
@@ -159,7 +159,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerFlowingFluid(final String name,
                                       final Class<? extends FlowingFluid> fluidImpl) {
-        this.registryProvider.flowingFluids.put(
+        this.elementRegistryProvider.flowingFluids.put(
                 name,
                 this.fluidDeferredRegistryShim.register(
                         name,
