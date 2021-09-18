@@ -72,7 +72,7 @@ public class PackageInspector {
         final StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
         int startIdx = 0;
         for (int i = 0; i < stElements.length; i++) {
-            if (stElements[i].getClassName().equals(PackageReflectionsModule.class.getName())) {
+            if (stElements[i].getClassName().equals(PackageInspector.class.getName())) {
                 startIdx = i + 1;
             }
         }

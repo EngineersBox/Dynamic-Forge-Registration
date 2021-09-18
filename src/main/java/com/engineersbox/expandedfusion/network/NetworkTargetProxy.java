@@ -35,7 +35,7 @@ public class NetworkTargetProxy implements IProxy {
                 () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
         );
         Registration.addTabGroup(
-                "expandedfusion_machines",
+                ExpandedFusion.MOD_ID + "_machines",
                 "Expanded Fusion Machines",
                 () -> new ItemStack(RegistryObjectContext.getBlockRegistryObject(FusionControlComputer.PROVIDER_NAME).asBlock())
         );
