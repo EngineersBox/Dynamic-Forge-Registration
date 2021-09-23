@@ -25,6 +25,7 @@ code organization.
 | `@FluidBucketProperties`      | Used in the `bucket` field of a `@FluidProvider` annotation to provide item attributes for an automatically generated bucket item.                                                                                                                                                                       | `false` |
 | `@AnonymousElementRegistrant` | Declaration of an anonymous element provider via enumeration or static fields                                                                                                                                                                                                                            | `true`  |
 | `@ElementRetriever`           | Specifies a `field` or `method` that supplies an instance of `com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement`. Usage with methods should only be applied where no parameters are specified. Can only be used in class annotated with `@AnonymousElementRegistrant` | `false` |
+| `@FluidFog`                   | Provides RGB values for fluid fog to be set to when player is immersed. All values will default to `0.0F` if left unspecified.                                                                                                                                                                           | `false` |
 
 ### Events
 
