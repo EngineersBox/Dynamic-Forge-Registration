@@ -1,6 +1,5 @@
 package com.engineersbox.expandedfusion.core.reflection;
 
-import com.engineersbox.expandedfusion.core.registration.resolver.PackageReflectionsModule;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import org.apache.commons.lang3.ArrayUtils;

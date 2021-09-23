@@ -1,6 +1,6 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
+package com.engineersbox.expandedfusion.core.registration.provider.service.element;
 
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.google.inject.Inject;
@@ -30,14 +30,14 @@ import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-public class BlockDeferredRegistryShim extends RegistryShim<Block> {
+public class BlockDeferredRegistryService extends RegistryService<Block> {
 
-    private static final Logger LOGGER = LogManager.getLogger(BlockDeferredRegistryShim.class);
+    private static final Logger LOGGER = LogManager.getLogger(BlockDeferredRegistryService.class);
     final Registration registration;
 
     @Inject
-    public BlockDeferredRegistryShim(@Named("modId") final String modID,
-                                     final Registration registration) {
+    public BlockDeferredRegistryService(@Named("modId") final String modID,
+                                        final Registration registration) {
         this.modID = modID;
         this.registration = registration;
     }

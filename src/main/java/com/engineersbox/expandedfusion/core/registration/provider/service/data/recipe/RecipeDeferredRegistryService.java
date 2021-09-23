@@ -1,6 +1,6 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.data.recipe;
+package com.engineersbox.expandedfusion.core.registration.provider.service.data.recipe;
 
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.core.registration.registryObject.data.recipe.RecipeSerializerRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.google.inject.Inject;
@@ -13,13 +13,13 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.function.Supplier;
 
-public class RecipeDeferredRegistryShim extends RegistryShim<IRecipeSerializer<?>> {
+public class RecipeDeferredRegistryService extends RegistryService<IRecipeSerializer<?>> {
 
     private final Registration registration;
 
     @Inject
-    public RecipeDeferredRegistryShim(@Named("modId") final String modID,
-                                      final Registration registration) {
+    public RecipeDeferredRegistryService(@Named("modId") final String modID,
+                                         final Registration registration) {
         this.modID = modID;
         this.registration = registration;
     }

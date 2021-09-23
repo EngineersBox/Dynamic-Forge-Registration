@@ -1,7 +1,7 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
+package com.engineersbox.expandedfusion.core.registration.provider.service.element;
 
 import com.engineersbox.expandedfusion.core.elements.block.IBlockProvider;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.TileEntityRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.google.inject.Inject;
@@ -12,13 +12,13 @@ import net.minecraft.tileentity.TileEntityType;
 
 import java.util.function.Supplier;
 
-public class TileEntityDeferredRegistryShim extends RegistryShim<TileEntity> {
+public class TileEntityDeferredRegistryService extends RegistryService<TileEntity> {
 
     private final Registration registration;
 
     @Inject
-    public TileEntityDeferredRegistryShim(@Named("modId") final String modID,
-                                          final Registration registration) {
+    public TileEntityDeferredRegistryService(@Named("modId") final String modID,
+                                             final Registration registration) {
         this.modID = modID;
         this.registration = registration;
     }

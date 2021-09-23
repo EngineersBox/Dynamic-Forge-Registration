@@ -7,11 +7,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@ProvidesElement
+@ProvidesElement("fluid")
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface FluidProvider {
     String name();
-    FluidBucketProperties[] bucket() default {};
     boolean gaseous() default false;
+    // TODO: Allow users to specify K,V pairs of the form "<METHOD NAME>:<ARG VALUE>" to set fluid block properties
+    //       These can be reflectively retrieved from the AbstractBlock class, get any method that returns
+    //       AbstractBlock.Properties and isn't create(...) or from(...)
 }

@@ -73,7 +73,7 @@ public class LangFileResourceHandler {
             return;
         }
         this.langMappings.put(providerNamespace, humanReadable);
-        LOGGER.info(
+        LOGGER.debug(
                 "Added mapping for: \"{}\" -> \"{}\"",
                 providerNamespace,
                 humanReadable
@@ -89,16 +89,15 @@ public class LangFileResourceHandler {
             br.write(jsonContent);
         } catch (final IOException e) {
             throw new RuntimeException(String.format(
-                    "Could not write JSON content to file: %s%s",
-                    this.outputDirectory,
-                    this.langFileName
+                    "Could not write JSON content to file: %s",
+                    getFormattedFilePath()
             ), e); // TODO: Implement an exception for this
         }
     }
 
     private String getFormattedFilePath() {
         return String.format(
-                "%s/%s",
+                "../%s/%s",
                 this.outputDirectory,
                 this.langFileName
         );

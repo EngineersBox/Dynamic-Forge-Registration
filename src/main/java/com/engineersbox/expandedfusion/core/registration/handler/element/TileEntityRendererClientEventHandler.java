@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.handler.element;
 
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.InternalEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;

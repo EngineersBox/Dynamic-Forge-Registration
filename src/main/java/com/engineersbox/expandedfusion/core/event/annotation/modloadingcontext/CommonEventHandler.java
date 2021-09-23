@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.event.annotation;
+package com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

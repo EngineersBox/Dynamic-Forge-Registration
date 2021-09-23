@@ -1,6 +1,6 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
+package com.engineersbox.expandedfusion.core.registration.provider.service.element;
 
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.elements.item.NoPlaceBucketItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
@@ -15,13 +15,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Supplier;
 
-public class ItemDeferredRegistryShim extends RegistryShim<Item> {
+public class ItemDeferredRegistryService extends RegistryService<Item> {
 
     private final Registration registration;
 
     @Inject
-    public ItemDeferredRegistryShim(@Named("modId") final String modID,
-                                    final Registration registration) {
+    public ItemDeferredRegistryService(@Named("modId") final String modID,
+                                       final Registration registration) {
         this.modID = modID;
         this.registration = registration;
     }

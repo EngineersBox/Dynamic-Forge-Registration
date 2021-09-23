@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.functional.PredicateSplitterConsumer;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucket;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
@@ -11,10 +11,10 @@ import com.engineersbox.expandedfusion.core.registration.provider.RegistrationRe
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid.FluidImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.*;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.element.BlockDeferredRegistryShim;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.element.FluidDeferredRegistryShim;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.element.ItemDeferredRegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.*;
+import com.engineersbox.expandedfusion.core.registration.provider.service.element.BlockDeferredRegistryService;
+import com.engineersbox.expandedfusion.core.registration.provider.service.element.FluidDeferredRegistryService;
+import com.engineersbox.expandedfusion.core.registration.provider.service.element.ItemDeferredRegistryService;
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
@@ -30,21 +30,21 @@ import java.util.function.Supplier;
 public class FluidProviderRegistrationResolver extends RegistrationResolver {
 
     private final FluidImplClassGrouping implClassGroupings;
-    private final FluidDeferredRegistryShim fluidDeferredRegistryShim;
-    private final BlockDeferredRegistryShim blockDeferredRegistryShim;
-    private final ItemDeferredRegistryShim itemDeferredRegistryShim;
+    private final FluidDeferredRegistryService fluidDeferredRegistryService;
+    private final BlockDeferredRegistryService blockDeferredRegistryService;
+    private final ItemDeferredRegistryService itemDeferredRegistryService;
     final ElementRegistryProvider elementRegistryProvider;
 
     @Inject
     public FluidProviderRegistrationResolver(final ElementRegistryProvider elementRegistryProvider,
                                              final ImplClassGroupings<FluidImplGrouping> implClassGroupings,
-                                             final RegistryShim<Fluid> fluidDeferredRegistryShim,
-                                             final RegistryShim<Block> blockDeferredRegistryShim,
-                                             final RegistryShim<Item> itemDeferredRegistryShim) {
+                                             final RegistryService<Fluid> fluidDeferredRegistryService,
+                                             final RegistryService<Block> blockDeferredRegistryService,
+                                             final RegistryService<Item> itemDeferredRegistryService) {
         this.elementRegistryProvider = elementRegistryProvider;
-        this.fluidDeferredRegistryShim = (FluidDeferredRegistryShim) fluidDeferredRegistryShim;
-        this.blockDeferredRegistryShim = (BlockDeferredRegistryShim) blockDeferredRegistryShim;
-        this.itemDeferredRegistryShim = (ItemDeferredRegistryShim) itemDeferredRegistryShim;
+        this.fluidDeferredRegistryService = (FluidDeferredRegistryService) fluidDeferredRegistryService;
+        this.blockDeferredRegistryService = (BlockDeferredRegistryService) blockDeferredRegistryService;
+        this.itemDeferredRegistryService = (ItemDeferredRegistryService) itemDeferredRegistryService;
         this.implClassGroupings = (FluidImplClassGrouping) implClassGroupings;
         this.implClassGroupings.collectAnnotatedResources();
     }
@@ -77,6 +77,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
             ));
         }
         if (!sourceFluidProvider.gaseous()) {
+            // TODO: Get a
             registerFluidBlock(sourceFluidProvider.name());
         }
         final Class<? extends Fluid> sourceFluidImpl = group.getSourceFluid();
@@ -86,25 +87,23 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                     name
             ));
         }
-        if (sourceFluidProvider.bucket().length > 0) {
-            registerBucketItem(sourceFluidProvider, group);
+        if (group.getSourceFluidBucketAnnotation() != null) {
+            registerBucketItem(group);
         }
         registerSourceFluid(name, sourceFluidImpl);
     }
 
     @SuppressWarnings("unchecked")
-    private void registerBucketItem(final FluidProvider sourceFluidProvider,
-                                    final FluidImplGrouping group) {
-        final FluidBucketProperties[] fluidBucketPropertiesArray = sourceFluidProvider.bucket();
-        final FluidBucketProperties bucketProperties = fluidBucketPropertiesArray[0];
+    private void registerBucketItem(final FluidImplGrouping group) {
+        final FluidBucket bucketProperties = group.getSourceFluidBucketAnnotation();
         final Supplier<? extends Item> bucketSupplier = () -> {
-            final Supplier<? extends Fluid> fluidSupplier = () -> RegistryObjectContext.getSourceFluidRegistryObject(sourceFluidProvider.name()).asFluid();
+            final Supplier<? extends Fluid> fluidSupplier = () -> RegistryObjectContext.getSourceFluidRegistryObject(group.getSourceFluidProviderAnnotation().name()).asFluid();
             if (bucketProperties.canPlace() && FlowingFluid.class.isAssignableFrom(group.getSourceFluid())) {
-                return this.itemDeferredRegistryShim.createBucketItem((Supplier<FlowingFluid>) fluidSupplier, bucketProperties.tabGroup());
+                return this.itemDeferredRegistryService.createBucketItem((Supplier<FlowingFluid>) fluidSupplier, bucketProperties.tabGroup());
             }
-            return this.itemDeferredRegistryShim.createNoPlaceBucketItem((Supplier<Fluid>) fluidSupplier, bucketProperties.tabGroup());
+            return this.itemDeferredRegistryService.createNoPlaceBucketItem((Supplier<Fluid>) fluidSupplier, bucketProperties.tabGroup());
         };
-        this.itemDeferredRegistryShim.register(
+        this.itemDeferredRegistryService.register(
                 bucketProperties.name(),
                 bucketSupplier
         );
@@ -139,7 +138,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
     private void registerFluidBlock(final String name) {
         this.elementRegistryProvider.blocks.put(
                 name,
-                this.blockDeferredRegistryShim.registerFluid(
+                this.blockDeferredRegistryService.registerFluid(
                         name,
                         () -> (FlowingFluid) RegistryObjectContext.getSourceFluidRegistryObject(name).asFluid()
                 )
@@ -150,7 +149,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                                      final Class<? extends Fluid> sourceFluidImpl) {
         this.elementRegistryProvider.sourceFluids.put(
                 name,
-                this.fluidDeferredRegistryShim.register(
+                this.fluidDeferredRegistryService.register(
                         name,
                         () -> super.<Fluid>instantiateWithDefaultConstructor(sourceFluidImpl)
                 )
@@ -161,7 +160,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                                       final Class<? extends FlowingFluid> fluidImpl) {
         this.elementRegistryProvider.flowingFluids.put(
                 name,
-                this.fluidDeferredRegistryShim.register(
+                this.fluidDeferredRegistryService.register(
                         name,
                         () -> super.<FlowingFluid>instantiateWithDefaultConstructor(fluidImpl)
                 )

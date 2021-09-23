@@ -1,6 +1,6 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
+package com.engineersbox.expandedfusion.core.registration.provider.service.element;
 
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.ContainerRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.google.inject.Inject;
@@ -10,13 +10,13 @@ import net.minecraft.inventory.container.ContainerType;
 
 import java.util.function.Supplier;
 
-public class ContainerDeferredRegistryShim extends RegistryShim<Container> {
+public class ContainerDeferredRegistryService extends RegistryService<Container> {
 
     private final Registration registration;
 
     @Inject
-    public ContainerDeferredRegistryShim(@Named("modId") final String modID,
-                                         final Registration registration) {
+    public ContainerDeferredRegistryService(@Named("modId") final String modID,
+                                            final Registration registration) {
         this.modID = modID;
         this.registration = registration;
     }

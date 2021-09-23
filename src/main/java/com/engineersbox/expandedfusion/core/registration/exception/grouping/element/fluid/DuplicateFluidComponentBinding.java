@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.exception.grouping.element;
+package com.engineersbox.expandedfusion.core.registration.exception.grouping.element.fluid;
 
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.DuplicateComponentBinding;
 import com.google.common.collect.ImmutableList;

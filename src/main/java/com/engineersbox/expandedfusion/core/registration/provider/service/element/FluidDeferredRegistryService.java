@@ -1,6 +1,6 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.element;
+package com.engineersbox.expandedfusion.core.registration.provider.service.element;
 
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.FluidRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.google.inject.Inject;
@@ -9,13 +9,13 @@ import net.minecraft.fluid.Fluid;
 
 import java.util.function.Supplier;
 
-public class FluidDeferredRegistryShim extends RegistryShim<Fluid> {
+public class FluidDeferredRegistryService extends RegistryService<Fluid> {
 
     private final Registration registration;
 
     @Inject
-    public FluidDeferredRegistryShim(@Named("modId") final String modID,
-                                     final Registration registration) {
+    public FluidDeferredRegistryService(@Named("modId") final String modID,
+                                        final Registration registration) {
         this.modID = modID;
         this.registration = registration;
     }

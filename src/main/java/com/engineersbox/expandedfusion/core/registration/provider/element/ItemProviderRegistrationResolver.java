@@ -8,8 +8,8 @@ import com.engineersbox.expandedfusion.core.registration.provider.RegistrationRe
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.item.ItemImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.item.ItemImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.element.ItemDeferredRegistryShim;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.element.ItemDeferredRegistryService;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.item.Item;
@@ -21,15 +21,15 @@ import java.util.function.Supplier;
 public class ItemProviderRegistrationResolver extends RegistrationResolver {
 
     private final ItemImplClassGrouping implClassGroupings;
-    private final ItemDeferredRegistryShim itemDeferredRegistryShim;
+    private final ItemDeferredRegistryService itemDeferredRegistryService;
     final ElementRegistryProvider elementRegistryProvider;
 
     @Inject
     public ItemProviderRegistrationResolver(final ElementRegistryProvider elementRegistryProvider,
                                             final ImplClassGroupings<ItemImplGrouping> implClassGroupings,
-                                            final RegistryShim<Item> itemDeferredRegistryShim) {
+                                            final RegistryService<Item> itemDeferredRegistryService) {
         this.elementRegistryProvider = elementRegistryProvider;
-        this.itemDeferredRegistryShim = (ItemDeferredRegistryShim) itemDeferredRegistryShim;
+        this.itemDeferredRegistryService = (ItemDeferredRegistryService) itemDeferredRegistryService;
         this.implClassGroupings = (ItemImplClassGrouping) implClassGroupings;
         this.implClassGroupings.collectAnnotatedResources();
     }
@@ -68,6 +68,6 @@ public class ItemProviderRegistrationResolver extends RegistrationResolver {
     private void registerItem(final String name,
                               final Class<? extends Item> itemImpl) {
         final Supplier<Item> itemSupplier = () -> super.<Item>instantiateWithDefaultConstructor(itemImpl);
-        this.elementRegistryProvider.items.put(name, this.itemDeferredRegistryShim.register(name, itemSupplier));
+        this.elementRegistryProvider.items.put(name, this.itemDeferredRegistryService.register(name, itemSupplier));
     }
 }

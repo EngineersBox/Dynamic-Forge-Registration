@@ -4,6 +4,10 @@ import com.engineersbox.expandedfusion.core.classifier.baked.BakedInClassifierMo
 import com.engineersbox.expandedfusion.core.dist.annotation.DistBound;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.*;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ClientEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.CommonEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.DataEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ServerEventHandler;
 import com.engineersbox.expandedfusion.core.event.broker.EventBroker;
 import com.engineersbox.expandedfusion.core.event.manager.BrokerManager;
 import com.engineersbox.expandedfusion.core.event.manager.DistEvent;
@@ -21,17 +25,15 @@ import com.engineersbox.expandedfusion.core.registration.exception.resolver.Reso
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.UninstantiatedElementResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.GroupingModule;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShimModule;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryServiceModule;
 import com.google.inject.*;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
-import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.ReflectionUtils;
@@ -159,37 +161,42 @@ public class JITRegistrationResolver extends JITResolver {
     private void setupEventPublishing() {
         configureClientEventListeners();
         configureServerEventListeners();
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishCommonEvent);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishGatherDataEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishBoundedCommonEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishBoundedGatherDataEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::publishCommonEvent);
     }
 
     @DistBound(Dist.CLIENT)
     private void configureClientEventListeners() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishClientEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishBoundedClientEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::publishClientEvent);
     }
 
     @DistBound(Dist.DEDICATED_SERVER)
     private void configureServerEventListeners() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishServerEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::publishBoundedServerEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::publishServerEvent);
     }
 
     @Override
-    public void publishCommonEvent(final ModLifecycleEvent event) {
+    public <E extends Event> void publishCommonEvent(final E event) {
         this.brokerManager.publishEvent(DistEvent.COMMON, event);
     }
 
     @Override
-    public void publishGatherDataEvent(final GatherDataEvent event) {
+    public <E extends Event> void publishGatherDataEvent(final E event) {
         this.brokerManager.publishEvent(DistEvent.DATA, event);
     }
 
+    @DistBound(Dist.CLIENT)
     @Override
-    public void publishClientEvent(final ModLifecycleEvent event) {
+    public <E extends Event> void publishClientEvent(final E event) {
         this.brokerManager.publishEvent(DistEvent.CLIENT, event);
     }
 
+    @DistBound(Dist.DEDICATED_SERVER)
     @Override
-    public void publishServerEvent(final ServerLifecycleEvent event) {
+    public <E extends Event> void publishServerEvent(final E event) {
         this.brokerManager.publishEvent(DistEvent.SERVER, event);
     }
 
@@ -236,12 +243,34 @@ public class JITRegistrationResolver extends JITResolver {
             }
         }
 
+        @DistBound(Dist.DEDICATED_SERVER)
+        @SafeVarargs
+        private final Set<Class<? extends Annotation>> filterServerEventHandlers(final Class<? extends Annotation>... distAnnotations) {
+            return Stream.of(distAnnotations)
+                    .filter((final Class<? extends Annotation> distAnnotation) -> !ClientEventHandler.class.isAssignableFrom(distAnnotation))
+                    .collect(Collectors.toSet());
+        }
+
+        @DistBound(Dist.CLIENT)
+        @SafeVarargs
+        private final Set<Class<? extends Annotation>> filterClientEventHandlers(final Class<? extends Annotation>... distAnnotations) {
+            return Stream.of(distAnnotations)
+                    .filter((final Class<? extends Annotation> distAnnotation) -> !ServerEventHandler.class.isAssignableFrom(distAnnotation))
+                    .collect(Collectors.toSet());
+        }
+
         @SuppressWarnings("unchecked")
-        private EventBroker createBrokerAndReflectivelyAddHandlers(final Class<? extends Annotation> distAnnotation, final Injector injector) {
+        @SafeVarargs
+        private final EventBroker createBrokerAndReflectivelyAddHandlers(final Injector injector, final Class<? extends Annotation>... distAnnotations) {
             final EventBroker eventBroker = new EventBroker();
-            if ((FMLEnvironment.dist == Dist.CLIENT && ServerEventHandler.class.isAssignableFrom(distAnnotation))
-                || (FMLEnvironment.dist == Dist.DEDICATED_SERVER && ClientEventHandler.class.isAssignableFrom(distAnnotation))) {
-                return eventBroker;
+            final Set<Class<? extends Annotation>> serverHandlers = filterServerEventHandlers(distAnnotations);
+            final Set<Class<? extends Annotation>> clientHandlers = filterClientEventHandlers(distAnnotations);
+            final Set<Class<? extends Annotation>> filteredAnnotations = new HashSet<>();
+            if (serverHandlers != null) {
+                filteredAnnotations.addAll(serverHandlers);
+            }
+            if (clientHandlers != null) {
+                filteredAnnotations.addAll(clientHandlers);
             }
             final ConfigurationBuilder configBuilder = new ConfigurationBuilder()
                     .setUrls(this.packageName != null ? ClasspathHelper.forPackage(this.packageName) : ClasspathHelper.forJavaClassPath())
@@ -251,17 +280,21 @@ public class JITRegistrationResolver extends JITResolver {
                             new TypeAnnotationsScanner()
                     );
 
-            Reflections reflections = new Reflections(configBuilder);
-            final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
+            final Reflections externalReflections = new Reflections(configBuilder);
+            final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = filteredAnnotations
                     .stream()
+                    .map(externalReflections::getTypesAnnotatedWith)
+                    .flatMap(Set::stream)
                     // Classes marked with @InternalEventHandler should not be used outside this lib
                     .filter((final Class<?> clazz) -> !clazz.isAnnotationPresent(InternalEventHandler.class))
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
                     .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
 
-            reflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)));
-            final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = reflections.getTypesAnnotatedWith(distAnnotation)
+            final Reflections internalReflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)));
+            final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = filteredAnnotations
                     .stream()
+                    .map(internalReflections::getTypesAnnotatedWith)
+                    .flatMap(Set::stream)
                     .filter((final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class))
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
                     .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
@@ -273,19 +306,19 @@ public class JITRegistrationResolver extends JITResolver {
             final BrokerManager<DistEvent> eventBrokerManager = new BrokerManager<>(DistEvent.class);
             eventBrokerManager.putMapping(
                     DistEvent.COMMON,
-                    createBrokerAndReflectivelyAddHandlers(CommonEventHandler.class, injector)
+                    createBrokerAndReflectivelyAddHandlers(injector, CommonEventHandler.class)
             );
             eventBrokerManager.putMapping(
                     DistEvent.CLIENT,
-                    createBrokerAndReflectivelyAddHandlers(ClientEventHandler.class, injector)
+                    createBrokerAndReflectivelyAddHandlers(injector, ClientEventHandler.class)
             );
             eventBrokerManager.putMapping(
                     DistEvent.SERVER,
-                    createBrokerAndReflectivelyAddHandlers(ServerEventHandler.class, injector)
+                    createBrokerAndReflectivelyAddHandlers(injector, ServerEventHandler.class)
             );
             eventBrokerManager.putMapping(
                     DistEvent.DATA,
-                    createBrokerAndReflectivelyAddHandlers(DataEventHandler.class, injector)
+                    createBrokerAndReflectivelyAddHandlers(injector, DataEventHandler.class)
             );
 
             return eventBrokerManager;
@@ -338,7 +371,7 @@ public class JITRegistrationResolver extends JITResolver {
                     new RegistrationModule(modId),
                     new ProviderModule(),
                     new GroupingModule(),
-                    new RegistryShimModule(),
+                    new RegistryServiceModule(),
                     new BakedInClassifierModule(),
                     new PackageReflectionsModule()
                             .withPackageName(this.packageName)

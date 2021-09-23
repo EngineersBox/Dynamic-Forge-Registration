@@ -1,8 +1,8 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim.data.tags;
+package com.engineersbox.expandedfusion.core.registration.provider.service.data.tags;
 
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.TagBinding;
 import com.engineersbox.expandedfusion.core.registration.contexts.provider.TagRegistryProvider;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
@@ -16,12 +16,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TagDeferredRegistryShim extends RegistryShim<ITag.INamedTag<?>> {
+public class TagDeferredRegistryService extends RegistryService<ITag.INamedTag<?>> {
 
     private final TagRegistryProvider tagRegistryProvider;
 
     @Inject
-    public TagDeferredRegistryShim(final TagRegistryProvider tagRegistryProvider) {
+    public TagDeferredRegistryService(final TagRegistryProvider tagRegistryProvider) {
         this.tagRegistryProvider = tagRegistryProvider;
     }
 

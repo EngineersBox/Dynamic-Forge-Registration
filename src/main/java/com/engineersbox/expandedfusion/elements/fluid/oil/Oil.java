@@ -1,8 +1,9 @@
 package com.engineersbox.expandedfusion.elements.fluid.oil;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidFog;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucketProperties;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucket;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
@@ -14,15 +15,20 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 @LangMetadata(
         locales = @LocaleEntry(key = LangKey.EN_US, mapping = Oil.NAME_MAPPING)
 )
+@FluidBucket(
+        name = Oil.BUCKET_NAME,
+        lang = @LangMetadata(
+                locales =  @LocaleEntry(key = LangKey.EN_US, mapping = Oil.BUCKET_NAME_MAPPING)
+        ),
+        tabGroup = Oil.BUCKET_TAB_GROUP
+)
+@FluidFog(
+        red = 0.02F,
+        green = 0.02F,
+        blue = 0.02F
+)
 @FluidProvider(
-        name = Oil.PROVIDER_NAME,
-        bucket = @FluidBucketProperties(
-                name = Oil.BUCKET_NAME,
-                lang = @LangMetadata(
-                        locales =  @LocaleEntry(key = LangKey.EN_US, mapping = Oil.BUCKET_NAME_MAPPING)
-                ),
-                tabGroup = Oil.BUCKET_TAB_GROUP
-        )
+        name = Oil.PROVIDER_NAME
 )
 public class Oil extends ForgeFlowingFluid.Source {
     public static final String PROVIDER_NAME = "oil";

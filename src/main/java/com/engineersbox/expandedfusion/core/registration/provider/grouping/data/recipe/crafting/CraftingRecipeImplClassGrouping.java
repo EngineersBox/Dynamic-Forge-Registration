@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.CraftingRecipe;
-import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
+import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.block.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;

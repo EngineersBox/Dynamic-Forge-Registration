@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.event.element;
 
-import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.util.ColorGetter;
 import com.engineersbox.expandedfusion.elements.item.CanisterItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;

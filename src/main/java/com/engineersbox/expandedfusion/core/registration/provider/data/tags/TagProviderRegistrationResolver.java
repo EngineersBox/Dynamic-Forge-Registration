@@ -8,8 +8,8 @@ import com.engineersbox.expandedfusion.core.registration.provider.RegistrationRe
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.tags.TagImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.tags.TagImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.data.tags.TagDeferredRegistryShim;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
+import com.engineersbox.expandedfusion.core.registration.provider.service.data.tags.TagDeferredRegistryService;
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
@@ -27,13 +27,13 @@ import javax.annotation.Nonnull;
 public class TagProviderRegistrationResolver extends RegistrationResolver {
 
     private final TagImplClassGrouping implClassGroupings;
-    private final TagDeferredRegistryShim tagDeferredRegistryShim;
+    private final TagDeferredRegistryService tagDeferredRegistryService;
 
     @Inject
     public TagProviderRegistrationResolver(final ImplClassGroupings<TagImplGrouping> implClassGroupings,
-                                           final RegistryShim<ITag.INamedTag<?>> tagDeferredRegistryShim) {
+                                           final RegistryService<ITag.INamedTag<?>> tagDeferredRegistryService) {
         this.implClassGroupings = (TagImplClassGrouping) implClassGroupings;
-        this.tagDeferredRegistryShim = (TagDeferredRegistryShim) tagDeferredRegistryShim;
+        this.tagDeferredRegistryService = (TagDeferredRegistryService) tagDeferredRegistryService;
         this.implClassGroupings.collectAnnotatedResources();
     }
 
@@ -76,7 +76,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
                         tag.mirroredItemTagPath()
                 ));
             }
-            this.tagDeferredRegistryShim.bindBlockTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindBlockTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
         }
     }
 
@@ -89,7 +89,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
                     tag.namespace(),
                     tag.path()
             ));
-            this.tagDeferredRegistryShim.bindItemTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindItemTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
         }
     }
 
@@ -102,7 +102,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
                     tag.namespace(),
                     tag.path()
             ));
-            this.tagDeferredRegistryShim.bindSourceFluidTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindSourceFluidTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
         }
     }
 
@@ -115,7 +115,7 @@ public class TagProviderRegistrationResolver extends RegistrationResolver {
                     tag.namespace(),
                     tag.path()
             ));
-            this.tagDeferredRegistryShim.bindFlowingFluidTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindFlowingFluidTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
         }
     }
 

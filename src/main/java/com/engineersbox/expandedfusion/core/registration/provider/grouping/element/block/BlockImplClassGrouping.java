@@ -7,7 +7,7 @@ import com.engineersbox.expandedfusion.core.dist.annotation.DistBound;
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
 import com.engineersbox.expandedfusion.core.registration.exception.MisconfiguredProviderException;
-import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
+import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.block.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;

@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.*;
-import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.DuplicateBlockComponentBinding;
+import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.block.DuplicateBlockComponentBinding;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplGrouping;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

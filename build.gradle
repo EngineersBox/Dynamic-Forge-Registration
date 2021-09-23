@@ -155,7 +155,10 @@ def jvmProperties = [
         "org.aspectj.weaver.showWeaveInfo": "true"
 ]
 
-minecraft.runs.each {
+minecraft.runs.findAll {
+    RunConfig config ->
+        config.name != "lang"
+} .each {
     RunConfig config ->
         config.workingDirectory project.file('run')
         jvmProperties.each {

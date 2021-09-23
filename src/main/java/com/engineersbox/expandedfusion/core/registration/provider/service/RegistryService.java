@@ -1,8 +1,8 @@
-package com.engineersbox.expandedfusion.core.registration.provider.shim;
+package com.engineersbox.expandedfusion.core.registration.provider.service;
 
 import net.minecraft.util.ResourceLocation;
 
-public abstract class RegistryShim<T> {
+public abstract class RegistryService<T> {
 
     public String modID;
 

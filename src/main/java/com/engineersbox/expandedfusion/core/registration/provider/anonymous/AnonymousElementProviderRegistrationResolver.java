@@ -8,9 +8,9 @@ import com.engineersbox.expandedfusion.core.registration.provider.RegistrationRe
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplGrouping;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.RegistryShim;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.data.tags.TagDeferredRegistryShim;
-import com.engineersbox.expandedfusion.core.registration.provider.shim.element.*;
+import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
+import com.engineersbox.expandedfusion.core.registration.provider.service.data.tags.TagDeferredRegistryService;
+import com.engineersbox.expandedfusion.core.registration.provider.service.element.*;
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
@@ -25,25 +25,25 @@ import javax.annotation.Nonnull;
 public class AnonymousElementProviderRegistrationResolver extends RegistrationResolver {
 
     private final AnonymousElementImplClassGrouping implClassGroupings;
-    private final BlockDeferredRegistryShim blockDeferredRegistryShim;
-    private final ItemDeferredRegistryShim itemDeferredRegistryShim;
-    private final FluidDeferredRegistryShim fluidDeferredRegistryShim;
-    private final TagDeferredRegistryShim tagDeferredRegistryShim;
+    private final BlockDeferredRegistryService blockDeferredRegistryService;
+    private final ItemDeferredRegistryService itemDeferredRegistryService;
+    private final FluidDeferredRegistryService fluidDeferredRegistryService;
+    private final TagDeferredRegistryService tagDeferredRegistryService;
     private final ElementRegistryProvider elementRegistryProvider;
 
     @Inject
     public AnonymousElementProviderRegistrationResolver(final ElementRegistryProvider elementRegistryProvider,
                                                         final ImplClassGroupings<AnonymousElementImplGrouping> implClassGroupings,
-                                                        final RegistryShim<Block> blockDeferredRegistryShim,
-                                                        final RegistryShim<Item> itemDeferredRegistryShim,
-                                                        final RegistryShim<Fluid> fluidDeferredRegistryShim,
-                                                        final RegistryShim<ITag.INamedTag<?>> tagDeferredRegistryShim) {
+                                                        final RegistryService<Block> blockDeferredRegistryService,
+                                                        final RegistryService<Item> itemDeferredRegistryService,
+                                                        final RegistryService<Fluid> fluidDeferredRegistryService,
+                                                        final RegistryService<ITag.INamedTag<?>> tagDeferredRegistryService) {
         this.elementRegistryProvider = elementRegistryProvider;
         this.implClassGroupings = (AnonymousElementImplClassGrouping) implClassGroupings;
-        this.blockDeferredRegistryShim = (BlockDeferredRegistryShim) blockDeferredRegistryShim;
-        this.itemDeferredRegistryShim = (ItemDeferredRegistryShim) itemDeferredRegistryShim;
-        this.fluidDeferredRegistryShim = (FluidDeferredRegistryShim) fluidDeferredRegistryShim;
-        this.tagDeferredRegistryShim = (TagDeferredRegistryShim) tagDeferredRegistryShim;
+        this.blockDeferredRegistryService = (BlockDeferredRegistryService) blockDeferredRegistryService;
+        this.itemDeferredRegistryService = (ItemDeferredRegistryService) itemDeferredRegistryService;
+        this.fluidDeferredRegistryService = (FluidDeferredRegistryService) fluidDeferredRegistryService;
+        this.tagDeferredRegistryService = (TagDeferredRegistryService) tagDeferredRegistryService;
         this.implClassGroupings.collectAnnotatedResources();
     }
 
@@ -72,40 +72,40 @@ public class AnonymousElementProviderRegistrationResolver extends RegistrationRe
 
     private void registerBlocks(final AnonymousElement element) {
         element.blockSuppliers.forEach((final String providerName, final AttributedSupplier<Block, Block> attributedSupplier) -> {
-            this.tagDeferredRegistryShim.bindBlockTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindBlockTag(providerName, attributedSupplier.getTagBinding());
             this.elementRegistryProvider.blocks.put(
                     providerName,
-                    this.blockDeferredRegistryShim.register(providerName, attributedSupplier.getSupplier(), attributedSupplier.getTabGroup())
+                    this.blockDeferredRegistryService.register(providerName, attributedSupplier.getSupplier(), attributedSupplier.getTabGroup())
             );
         });
     }
 
     private void registerItems(final AnonymousElement element) {
         element.itemSuppliers.forEach((final String providerName, final AttributedSupplier<Item, Item> attributedSupplier) -> {
-            this.tagDeferredRegistryShim.bindItemTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindItemTag(providerName, attributedSupplier.getTagBinding());
             this.elementRegistryProvider.items.put(
                     providerName,
-                    this.itemDeferredRegistryShim.register(providerName, attributedSupplier.getSupplier())
+                    this.itemDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
             );
         });
     }
 
     private void registerSourceFluids(final AnonymousElement element) {
         element.sourceFluidSuppliers.forEach((final String providerName, final AttributedSupplier<Fluid, Fluid> attributedSupplier) -> {
-            this.tagDeferredRegistryShim.bindFlowingFluidTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindFlowingFluidTag(providerName, attributedSupplier.getTagBinding());
             this.elementRegistryProvider.sourceFluids.put(
                     providerName,
-                    this.fluidDeferredRegistryShim.register(providerName, attributedSupplier.getSupplier())
+                    this.fluidDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
             );
         });
     }
 
     private void registerFlowingFluids(final AnonymousElement element) {
         element.flowingFluidSuppliers.forEach((final String providerName, final AttributedSupplier<FlowingFluid, Fluid> attributedSupplier) -> {
-            this.tagDeferredRegistryShim.bindSourceFluidTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindSourceFluidTag(providerName, attributedSupplier.getTagBinding());
             this.elementRegistryProvider.flowingFluids.put(
                     providerName,
-                    this.fluidDeferredRegistryShim.register(providerName, attributedSupplier.getSupplier())
+                    this.fluidDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
             );
         });
     }

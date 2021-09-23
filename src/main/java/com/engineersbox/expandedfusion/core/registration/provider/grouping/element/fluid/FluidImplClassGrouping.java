@@ -1,7 +1,9 @@
 package com.engineersbox.expandedfusion.core.registration.provider.grouping.element.fluid;
 
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucket;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.exception.grouping.element.fluid.FluidBucketBindingException;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -28,22 +30,26 @@ public class FluidImplClassGrouping extends ImplClassGroupings<FluidImplGrouping
                 this.reflections.getTypesAnnotatedWith(FluidProvider.class)
         );
         for (final Class<? extends FlowingFluid> c : flowingFluidProviderAnnotatedClasses) {
-            final FluidProvider annotation = c.getAnnotation(FluidProvider.class);
-            if (annotation == null) {
+            final FluidProvider fluidProvider = c.getAnnotation(FluidProvider.class);
+            if (fluidProvider == null) {
                 continue;
             }
-            addIfNotExists(annotation.name(), c);
+            final FluidBucket fluidBucket = c.getAnnotation(FluidBucket.class);
+            if (fluidBucket != null) {
+                throw new FluidBucketBindingException(c);
+            }
+            addIfNotExists(fluidProvider.name(), c);
         }
         final Set<Class<? extends ForgeFlowingFluid.Source>> sourceFluidProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(
                 ForgeFlowingFluid.Source.class,
                 this.reflections.getTypesAnnotatedWith(FluidProvider.class)
         );
         for (final Class<? extends Fluid> c : sourceFluidProviderAnnotatedClasses) {
-            final FluidProvider annotation = c.getAnnotation(FluidProvider.class);
-            if (annotation == null) {
+            final FluidProvider fluidProvider = c.getAnnotation(FluidProvider.class);
+            if (fluidProvider == null) {
                 continue;
             }
-            addIfNotExists(annotation.name(), c);
+            addIfNotExists(fluidProvider.name(), c);
         }
     }
 

@@ -2,7 +2,7 @@ package com.engineersbox.expandedfusion.event.element;
 
 import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.event.annotation.ClientEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ClientEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.google.inject.Inject;

@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.handler.data.tags;
 
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
-import com.engineersbox.expandedfusion.core.event.annotation.DataEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.DataEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.InternalEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
