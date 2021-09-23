@@ -266,6 +266,9 @@ public class JITRegistrationResolver extends JITResolver {
             final Set<Class<? extends Annotation>> serverHandlers = filterServerEventHandlers(distAnnotations);
             final Set<Class<? extends Annotation>> clientHandlers = filterClientEventHandlers(distAnnotations);
             final Set<Class<? extends Annotation>> filteredAnnotations = new HashSet<>();
+            if ((serverHandlers == null || serverHandlers.isEmpty()) && (clientHandlers == null || clientHandlers.isEmpty())) {
+                return eventBroker;
+            }
             if (serverHandlers != null) {
                 filteredAnnotations.addAll(serverHandlers);
             }
