@@ -8,6 +8,7 @@ import com.engineersbox.expandedfusion.core.registration.registryObject.element.
 import com.engineersbox.expandedfusion.core.event.EventSubscriptionHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 
 @SuppressWarnings("unused")
@@ -22,7 +23,7 @@ public class ItemClientEventHandler implements EventSubscriptionHandler {
             return;
         }
         final ItemRegistryObject<CanisterItem> canister = (ItemRegistryObject<CanisterItem>) potentialCanister;
-        event.getItemColors().register((stack, tintIndex) -> {
+        event.getItemColors().register((final ItemStack stack, final int tintIndex) -> {
             if (tintIndex == 1) {
                 return ColorGetter.getColor(canister.get().getFluid(stack).getFluid());
             }

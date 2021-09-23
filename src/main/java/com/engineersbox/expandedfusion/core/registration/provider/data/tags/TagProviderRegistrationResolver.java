@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Nonnull;
 
 @RegistrationPhaseHandler(ResolverPhase.TAGS)
-public class TagProviderRegistrationResolver extends RegistrationResolver {
+public class TagProviderRegistrationResolver implements RegistrationResolver {
 
     private final TagImplClassGrouping implClassGroupings;
     private final TagDeferredRegistryService tagDeferredRegistryService;

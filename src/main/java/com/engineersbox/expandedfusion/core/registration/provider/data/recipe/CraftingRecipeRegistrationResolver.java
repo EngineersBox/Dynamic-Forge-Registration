@@ -10,7 +10,7 @@ import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 
 @RegistrationPhaseHandler(ResolverPhase.RECIPE_INLINE_DECLARATION)
-public class CraftingRecipeRegistrationResolver extends RegistrationResolver {
+public class CraftingRecipeRegistrationResolver implements RegistrationResolver {
 
     private final CraftingRecipeImplClassGrouping implClassGroupings;
     private final RecipeRegistryProvider recipeRegistryProvider;

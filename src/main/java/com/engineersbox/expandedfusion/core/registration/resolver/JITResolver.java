@@ -8,7 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
 
-public abstract class JITResolver extends RegistrationResolver {
+public abstract class JITResolver implements RegistrationResolver {
 
     public abstract void instantiateResolvers();
 

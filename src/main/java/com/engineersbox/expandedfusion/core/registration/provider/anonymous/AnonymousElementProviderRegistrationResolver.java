@@ -22,7 +22,7 @@ import net.minecraft.tags.ITag;
 import javax.annotation.Nonnull;
 
 @RegistrationPhaseHandler(ResolverPhase.ANONYMOUS_ELEMENT)
-public class AnonymousElementProviderRegistrationResolver extends RegistrationResolver {
+public class AnonymousElementProviderRegistrationResolver implements RegistrationResolver {
 
     private final AnonymousElementImplClassGrouping implClassGroupings;
     private final BlockDeferredRegistryService blockDeferredRegistryService;

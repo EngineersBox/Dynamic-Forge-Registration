@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 @RegistrationPhaseHandler(ResolverPhase.ITEM)
-public class ItemProviderRegistrationResolver extends RegistrationResolver {
+public class ItemProviderRegistrationResolver implements RegistrationResolver {
 
     private final ItemImplClassGrouping implClassGroupings;
     private final ItemDeferredRegistryService itemDeferredRegistryService;
@@ -67,7 +67,7 @@ public class ItemProviderRegistrationResolver extends RegistrationResolver {
 
     private void registerItem(final String name,
                               final Class<? extends Item> itemImpl) {
-        final Supplier<Item> itemSupplier = () -> super.<Item>instantiateWithDefaultConstructor(itemImpl);
+        final Supplier<Item> itemSupplier = () -> this.<Item>instantiateWithDefaultConstructor(itemImpl);
         this.elementRegistryProvider.items.put(name, this.itemDeferredRegistryService.register(name, itemSupplier));
     }
 }

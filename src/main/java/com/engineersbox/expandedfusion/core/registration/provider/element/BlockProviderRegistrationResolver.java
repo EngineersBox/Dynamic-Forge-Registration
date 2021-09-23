@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 @RegistrationPhaseHandler(ResolverPhase.BLOCK)
-public class BlockProviderRegistrationResolver extends RegistrationResolver {
+public class BlockProviderRegistrationResolver implements RegistrationResolver {
 
     private final BlockImplClassGrouping implClassGroupings;
     private final BlockDeferredRegistryService blockDeferredRegistryService;
@@ -168,7 +168,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         }
         this.elementRegistryProvider.tileEntities.put(
                 name,
-                this.tileEntityDeferredRegistryService.register(name, () -> super.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
+                this.tileEntityDeferredRegistryService.register(name, () -> this.<TileEntity>instantiateWithDefaultConstructor(tileEntityImpl))
         );
     }
 
@@ -178,7 +178,7 @@ public class BlockProviderRegistrationResolver extends RegistrationResolver {
         final BaseBlockProperties[] properties = blockProvider.properties();
         Supplier<Block> blockSupplier;
         if (properties.length < 1) {
-            blockSupplier = () -> super.<Block>instantiateWithDefaultConstructor(blockImpl);
+            blockSupplier = () -> this.<Block>instantiateWithDefaultConstructor(blockImpl);
         } else {
             blockSupplier = () -> new Block(createBlockProperties(properties[0]));
         }

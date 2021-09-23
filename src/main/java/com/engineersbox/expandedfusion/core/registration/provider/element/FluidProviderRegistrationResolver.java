@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @RegistrationPhaseHandler(ResolverPhase.FLUID)
-public class FluidProviderRegistrationResolver extends RegistrationResolver {
+public class FluidProviderRegistrationResolver implements RegistrationResolver {
 
     private final FluidImplClassGrouping implClassGroupings;
     private final FluidDeferredRegistryService fluidDeferredRegistryService;
@@ -151,7 +151,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                 name,
                 this.fluidDeferredRegistryService.register(
                         name,
-                        () -> super.<Fluid>instantiateWithDefaultConstructor(sourceFluidImpl)
+                        () -> this.<Fluid>instantiateWithDefaultConstructor(sourceFluidImpl)
                 )
         );
     }
@@ -162,7 +162,7 @@ public class FluidProviderRegistrationResolver extends RegistrationResolver {
                 name,
                 this.fluidDeferredRegistryService.register(
                         name,
-                        () -> super.<FlowingFluid>instantiateWithDefaultConstructor(fluidImpl)
+                        () -> this.<FlowingFluid>instantiateWithDefaultConstructor(fluidImpl)
                 )
         );
     }

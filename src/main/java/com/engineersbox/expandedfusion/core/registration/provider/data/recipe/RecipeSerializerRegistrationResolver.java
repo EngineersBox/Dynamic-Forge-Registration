@@ -17,7 +17,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 
 @RegistrationPhaseHandler(ResolverPhase.RECIPE_SERIALIZER)
-public class RecipeSerializerRegistrationResolver extends RegistrationResolver  {
+public class RecipeSerializerRegistrationResolver implements RegistrationResolver  {
 
     private final RecipeRegistryProvider recipeRegistryProvider;
     private final RecipeSerializerImplClassGrouping implClassGroupings;
@@ -99,7 +99,7 @@ public class RecipeSerializerRegistrationResolver extends RegistrationResolver  
                 name,
                 this.recipeDeferredRegistryService.registerSerializer(
                         name,
-                        () -> super.<IRecipeSerializer<? extends IRecipe<?>>>instantiateWithDefaultConstructor(recipeSerializerImpl)
+                        () -> this.<IRecipeSerializer<? extends IRecipe<?>>>instantiateWithDefaultConstructor(recipeSerializerImpl)
                 )
         );
     }
