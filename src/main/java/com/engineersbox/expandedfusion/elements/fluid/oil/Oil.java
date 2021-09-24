@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.elements.fluid.oil;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidFog;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidBucket;
@@ -28,7 +29,14 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
         blue = 0.02F
 )
 @FluidProvider(
-        name = Oil.PROVIDER_NAME
+        name = Oil.PROVIDER_NAME,
+        blockProperties = @BlockProperties(
+                material = "WATER",
+                doesNotBlockMovement = true,
+                hardness = 100.0F,
+                resistance = 100.0F,
+                noDrops = true
+        )
 )
 public class Oil extends ForgeFlowingFluid.Source {
     public static final String PROVIDER_NAME = "oil";

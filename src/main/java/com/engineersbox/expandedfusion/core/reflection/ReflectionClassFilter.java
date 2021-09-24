@@ -9,7 +9,6 @@ public class ReflectionClassFilter {
         throw new IllegalStateException("Utility Class");
     }
 
-
     @SuppressWarnings("unchecked")
     public static <E> Set<Class<? extends E>> filterClassesBySuperType(final Class<E> superType, final Set<Class<?>> classes) {
         return classes.stream()

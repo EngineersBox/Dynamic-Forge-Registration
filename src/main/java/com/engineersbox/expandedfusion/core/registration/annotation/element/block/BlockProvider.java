@@ -15,6 +15,6 @@ public @interface BlockProvider {
     String name();
     BlockImplType type();
     boolean noItem() default false;
-    BaseBlockProperties[] properties() default {};
+    BlockProperties[] properties() default {};
     String tabGroup() default "";
 }

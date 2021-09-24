@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.element.fluid;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.element.ProvidesElement;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProperties;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,4 +17,5 @@ public @interface FluidProvider {
     // TODO: Allow users to specify K,V pairs of the form "<METHOD NAME>:<ARG VALUE>" to set fluid block properties
     //       These can be reflectively retrieved from the AbstractBlock class, get any method that returns
     //       AbstractBlock.Properties and isn't create(...) or from(...)
+    BlockProperties[] blockProperties() default {};
 }

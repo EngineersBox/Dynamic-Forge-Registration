@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;
+import com.engineersbox.expandedfusion.core.reflection.FieldAccessor;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
@@ -175,12 +176,12 @@ public class BlockProviderRegistrationResolver implements RegistrationResolver {
     private void registerBlock(@Nonnull final String name,
                                @Nonnull final BlockProvider blockProvider,
                                @Nonnull final Class<? extends Block> blockImpl) {
-        final BaseBlockProperties[] properties = blockProvider.properties();
+        final BlockProperties[] properties = blockProvider.properties();
         Supplier<Block> blockSupplier;
         if (properties.length < 1) {
             blockSupplier = () -> this.<Block>instantiateWithDefaultConstructor(blockImpl);
         } else {
-            blockSupplier = () -> new Block(createBlockProperties(properties[0]));
+            blockSupplier = () -> new Block(this.blockDeferredRegistryService.assemblePropertiesFromAnnotation(properties[0]));
         }
         BlockRegistryObject<Block> blockRegistryObject;
         if (blockProvider.noItem()) {
@@ -199,25 +200,5 @@ public class BlockProviderRegistrationResolver implements RegistrationResolver {
                 name,
                 blockRegistryObject
         );
-    }
-
-    @SuppressWarnings("java:S3252")
-    private Block.Properties createBlockProperties(final BaseBlockProperties baseProps) {
-        return Block.Properties.create(getMaterialForString(baseProps.material()));
-    }
-
-    private Material getMaterialForString(final String material) {
-        final Field[] fields = Material.class.getDeclaredFields();
-        final Optional<Field> matValue = Arrays.stream(fields)
-                .filter((final Field field) -> field.getType().isAssignableFrom(Material.class) && field.getName().equals(material))
-                .findFirst();
-        if (matValue.isPresent()) {
-            try {
-                return (Material) matValue.get().get(Material.AIR);
-            } catch (final IllegalAccessException e) {
-                throw new ProviderElementRegistrationException(e);
-            }
-        }
-        return Material.AIR;
     }
 }
