@@ -266,6 +266,7 @@ public class JITRegistrationResolver extends JITResolver {
             final Set<Class<? extends Annotation>> serverHandlers = filterServerEventHandlers(distAnnotations);
             final Set<Class<? extends Annotation>> clientHandlers = filterClientEventHandlers(distAnnotations);
             final Set<Class<? extends Annotation>> filteredAnnotations = new HashSet<>();
+            // Null handling here is for AspectJ @Around default null return when not on required dist
             if ((serverHandlers == null || serverHandlers.isEmpty()) && (clientHandlers == null || clientHandlers.isEmpty())) {
                 return eventBroker;
             }

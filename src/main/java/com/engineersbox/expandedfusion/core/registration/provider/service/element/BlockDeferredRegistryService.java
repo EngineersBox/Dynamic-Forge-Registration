@@ -103,8 +103,14 @@ public class BlockDeferredRegistryService extends RegistryService<Block> {
 
     private AbstractBlock.Properties setPredicatedProperties(AbstractBlock.Properties blockProps,
                                                              final BlockProperties properties) {
-        blockProps = blockProps.setAllowsSpawn((final BlockState state, final IBlockReader reader, final BlockPos pos, final EntityType<?> entityType) ->
-                state.isSolidSide(reader, pos, properties.allowsSpawn().direction()) && state.getLightValue(reader, pos) < properties.allowsSpawn().lightLevelUpperBound());
+        final Optional<BlockProperties.AllowsSpawn> allowsSpawn = getFieldAndOrLog(properties.allowsSpawn(), "allowsSpawn");
+        if (allowsSpawn.isPresent()) {
+            blockProps = blockProps.setAllowsSpawn((final BlockState state, final IBlockReader reader, final BlockPos pos, final EntityType<?> entityType) ->
+                    state.isSolidSide(reader, pos, allowsSpawn.get().direction())
+                            && state.getLightValue(reader, pos) <= allowsSpawn.get().lightLevelUpperBound()
+                            && state.getLightValue(reader, pos) >= allowsSpawn.get().lightLevelLowerBound()
+            );
+        }
         final Optional<Boolean> isOpaque = getFieldAndOrLog(ArrayUtils.toObject(properties.isOpaque()), "isOpaque");
         if (isOpaque.isPresent()) {
             blockProps = blockProps.setOpaque((final BlockState state, final IBlockReader reader, final BlockPos pos) -> isOpaque.get());

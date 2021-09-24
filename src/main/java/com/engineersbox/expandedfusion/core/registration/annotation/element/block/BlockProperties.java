@@ -23,7 +23,7 @@ public @interface BlockProperties {
     boolean noDrops() default false;
     String[] lootFrom() default {};
     boolean isAir() default false;
-    AllowsSpawn allowsSpawn() default @AllowsSpawn();
+    AllowsSpawn[] allowsSpawn() default {};
     boolean[] isOpaque() default {};
     boolean[] suffocates() default {};
     boolean[] blocksVision() default {};
@@ -33,6 +33,7 @@ public @interface BlockProperties {
 
     @interface AllowsSpawn {
         Direction direction() default Direction.UP;
-        int lightLevelUpperBound() default 14;
+        int lightLevelUpperBound() default 15; // LEQ
+        int lightLevelLowerBound() default 0; // GEQ
     }
 }
