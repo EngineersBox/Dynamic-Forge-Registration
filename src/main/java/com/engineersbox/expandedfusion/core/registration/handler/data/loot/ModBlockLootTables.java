@@ -1,9 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.handler.data.loot;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.data.loot.NoDefaultLootItem;
-import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
-import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryObjectRetrievalException;
 import com.engineersbox.expandedfusion.core.registration.registryObject.RegistryObjectWrapper;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import net.minecraft.block.Block;

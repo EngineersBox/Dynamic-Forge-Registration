@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Singleton
-public class TagRegistryProvider {
+public final class TagRegistryProvider {
     public final Map<ResourceLocation, ITag.INamedTag<Block>> blockTags = new HashMap<>();
     public final Map<ResourceLocation, ITag.INamedTag<Item>> itemTags = new HashMap<>();
     public final Map<ResourceLocation, ITag.INamedTag<Fluid>> fluidTags = new HashMap<>();

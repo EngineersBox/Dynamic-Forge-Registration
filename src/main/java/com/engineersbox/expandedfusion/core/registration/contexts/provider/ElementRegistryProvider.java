@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public class ElementRegistryProvider {
+public final class ElementRegistryProvider {
     public final Map<String, BlockRegistryObject<? extends Block>> blocks = new HashMap<>();
     public final Map<String, TileEntityRegistryObject<? extends TileEntity>> tileEntities = new HashMap<>();
     public final Map<String, ContainerRegistryObject<? extends Container>> containers = new HashMap<>();

@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Singleton
-public class Registration {
+public final class Registration {
     private String modID;
     private static final Map<String, ItemGroup> CREATIVE_TABS = new HashMap<>();
 
@@ -90,31 +90,6 @@ public class Registration {
         return tileEntities;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends Block> Collection<T> getBlocksByClass(final Class<T> clazz) {
-        return getBlockRegister().getEntries().stream()
-                .map(RegistryObject::get)
-                .filter(clazz::isInstance)
-                .map(block -> (T) block)
-                .collect(Collectors.toList());
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T extends Item> Collection<T> getItemsByClass(final Class<T> clazz) {
-        return getItemRegister().getEntries().stream()
-                .map(RegistryObject::get)
-                .filter(clazz::isInstance)
-                .map(item -> (T) item)
-                .collect(Collectors.toList());
-    }
-
-    public Collection<Item> getItemsByClass(final Predicate<Item> predicate) {
-        return getItemRegister().getEntries().stream()
-                .map(RegistryObject::get)
-                .filter(predicate)
-                .collect(Collectors.toList());
-    }
-
     private <T extends IForgeRegistryEntry<T>> DeferredRegister<T> createRegister(final IForgeRegistry<T> registry) {
         return DeferredRegister.create(registry, this.modID);
     }
@@ -135,7 +110,7 @@ public class Registration {
         if (CREATIVE_TABS.containsKey(name)) {
             return;
         }
-        CREATIVE_TABS.put(name, new ModItemGroups.ModItemGroup(
+        CREATIVE_TABS.put(name, new ModItemGroup(
                 name,
                 nameMapping,
                 iconSupplier

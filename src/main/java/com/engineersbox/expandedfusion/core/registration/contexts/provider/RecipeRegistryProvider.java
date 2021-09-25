@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public class RecipeRegistryProvider {
+public final class RecipeRegistryProvider {
     public final Map<String, IRecipeType<? extends IRecipe<?>>> recipeTypes = new HashMap<>();
     public final Map<String, RecipeSerializerRegistryObject<? extends IRecipe<?>>> recipeSerializers = new HashMap<>();
     public final Map<String, CraftingRecipeImplGrouping> craftingRecipesToBeRegistered = new HashMap<>();

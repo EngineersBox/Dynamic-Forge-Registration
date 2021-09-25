@@ -2,9 +2,9 @@ package com.engineersbox.expandedfusion.core.registration.provider.service.eleme
 
 import com.engineersbox.expandedfusion.core.reflection.FieldAccessor;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProperties;
+import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.provider.service.RegistryService;
-import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -14,12 +14,10 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.loot.LootTableManager;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;

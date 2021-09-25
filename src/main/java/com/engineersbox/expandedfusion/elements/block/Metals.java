@@ -12,10 +12,16 @@ import net.minecraft.util.ResourceLocation;
 @AnonymousElementRegistrant
 public enum Metals {
     ALUMINUM(new AnonymousElement.Builder()
-            .block("aluminium_block", ExpandedFusion.MOD_ID, AbstractBlock.Properties.create(Material.IRON)
-                    .hardnessAndResistance(4, 20)
-                    .sound(SoundType.METAL), new ResourceLocation("forge", "testblock/tag"), new ResourceLocation("forge", "testitem/tag"))
-            .build());
+            .block(
+                    "aluminium_block",
+                    ExpandedFusion.MOD_ID,
+                    AbstractBlock.Properties.create(Material.IRON)
+                            .hardnessAndResistance(4, 20)
+                            .sound(SoundType.METAL),
+                    new ResourceLocation("forge", "testblock/tag"),
+                    new ResourceLocation("forge", "testitem/tag")
+            ).build()
+    );
 
     @ElementRetriever
     public final AnonymousElement element;
