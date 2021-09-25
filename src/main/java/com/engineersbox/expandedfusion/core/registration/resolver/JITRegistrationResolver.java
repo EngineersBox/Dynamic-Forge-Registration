@@ -47,6 +47,7 @@ import org.reflections.util.ConfigurationBuilder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -136,15 +137,7 @@ public class JITRegistrationResolver extends JITResolver {
 
     @Override
     public void registerAll() {
-        Stream.of(
-                ResolverPhase.TAGS,
-                ResolverPhase.ANONYMOUS_ELEMENT,
-                ResolverPhase.BLOCK,
-                ResolverPhase.ITEM,
-                ResolverPhase.FLUID,
-                ResolverPhase.RECIPE_SERIALIZER,
-                ResolverPhase.RECIPE_INLINE_DECLARATION
-        ).forEach(this::registerHandledElementsOfResolver);
+        Stream.of(ResolverPhase.values()).forEach(this::registerHandledElementsOfResolver);
     }
 
     @SuppressWarnings("unchecked")
@@ -259,14 +252,13 @@ public class JITRegistrationResolver extends JITResolver {
                     .collect(Collectors.toSet());
         }
 
-        @SuppressWarnings("unchecked")
         @SafeVarargs
         private final EventBroker createBrokerAndReflectivelyAddHandlers(final Injector injector, final Class<? extends Annotation>... distAnnotations) {
             final EventBroker eventBroker = new EventBroker();
             final Set<Class<? extends Annotation>> serverHandlers = filterServerEventHandlers(distAnnotations);
             final Set<Class<? extends Annotation>> clientHandlers = filterClientEventHandlers(distAnnotations);
             final Set<Class<? extends Annotation>> filteredAnnotations = new HashSet<>();
-            // Null handling here is for AspectJ @Around default null return when not on required dist
+            // Null handling here is for AspectJ @Around default null return when not in required dist
             if ((serverHandlers == null || serverHandlers.isEmpty()) && (clientHandlers == null || clientHandlers.isEmpty())) {
                 return eventBroker;
             }
@@ -285,45 +277,40 @@ public class JITRegistrationResolver extends JITResolver {
                     );
 
             final Reflections externalReflections = new Reflections(configBuilder);
-            final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = filteredAnnotations
-                    .stream()
-                    .map(externalReflections::getTypesAnnotatedWith)
-                    .flatMap(Set::stream)
-                    // Classes marked with @InternalEventHandler should not be used outside this lib
-                    .filter((final Class<?> clazz) -> !clazz.isAnnotationPresent(InternalEventHandler.class))
-                    .filter(EventSubscriptionHandler.class::isAssignableFrom)
-                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
+            final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = filterEventSubscriptionHandlers(
+                    externalReflections,
+                    filteredAnnotations,
+                    (final Class<?> clazz) -> !clazz.isAnnotationPresent(InternalEventHandler.class)
+            );
 
             final Reflections internalReflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)));
-            final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = filteredAnnotations
-                    .stream()
-                    .map(internalReflections::getTypesAnnotatedWith)
-                    .flatMap(Set::stream)
-                    .filter((final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class))
-                    .filter(EventSubscriptionHandler.class::isAssignableFrom)
-                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
+            final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = filterEventSubscriptionHandlers(
+                    internalReflections,
+                    filteredAnnotations,
+                    (final Class<?> clazz) -> clazz.isAnnotationPresent(InternalEventHandler.class)
+            );
             Stream.concat(nonInternalClasses, internalClasses).forEach((final Class<? extends EventSubscriptionHandler> consumer) -> addSubscriptionHandler(eventBroker, consumer, injector));
             return eventBroker;
         }
 
+        @SuppressWarnings("unchecked")
+        private Stream<Class<? extends EventSubscriptionHandler>> filterEventSubscriptionHandlers(final Reflections reflections,
+                                                                                                  final Set<Class<? extends Annotation>> filteredAnnotations,
+                                                                                                  final Predicate<Class<?>> handlerPredicate) {
+            return filteredAnnotations.stream()
+                    .map(reflections::getTypesAnnotatedWith)
+                    .flatMap(Set::stream)
+                    .filter(handlerPredicate)
+                    .filter(EventSubscriptionHandler.class::isAssignableFrom)
+                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
+        }
+
         private BrokerManager<DistEvent> createBrokerManager(final Injector injector) {
             final BrokerManager<DistEvent> eventBrokerManager = new BrokerManager<>(DistEvent.class);
-            eventBrokerManager.putMapping(
-                    DistEvent.COMMON,
-                    createBrokerAndReflectivelyAddHandlers(injector, CommonEventHandler.class)
-            );
-            eventBrokerManager.putMapping(
-                    DistEvent.CLIENT,
-                    createBrokerAndReflectivelyAddHandlers(injector, ClientEventHandler.class)
-            );
-            eventBrokerManager.putMapping(
-                    DistEvent.SERVER,
-                    createBrokerAndReflectivelyAddHandlers(injector, ServerEventHandler.class)
-            );
-            eventBrokerManager.putMapping(
-                    DistEvent.DATA,
-                    createBrokerAndReflectivelyAddHandlers(injector, DataEventHandler.class)
-            );
+            Stream.of(DistEvent.values()).forEach((final DistEvent distEvent) -> eventBrokerManager.putMapping(
+                    distEvent,
+                    createBrokerAndReflectivelyAddHandlers(injector, distEvent.getEventHandlerAnnotation())
+            ));
 
             return eventBrokerManager;
         }

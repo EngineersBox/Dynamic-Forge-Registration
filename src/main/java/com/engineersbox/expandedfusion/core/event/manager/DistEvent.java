@@ -1,35 +1,25 @@
 package com.engineersbox.expandedfusion.core.event.manager;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
-import net.minecraftforge.fml.event.server.ServerLifecycleEvent;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ClientEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.CommonEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.DataEventHandler;
+import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.ServerEventHandler;
+
+import java.lang.annotation.Annotation;
 
 public enum DistEvent {
-    COMMON(
-            ModLifecycleEvent.class,
-            Dist.CLIENT, Dist.DEDICATED_SERVER
-    ),
-    DATA(
-            GatherDataEvent.class,
-            Dist.CLIENT, Dist.DEDICATED_SERVER
-    ),
-    CLIENT(
-            ModLifecycleEvent.class,
-            Dist.CLIENT
-    ),
-    SERVER(
-            ServerLifecycleEvent.class,
-            Dist.DEDICATED_SERVER
-    );
+    COMMON(CommonEventHandler.class),
+    CLIENT(ClientEventHandler.class),
+    SERVER(ServerEventHandler.class),
+    DATA(DataEventHandler.class);
 
-    private final Class<? extends Event> eventClass;
-    private final Dist[] applicableDists;
+    private final Class<? extends Annotation> eventHandlerAnnotation;
 
-    DistEvent(final Class<? extends Event> eventClass,
-              final Dist ...applicableDists) {
-        this.eventClass = eventClass;
-        this.applicableDists = applicableDists;
+    DistEvent(final Class<? extends Annotation> eventHandlerAnnotation) {
+        this.eventHandlerAnnotation = eventHandlerAnnotation;
+    }
+
+    public Class<? extends Annotation> getEventHandlerAnnotation() {
+        return this.eventHandlerAnnotation;
     }
 }

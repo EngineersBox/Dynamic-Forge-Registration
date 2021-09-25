@@ -8,5 +8,4 @@ public enum ResolverPhase {
     FLUID,
     RECIPE_SERIALIZER,
     RECIPE_INLINE_DECLARATION,
-    RECIPE_DECLARATION,
 }

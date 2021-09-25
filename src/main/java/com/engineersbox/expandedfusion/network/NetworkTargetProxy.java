@@ -6,19 +6,10 @@ import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObject
 import com.engineersbox.expandedfusion.core.registration.resolver.JITRegistrationResolver;
 import com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer.FusionControlComputer;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class NetworkTargetProxy implements IProxy {
     private MinecraftServer server = null;
