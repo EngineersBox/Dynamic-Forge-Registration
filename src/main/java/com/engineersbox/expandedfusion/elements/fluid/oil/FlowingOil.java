@@ -10,12 +10,8 @@ import net.minecraft.block.FlowingFluidBlock;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-@LangMetadata(
-        locales =  @LocaleEntry(key = LangKey.EN_US, mapping = FlowingOil.NAME_MAPPING)
-)
-@FluidProvider(
-    name = FlowingOil.PROVIDER_NAME
-)
+@LangMetadata(locales =  @LocaleEntry(key = LangKey.EN_US, mapping = FlowingOil.NAME_MAPPING))
+@FluidProvider(name = FlowingOil.PROVIDER_NAME)
 public class FlowingOil extends ForgeFlowingFluid.Flowing {
     public static final String PROVIDER_NAME = "flowing_oil";
     public static final String NAME_MAPPING = "Flowing Oil";

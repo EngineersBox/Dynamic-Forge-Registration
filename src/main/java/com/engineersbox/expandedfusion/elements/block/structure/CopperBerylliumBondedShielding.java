@@ -5,7 +5,9 @@ import com.engineersbox.expandedfusion.core.registration.annotation.element.bloc
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 
 @LangMetadata(
@@ -20,6 +22,6 @@ public class CopperBerylliumBondedShielding extends Block {
     public static final String NAME_MAPPING = "Copper-Beryllium Bonded Shielding";
 
     public CopperBerylliumBondedShielding() {
-        super(Block.Properties.create(Material.IRON));
+        super(AbstractBlock.Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(6.0F, 20.0F));
     }
 }

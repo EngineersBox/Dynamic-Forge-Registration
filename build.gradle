@@ -136,7 +136,7 @@ minecraft {
 
         data {
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'expandedfusion', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'expandedfusion', '--reports', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
 
         lang {

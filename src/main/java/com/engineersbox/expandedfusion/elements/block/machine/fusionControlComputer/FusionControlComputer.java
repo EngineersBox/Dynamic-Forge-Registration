@@ -1,18 +1,18 @@
 package com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tag;
-import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.elements.MachineTier;
+import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.CraftingRecipe;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.PatternKey;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.PatternLine;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.UnlockCriterion;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tag;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
+import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.data.recipe.AccessCriterion;
 import com.engineersbox.expandedfusion.core.registration.data.recipe.IngredientType;
-import com.engineersbox.expandedfusion.core.elements.MachineTier;
-import com.engineersbox.expandedfusion.core.elements.machine.AbstractMachineBlock;
-import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
 import com.engineersbox.expandedfusion.elements.block.structure.CopperBerylliumBondedShielding;
 import com.engineersbox.expandedfusion.elements.block.structure.NiobiumTitaniumCoil;
@@ -61,7 +61,7 @@ public class FusionControlComputer extends AbstractMachineBlock {
 
     @SuppressWarnings("unused")
     public FusionControlComputer() {
-        super(MachineTier.REINFORCED, Properties.create(Material.IRON).hardnessAndResistance(6, 20).sound(SoundType.METAL));
+        super(MachineTier.REINFORCED, Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(6.0F, 20.0F).sound(SoundType.METAL));
     }
 
     @Override

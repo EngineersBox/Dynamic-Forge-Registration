@@ -14,9 +14,7 @@ import net.minecraft.block.FlowingFluidBlock;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-@LangMetadata(
-        locales = @LocaleEntry(key = LangKey.EN_US, mapping = Oil.NAME_MAPPING)
-)
+@LangMetadata(locales = @LocaleEntry(key = LangKey.EN_US, mapping = Oil.NAME_MAPPING))
 @FluidBucket(
         name = Oil.BUCKET_NAME,
         lang = @LangMetadata(
@@ -24,9 +22,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
         ),
         tabGroup = Oil.BUCKET_TAB_GROUP
 )
-@Tag(
-        path = "fluids/oil"
-)
+@Tag(path = "fluids/oil")
 @FluidFog(
         red = 0.02F,
         green = 0.02F,
