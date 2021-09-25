@@ -14,6 +14,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
@@ -135,10 +136,9 @@ public class BlockDeferredRegistryService extends RegistryService<Block> {
     }
 
     private AbstractBlock.Properties createInitialBlockProps(final BlockProperties properties) {
-        AbstractBlock.Properties blockProps = AbstractBlock.Properties.create(FieldAccessor.getFieldValue(
+        AbstractBlock.Properties blockProps = AbstractBlock.Properties.create(FieldAccessor.getStaticFieldValue(
                 properties.material(),
-                Material.class,
-                null
+                Material.class
         ));
         final Optional<String> dyeColour = getFieldAndOrLog(properties.dyeColour(), "dyeColour");
         final Optional<String> materialColour = getFieldAndOrLog(properties.materialColour(), "materialColour");

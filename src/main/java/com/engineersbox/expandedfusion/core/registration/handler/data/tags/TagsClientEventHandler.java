@@ -108,6 +108,7 @@ public class TagsClientEventHandler implements EventSubscriptionHandler {
 
             @Override
             protected void registerTags() {
+                // TODO: Fix tags creating nested fluids directory inside forge/tags/fluids
                 Map<ITag.INamedTag<Fluid>, Set<String>> tagsToBeRegistered = RegistryObjectContext.getSourceFluidTagsToBeRegistered();
                 tagsToBeRegistered.forEach((final ITag.INamedTag<Fluid> blockTag, final Set<String> providerNames) -> {
                     final TagsProvider.Builder<Fluid> builder = this.getOrCreateBuilder(blockTag);

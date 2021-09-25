@@ -16,9 +16,11 @@ import com.engineersbox.expandedfusion.core.registration.provider.service.*;
 import com.engineersbox.expandedfusion.core.registration.provider.service.element.BlockDeferredRegistryService;
 import com.engineersbox.expandedfusion.core.registration.provider.service.element.FluidDeferredRegistryService;
 import com.engineersbox.expandedfusion.core.registration.provider.service.element.ItemDeferredRegistryService;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -83,16 +85,14 @@ public class FluidProviderRegistrationResolver implements RegistrationResolver {
         }
         if (!sourceFluidProvider.gaseous()) {
             final BlockProperties[] blockProperties = sourceFluidProvider.blockProperties();
-            if (blockProperties.length > 0) {
-                if (blockProperties.length > 1) {
-                    LOGGER.warn(
-                            "{} @BlockProperties annotations present on fluid {}, defaulting to first at index 0",
-                            blockProperties.length,
-                            sourceFluidProvider.name()
-                    );
-                }
-                registerFluidBlock(sourceFluidProvider.name(), blockProperties[0]);
+            if (blockProperties.length > 1) {
+                LOGGER.warn(
+                        "{} @BlockProperties annotations present on fluid {}, defaulting to first at index 0",
+                        blockProperties.length,
+                        sourceFluidProvider.name()
+                );
             }
+            registerFluidBlock(sourceFluidProvider.name(), blockProperties.length < 1 ? null : blockProperties[0]);
         }
         final Class<? extends Fluid> sourceFluidImpl = group.getSourceFluid();
         if (sourceFluidImpl == null) {
@@ -151,13 +151,23 @@ public class FluidProviderRegistrationResolver implements RegistrationResolver {
 
     private void registerFluidBlock(final String name,
                                     final BlockProperties blockProperties) {
+        final Supplier<FlowingFluid> flowingFluidSupplier = () -> (FlowingFluid) RegistryObjectContext.getSourceFluidRegistryObject(name).asFluid();
+        BlockRegistryObject<FlowingFluidBlock> fluidBlock;
+        if (blockProperties == null) {
+            fluidBlock = this.blockDeferredRegistryService.registerFluid(
+                    name,
+                    flowingFluidSupplier
+            );
+        } else {
+            fluidBlock = this.blockDeferredRegistryService.registerFluid(
+                    name,
+                    flowingFluidSupplier,
+                    this.blockDeferredRegistryService.assemblePropertiesFromAnnotation(blockProperties)
+            );
+        }
         this.elementRegistryProvider.blocks.put(
                 name,
-                this.blockDeferredRegistryService.registerFluid(
-                        name,
-                        () -> (FlowingFluid) RegistryObjectContext.getSourceFluidRegistryObject(name).asFluid(),
-                        this.blockDeferredRegistryService.assemblePropertiesFromAnnotation(blockProperties)
-                )
+                fluidBlock
         );
     }
 

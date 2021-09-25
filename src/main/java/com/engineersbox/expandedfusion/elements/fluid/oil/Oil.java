@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.elements.fluid.oil;
 
 import com.engineersbox.expandedfusion.ExpandedFusion;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tag;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidFog;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
@@ -22,6 +23,9 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
                 locales =  @LocaleEntry(key = LangKey.EN_US, mapping = Oil.BUCKET_NAME_MAPPING)
         ),
         tabGroup = Oil.BUCKET_TAB_GROUP
+)
+@Tag(
+        path = "fluids/oil"
 )
 @FluidFog(
         red = 0.02F,

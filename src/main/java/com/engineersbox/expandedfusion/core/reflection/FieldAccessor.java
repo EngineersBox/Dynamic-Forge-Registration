@@ -18,7 +18,7 @@ public class FieldAccessor {
     public static <T> T getFieldValue(final String fieldName,
                                       final Class<T> classOfT,
                                       final T instance) {
-        final Field[] fields = Material.class.getDeclaredFields();
+        final Field[] fields = classOfT.getDeclaredFields();
         final Optional<Field> fieldMatch = Arrays.stream(fields)
                 .filter((final Field field) -> field.getType().isAssignableFrom(classOfT) && field.getName().equals(fieldName))
                 .findFirst();
