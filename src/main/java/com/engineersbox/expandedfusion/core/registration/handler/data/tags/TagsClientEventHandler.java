@@ -89,7 +89,7 @@ public class TagsClientEventHandler implements EventSubscriptionHandler {
                 try {
                     method = ItemTagsProvider.class.getDeclaredMethod("copy", ITag.INamedTag.class, ITag.INamedTag.class);
                 } catch (final NoSuchMethodException e) {
-                    LOGGER.error("Could not find copy method for block -> item tag replication" ,e);
+                    LOGGER.error("Could not find copy method for block -> item tag replication", e);
                     return;
                 }
                 method.setAccessible(true);

@@ -11,6 +11,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.element.bloc
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.data.recipe.AccessCriterion;
 import com.engineersbox.expandedfusion.core.registration.data.recipe.IngredientType;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
@@ -61,7 +62,7 @@ public class FusionControlComputer extends AbstractMachineBlock {
 
     @SuppressWarnings("unused")
     public FusionControlComputer() {
-        super(MachineTier.REINFORCED, Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(6.0F, 20.0F).sound(SoundType.METAL));
+        super(MachineTier.REINFORCED, Properties.create(Material.IRON).lootFrom(() -> RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock()).setRequiresTool().hardnessAndResistance(6.0F, 20.0F).sound(SoundType.METAL));
     }
 
     @Override
