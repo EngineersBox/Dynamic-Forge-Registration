@@ -18,6 +18,7 @@ import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.annotation.Nonnull;
 
@@ -72,7 +73,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
 
     private void registerBlocks(final AnonymousElement element) {
         element.blockSuppliers.forEach((final String providerName, final AttributedSupplier<Block, Block> attributedSupplier) -> {
-            this.tagDeferredRegistryService.bindBlockTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindBlockTag(providerName, ImmutablePair.of(attributedSupplier.getTagBinding(), false));
             this.elementRegistryProvider.blocks.put(
                     providerName,
                     this.blockDeferredRegistryService.register(providerName, attributedSupplier.getSupplier(), attributedSupplier.getTabGroup())
@@ -82,7 +83,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
 
     private void registerItems(final AnonymousElement element) {
         element.itemSuppliers.forEach((final String providerName, final AttributedSupplier<Item, Item> attributedSupplier) -> {
-            this.tagDeferredRegistryService.bindItemTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindItemTag(providerName, ImmutablePair.of(attributedSupplier.getTagBinding(), false));
             this.elementRegistryProvider.items.put(
                     providerName,
                     this.itemDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
@@ -92,7 +93,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
 
     private void registerSourceFluids(final AnonymousElement element) {
         element.sourceFluidSuppliers.forEach((final String providerName, final AttributedSupplier<Fluid, Fluid> attributedSupplier) -> {
-            this.tagDeferredRegistryService.bindFlowingFluidTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindFlowingFluidTag(providerName, ImmutablePair.of(attributedSupplier.getTagBinding(), false));
             this.elementRegistryProvider.sourceFluids.put(
                     providerName,
                     this.fluidDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
@@ -102,7 +103,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
 
     private void registerFlowingFluids(final AnonymousElement element) {
         element.flowingFluidSuppliers.forEach((final String providerName, final AttributedSupplier<FlowingFluid, Fluid> attributedSupplier) -> {
-            this.tagDeferredRegistryService.bindSourceFluidTag(providerName, attributedSupplier.getTagBinding());
+            this.tagDeferredRegistryService.bindSourceFluidTag(providerName, ImmutablePair.of(attributedSupplier.getTagBinding(), false));
             this.elementRegistryProvider.flowingFluids.put(
                     providerName,
                     this.fluidDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())

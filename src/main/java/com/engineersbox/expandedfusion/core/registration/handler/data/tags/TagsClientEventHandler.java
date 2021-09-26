@@ -5,6 +5,9 @@ import com.engineersbox.expandedfusion.core.event.annotation.modloadingcontext.D
 import com.engineersbox.expandedfusion.core.event.annotation.InternalEventHandler;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.FluidRegistryObject;
+import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraft.block.Block;
@@ -16,6 +19,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,10 +48,14 @@ public class TagsClientEventHandler implements EventSubscriptionHandler {
 
             @Override
             protected void registerTags() {
-                final Map<ITag.INamedTag<Block>, Set<String>> tagsToBeRegistered = RegistryObjectContext.getBlockTagsToBeRegistered();
-                tagsToBeRegistered.forEach((final ITag.INamedTag<Block> blockTag, final Set<String> providerNames) -> {
+                final Map<ITag.INamedTag<Block>, Pair<Set<String>, Boolean>> tagsToBeRegistered = RegistryObjectContext.getBlockTagsToBeRegistered();
+                tagsToBeRegistered.forEach((final ITag.INamedTag<Block> blockTag, Pair<Set<String>, Boolean> providerPair) -> {
                     final TagsProvider.Builder<Block> builder = this.getOrCreateBuilder(blockTag);
-                    providerNames.forEach((final String providerName) -> builder.add(RegistryObjectContext.getBlockRegistryObject(providerName).asBlock()));
+                    providerPair.getKey().stream()
+                            .map(RegistryObjectContext::getBlockRegistryObject)
+                            .map(BlockRegistryObject::asBlock)
+                            .forEach(builder::add);
+                    builder.replace(providerPair.getValue());
                 });
             }
 
@@ -69,10 +77,14 @@ public class TagsClientEventHandler implements EventSubscriptionHandler {
 
             @Override
             protected void registerTags() {
-                final Map<ITag.INamedTag<Item>, Set<String>> tagsToBeRegistered = RegistryObjectContext.getItemTagsToBeRegistered();
-                tagsToBeRegistered.forEach((final ITag.INamedTag<Item> blockTag, final Set<String> providerNames) -> {
+                final Map<ITag.INamedTag<Item>, Pair<Set<String>, Boolean>> tagsToBeRegistered = RegistryObjectContext.getItemTagsToBeRegistered();
+                tagsToBeRegistered.forEach((final ITag.INamedTag<Item> blockTag, Pair<Set<String>, Boolean> providerPair) -> {
                     final TagsProvider.Builder<Item> builder = this.getOrCreateBuilder(blockTag);
-                    providerNames.forEach((final String providerName) -> builder.add(RegistryObjectContext.getItemRegistryObject(providerName).asItem()));
+                    providerPair.getKey().stream()
+                            .map(RegistryObjectContext::getItemRegistryObject)
+                            .map(ItemRegistryObject::asItem)
+                            .forEach(builder::add);
+                    builder.replace(providerPair.getValue());
                 });
                 RegistryObjectContext.getBlockTagsToBeRegisteredAsItemTags().forEach(this::copyBlockTagsToItemTags);
             }
@@ -109,15 +121,18 @@ public class TagsClientEventHandler implements EventSubscriptionHandler {
             @Override
             protected void registerTags() {
                 // TODO: Fix tags creating nested fluids directory inside forge/tags/fluids
-                Map<ITag.INamedTag<Fluid>, Set<String>> tagsToBeRegistered = RegistryObjectContext.getSourceFluidTagsToBeRegistered();
-                tagsToBeRegistered.forEach((final ITag.INamedTag<Fluid> blockTag, final Set<String> providerNames) -> {
+                addFluidTagsToProvider(RegistryObjectContext.getSourceFluidTagsToBeRegistered());
+                addFluidTagsToProvider(RegistryObjectContext.getFlowingFluidTagsToBeRegistered());
+            }
+
+            private void addFluidTagsToProvider(final Map<ITag.INamedTag<Fluid>, Pair<Set<String>, Boolean>> tagsToBeRegistered) {
+                tagsToBeRegistered.forEach((final ITag.INamedTag<Fluid> blockTag, Pair<Set<String>, Boolean> providerPair) -> {
                     final TagsProvider.Builder<Fluid> builder = this.getOrCreateBuilder(blockTag);
-                    providerNames.forEach((final String providerName) -> builder.add(RegistryObjectContext.getSourceFluidRegistryObject(providerName).asFluid()));
-                });
-                tagsToBeRegistered = RegistryObjectContext.getFlowingFluidTagsToBeRegistered();
-                tagsToBeRegistered.forEach((final ITag.INamedTag<Fluid> blockTag, final Set<String> providerNames) -> {
-                    final TagsProvider.Builder<Fluid> builder = this.getOrCreateBuilder(blockTag);
-                    providerNames.forEach((final String providerName) -> builder.add(RegistryObjectContext.getFlowingFluidRegistryObject(providerName).asFluid()));
+                    providerPair.getKey().stream()
+                            .map(RegistryObjectContext::getSourceFluidRegistryObject)
+                            .map(FluidRegistryObject::asFluid)
+                            .forEach(builder::add);
+                    builder.replace(providerPair.getValue());
                 });
             }
 

@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.annotation.Nonnull;
 
@@ -76,7 +77,10 @@ public class TagProviderRegistrationResolver implements RegistrationResolver {
                         tag.mirroredItemTagPath()
                 ));
             }
-            this.tagDeferredRegistryService.bindBlockTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindBlockTag(
+                    StringUtils.isEmpty(tag.provider()) ? name : tag.provider(),
+                    ImmutablePair.of(tagBinding, tag.replace())
+            );
         }
     }
 
@@ -89,7 +93,10 @@ public class TagProviderRegistrationResolver implements RegistrationResolver {
                     tag.namespace(),
                     tag.path()
             ));
-            this.tagDeferredRegistryService.bindItemTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindItemTag(
+                    StringUtils.isEmpty(tag.provider()) ? name : tag.provider(),
+                    ImmutablePair.of(tagBinding, tag.replace())
+            );
         }
     }
 
@@ -102,7 +109,10 @@ public class TagProviderRegistrationResolver implements RegistrationResolver {
                     tag.namespace(),
                     tag.path()
             ));
-            this.tagDeferredRegistryService.bindSourceFluidTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindSourceFluidTag(
+                    StringUtils.isEmpty(tag.provider()) ? name : tag.provider(),
+                    ImmutablePair.of(tagBinding, tag.replace())
+            );
         }
     }
 
@@ -115,7 +125,10 @@ public class TagProviderRegistrationResolver implements RegistrationResolver {
                     tag.namespace(),
                     tag.path()
             ));
-            this.tagDeferredRegistryService.bindFlowingFluidTag(StringUtils.isEmpty(tag.provider()) ? name : tag.provider(), tagBinding);
+            this.tagDeferredRegistryService.bindFlowingFluidTag(
+                    StringUtils.isEmpty(tag.provider()) ? name : tag.provider(),
+                    ImmutablePair.of(tagBinding, tag.replace())
+            );
         }
     }
 

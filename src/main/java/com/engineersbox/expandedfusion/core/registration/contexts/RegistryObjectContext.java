@@ -16,6 +16,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -84,7 +85,7 @@ public abstract class RegistryObjectContext {
         return RECIPE_REGISTRY_PROVIDER.craftingRecipesToBeRegistered;
     }
 
-    public static Map<ITag.INamedTag<Block>, Set<String>> getBlockTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Block>, Pair<Set<String>, Boolean>> getBlockTagsToBeRegistered() {
         return TAG_REGISTRY_PROVIDER.blockTagsToBeRegistered;
     }
 
@@ -92,15 +93,15 @@ public abstract class RegistryObjectContext {
         return TAG_REGISTRY_PROVIDER.blockTagsToBeRegisteredAsItemTags;
     }
 
-    public static Map<ITag.INamedTag<Item>, Set<String>> getItemTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Item>, Pair<Set<String>, Boolean>> getItemTagsToBeRegistered() {
         return TAG_REGISTRY_PROVIDER.itemTagsToBeRegistered;
     }
 
-    public static Map<ITag.INamedTag<Fluid>, Set<String>> getSourceFluidTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Fluid>, Pair<Set<String>, Boolean>> getSourceFluidTagsToBeRegistered() {
         return TAG_REGISTRY_PROVIDER.sourceFluidTagsToBeRegistered;
     }
 
-    public static Map<ITag.INamedTag<Fluid>, Set<String>> getFlowingFluidTagsToBeRegistered() {
+    public static Map<ITag.INamedTag<Fluid>, Pair<Set<String>, Boolean>> getFlowingFluidTagsToBeRegistered() {
         return TAG_REGISTRY_PROVIDER.flowingFluidTagsToBeRegistered;
     }
 }

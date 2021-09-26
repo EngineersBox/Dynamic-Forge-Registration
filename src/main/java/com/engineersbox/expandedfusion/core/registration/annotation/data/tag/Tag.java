@@ -10,6 +10,7 @@ public @interface Tag {
     String path();
     String mirroredItemTagNamespace() default "forge";
     String mirroredItemTagPath() default "";
+    boolean replace() default false;
     /*
      * If this field is specified, use it instead of the value found
      * in @BlockProvider, @ItemProvider or @FluidProvider annotations
