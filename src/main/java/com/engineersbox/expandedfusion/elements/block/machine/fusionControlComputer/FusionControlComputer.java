@@ -62,7 +62,14 @@ public class FusionControlComputer extends AbstractMachineBlock {
 
     @SuppressWarnings("unused")
     public FusionControlComputer() {
-        super(MachineTier.REINFORCED, Properties.create(Material.IRON).lootFrom(() -> RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock()).setRequiresTool().hardnessAndResistance(6.0F, 20.0F).sound(SoundType.METAL));
+        super(
+                MachineTier.REINFORCED,
+                Properties.create(Material.IRON)
+                        .lootFrom(() -> RegistryObjectContext.getBlockRegistryObject(NiobiumTitaniumCoil.PROVIDER_NAME).asBlock())
+                        .setRequiresTool()
+                        .hardnessAndResistance(6.0F, 20.0F)
+                        .sound(SoundType.METAL)
+        );
     }
 
     @Override
