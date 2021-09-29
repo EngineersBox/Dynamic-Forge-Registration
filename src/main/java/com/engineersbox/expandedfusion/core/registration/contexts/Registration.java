@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 @Singleton
 public final class Registration {
-    private String modID;
+    private final String modID;
     private static final Map<String, ItemGroup> CREATIVE_TABS = new HashMap<>();
 
     private DeferredRegister<Fluid> fluids;

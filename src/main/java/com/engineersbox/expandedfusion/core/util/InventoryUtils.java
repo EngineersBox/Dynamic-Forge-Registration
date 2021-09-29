@@ -2,8 +2,12 @@ package com.engineersbox.expandedfusion.core.util;
 
 import com.engineersbox.expandedfusion.core.util.generator.LayeredStreamGenerator;
 import com.engineersbox.expandedfusion.core.util.math.MathUtils;
+import com.engineersbox.expandedfusion.elements.item.CanisterItem;
 import com.google.common.collect.Range;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import com.google.common.collect.ImmutableList;
@@ -159,15 +163,15 @@ public final class InventoryUtils {
         return false;
     }
 
-//    public static boolean isFilledFluidContainer(final ItemStack stack) {
-//        final Item item = stack.getItem();
-//        return (item instanceof BucketItem && ((BucketItem) item).getFluid() != Fluids.EMPTY)
-//                || (item instanceof CanisterItem && !((CanisterItem) item).getFluid(stack).isEmpty());
-//    }
-//
-//    public static boolean isEmptyFluidContainer(final ItemStack stack) {
-//        final Item item = stack.getItem();
-//        return (item instanceof BucketItem && ((BucketItem) item).getFluid() == Fluids.EMPTY)
-//                || (item instanceof CanisterItem && ((CanisterItem) item).getFluid(stack).isEmpty());
-//    }
+    public static boolean isFilledFluidContainer(final ItemStack stack) {
+        final Item item = stack.getItem();
+        return (item instanceof BucketItem && ((BucketItem) item).getFluid() != Fluids.EMPTY)
+                || (item instanceof CanisterItem && !((CanisterItem) item).getFluid(stack).isEmpty());
+    }
+
+    public static boolean isEmptyFluidContainer(final ItemStack stack) {
+        final Item item = stack.getItem();
+        return (item instanceof BucketItem && ((BucketItem) item).getFluid() == Fluids.EMPTY)
+                || (item instanceof CanisterItem && ((CanisterItem) item).getFluid(stack).isEmpty());
+    }
 }

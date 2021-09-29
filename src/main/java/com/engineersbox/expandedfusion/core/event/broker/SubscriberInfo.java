@@ -3,8 +3,6 @@ package com.engineersbox.expandedfusion.core.event.broker;
 import com.engineersbox.expandedfusion.core.event.annotation.Subscriber;
 import com.engineersbox.expandedfusion.core.registration.exception.resolver.event.broker.SubscriberMethodInvocationException;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

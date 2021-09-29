@@ -7,15 +7,12 @@ import com.engineersbox.expandedfusion.core.registration.annotation.processors.m
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 
-@LangMetadata(
-        locales = @LocaleEntry(key = LangKey.EN_US, mapping = CopperBerylliumBondedShielding.NAME_MAPPING)
-)
+@LangMetadata(locales = @LocaleEntry(key = LangKey.EN_US, mapping = CopperBerylliumBondedShielding.NAME_MAPPING))
 @BlockProvider(
-    name = CopperBerylliumBondedShielding.PROVIDER_NAME,
-    type = BlockImplType.STATIC
+        name = CopperBerylliumBondedShielding.PROVIDER_NAME,
+        type = BlockImplType.STATIC
 )
 public class CopperBerylliumBondedShielding extends Block {
     public static final String PROVIDER_NAME = "copper_beryllium_bonded_shielding";

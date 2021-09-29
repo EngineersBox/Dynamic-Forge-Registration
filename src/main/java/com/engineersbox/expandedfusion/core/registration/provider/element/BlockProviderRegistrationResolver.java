@@ -1,7 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.provider.element;
 
 import com.engineersbox.expandedfusion.core.reflection.CheckedInstantiator;
-import com.engineersbox.expandedfusion.core.reflection.FieldAccessor;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.exception.provider.element.ProviderElementRegistrationException;
@@ -18,7 +17,6 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplC
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -26,9 +24,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 import java.util.function.Supplier;
 
 @RegistrationPhaseHandler(ResolverPhase.BLOCK)

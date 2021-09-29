@@ -67,7 +67,6 @@ public class SyncHandler {
                         field.setAccessible(true);
                     final String name = sync.name();
 
-                    //noinspection ChainOfInstanceofChecks
                     final FieldPrimitiveActions<?> actions = FIELD_TAG_PRIMITIVE_ACTIONS.get(field.getType());
                     if (actions != null) {
                         actions.fieldSet.apply(field, obj, actions.tagsGet.apply(tags, name));
@@ -86,7 +85,7 @@ public class SyncHandler {
             }));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static CompoundNBT writeSyncVars(final Object obj, final CompoundNBT tags, final SyncVariable.Type syncType) {
         Arrays.stream(obj.getClass().getDeclaredFields()).forEach((field) -> Arrays.stream(field.getDeclaredAnnotations())
             .filter((annotation) -> {
@@ -104,7 +103,6 @@ public class SyncHandler {
                         field.setAccessible(true);
                     final String name = sync.name();
 
-                    //noinspection ChainOfInstanceofChecks
                     final FieldPrimitiveActions<?> actions = FIELD_TAG_PRIMITIVE_ACTIONS.get(field.getType());
                     if (actions != null) {
                         actions.tagsPut.apply(tags, name, actions.fieldGet.apply(field, obj));

@@ -19,9 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-@TileEntityProvider(
-        name = FusionControlComputer.PROVIDER_NAME
-)
+@TileEntityProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerTileEntity extends AbstractMachineTileEntity<AbstractCookingRecipe> {
 
     private static final TransportSlotConfiguration SLOT_CONFIG = new TransportSlotConfiguration.Builder()

@@ -2,7 +2,6 @@ package com.engineersbox.expandedfusion.core.registration.exception.grouping.dat
 
 import com.engineersbox.expandedfusion.core.registration.exception.grouping.DuplicateComponentBinding;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.tags.ITag;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.List;

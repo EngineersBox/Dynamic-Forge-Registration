@@ -146,7 +146,7 @@ public class MultiClassImplementationClassifier<T extends ImplGrouping> implemen
 
     public static class Builder<T extends ImplGrouping> {
 
-        Map<String, List<ClassifierRequirement<?, ?>>> requirements;
+        final Map<String, List<ClassifierRequirement<?, ?>>> requirements;
 
         public Builder() {
             this.requirements = new HashMap<>();

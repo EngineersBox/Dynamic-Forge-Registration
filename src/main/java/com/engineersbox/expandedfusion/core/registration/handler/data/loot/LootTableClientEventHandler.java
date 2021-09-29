@@ -53,7 +53,7 @@ public class LootTableClientEventHandler implements EventSubscriptionHandler {
             }
 
             @Override
-            protected void validate(final Map<ResourceLocation, LootTable> resourceMappedTables, ValidationTracker validationTracker) {
+            protected void validate(final Map<ResourceLocation, LootTable> resourceMappedTables, final ValidationTracker validationTracker) {
                 resourceMappedTables.forEach((final ResourceLocation id, final LootTable table) ->
                         LootTableManager.validateLootTable(validationTracker, id, table));
             }

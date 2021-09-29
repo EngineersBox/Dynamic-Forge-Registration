@@ -80,6 +80,7 @@ public class BlockImplClassGrouping extends ImplClassGroupings<BlockImplGrouping
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @DistBound(Dist.CLIENT)
     private void addDistDependentProviders() {
         final Set<Class<? extends ContainerScreen>> screenProviderAnnotatedClasses = ReflectionClassFilter.filterClassesBySuperType(

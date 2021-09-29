@@ -241,6 +241,7 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
         return Optional.empty();
     }
 
+    @SuppressWarnings({"unchecked", "RedundantOperationOnEmptyContainer"})
     private Stream<Field> createdMergedFieldStream(final String key, final Class<?> ...classes) {
         Stream<Field> collector = new HashSet<Field>().stream();
         for (final Class<?> clazz : classes) {

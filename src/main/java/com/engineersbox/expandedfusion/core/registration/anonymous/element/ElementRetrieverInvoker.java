@@ -22,6 +22,7 @@ public class ElementRetrieverInvoker {
         this.method = resolveMethod(clazz);
     }
 
+    @SuppressWarnings("unchecked")
     private Optional<Field> resolveField(final Class<Enum<?>> clazz) {
         final Set<Field> retrieverField = ReflectionUtils.getFields(
                 clazz,
@@ -31,6 +32,7 @@ public class ElementRetrieverInvoker {
         return retrieverField.stream().findFirst();
     }
 
+    @SuppressWarnings("unchecked")
     private Optional<Method> resolveMethod(final Class<Enum<?>> clazz) {
         final Set<Method> retrieverField = ReflectionUtils.getMethods(
                 clazz,

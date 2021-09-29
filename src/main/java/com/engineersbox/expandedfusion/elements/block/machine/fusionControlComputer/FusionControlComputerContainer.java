@@ -16,12 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 
-@LangMetadata(
-        locales = @LocaleEntry(key = LangKey.EN_US, mapping = FusionControlComputer.NAME_MAPPING)
-)
-@ContainerProvider(
-        name = FusionControlComputer.PROVIDER_NAME
-)
+@LangMetadata(locales = @LocaleEntry(key = LangKey.EN_US, mapping = FusionControlComputer.NAME_MAPPING))
+@ContainerProvider(name = FusionControlComputer.PROVIDER_NAME)
 public class FusionControlComputerContainer extends AbstractMachineContainer<FusionControlComputerTileEntity> {
 
     @SuppressWarnings("unused")

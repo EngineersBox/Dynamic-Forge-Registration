@@ -19,14 +19,12 @@ public class MisconfiguredProviderException extends RuntimeException {
     private static String formatError(final Map<String, List<Class<? extends Annotation>>> requires) {
         final StringBuilder sb = new StringBuilder("Invalid providers:\n\n");
         final AtomicInteger index = new AtomicInteger(0);
-        requires.forEach((String name, List<Class<? extends Annotation>> missing) -> {
-            sb.append(String.format(
-                "[%d] Missing provider annotated resources for [%s]%nMissing providers: [%s]%n%n",
-                index.incrementAndGet(),
-                name,
-                missing.stream().map(Class::getName).collect(Collectors.joining(", "))
-            ));
-        });
+        requires.forEach((String name, List<Class<? extends Annotation>> missing) -> sb.append(String.format(
+            "[%d] Missing provider annotated resources for [%s]%nMissing providers: [%s]%n%n",
+            index.incrementAndGet(),
+            name,
+            missing.stream().map(Class::getName).collect(Collectors.joining(", "))
+        )));
         return sb.toString().trim();
     }
 }

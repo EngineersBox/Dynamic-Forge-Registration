@@ -1,18 +1,9 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements;
 
-import com.engineersbox.expandedfusion.core.reflection.ProxyUtils;
-import com.engineersbox.expandedfusion.core.registration.annotation.element.ProvidesElement;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
-import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.elements.InvalidMetadataDeclaration;
-import org.reflections.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MetadataProvider<T extends Annotation> {
 

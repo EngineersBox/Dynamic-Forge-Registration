@@ -30,6 +30,7 @@ public class BindingGroupTransformer {
                 .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
     public List<AnonymousElement> getStaticFieldRegistrantElements() {
         final Set<Field> elementFields = ReflectionUtils.getFields(
                 this.registrant,

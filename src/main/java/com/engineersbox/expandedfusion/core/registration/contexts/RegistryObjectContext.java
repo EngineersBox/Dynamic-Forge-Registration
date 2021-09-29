@@ -18,11 +18,8 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class RegistryObjectContext {
 

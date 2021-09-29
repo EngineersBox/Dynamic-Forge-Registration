@@ -2,8 +2,6 @@ package com.engineersbox.expandedfusion.core.functional;
 
 import java.util.Iterator;
 import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class DualStreamIterator<T, E> {

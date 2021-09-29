@@ -9,12 +9,10 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-@LangMetadata(
-        locales = @LocaleEntry(key = LangKey.EN_US, mapping = NiobiumTitaniumCoil.NAME_MAPPING)
-)
+@LangMetadata(locales = @LocaleEntry(key = LangKey.EN_US, mapping = NiobiumTitaniumCoil.NAME_MAPPING))
 @BlockProvider(
-    name = NiobiumTitaniumCoil.PROVIDER_NAME,
-    type = BlockImplType.STATIC
+        name = NiobiumTitaniumCoil.PROVIDER_NAME,
+        type = BlockImplType.STATIC
 )
 public class NiobiumTitaniumCoil extends Block {
     public static final String PROVIDER_NAME = "niobium_titanium_coil";
