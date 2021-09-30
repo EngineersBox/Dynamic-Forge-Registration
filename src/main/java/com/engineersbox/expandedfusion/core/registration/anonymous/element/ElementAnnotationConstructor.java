@@ -1,6 +1,5 @@
 package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 
-import com.engineersbox.expandedfusion.core.reflection.AnnotationFieldUpdater;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
@@ -15,17 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ElementAnnotationConstructor<T> {
+public class ElementAnnotationConstructor {
 
-    private final AnnotationFieldUpdater<T> annotationFieldUpdater;
+    private ElementAnnotationConstructor() {}
 
-    public ElementAnnotationConstructor(final T instance) {
-        this.annotationFieldUpdater = new AnnotationFieldUpdater<>(instance);
-    }
-
-    public ElementAnnotationConstructor<T> withLangMapping(final Map<LangKey, String> langMapping) {
+    public static LangMetadata createLangMetadata(final Map<LangKey, String> langMapping) {
         final LocaleEntry[] locales = createLocales(langMapping);
-        this.annotationFieldUpdater.withNewValue(LangMetadata.class, new LangMetadata(){
+        return new LangMetadata(){
             @Override
             public Class<? extends Annotation> annotationType() {
                 return LangMetadata.class;
@@ -35,11 +30,10 @@ public class ElementAnnotationConstructor<T> {
             public LocaleEntry[] locales() {
                 return locales;
             }
-        });
-        return this;
+        };
     }
 
-    private LocaleEntry[] createLocales(final Map<LangKey, String> langMapping) {
+    private static LocaleEntry[] createLocales(final Map<LangKey, String> langMapping) {
         final LocaleEntry[] locales = new LocaleEntry[langMapping.size()];
         final List<Map.Entry<LangKey, String>> indexableLangEntries = new ArrayList<>(langMapping.entrySet());
         for (int i = 0; i < langMapping.size(); i++) {
@@ -65,8 +59,8 @@ public class ElementAnnotationConstructor<T> {
         return locales;
     }
 
-    public ElementAnnotationConstructor<T> withBlockProvider(final String providerName) {
-        final BlockProvider blockProvider = new BlockProvider(){
+    public static BlockProvider createBlockProvider(final String providerName) {
+        return new BlockProvider(){
             @Override
             public Class<? extends Annotation> annotationType() { return BlockProvider.class; }
             @Override
@@ -78,25 +72,21 @@ public class ElementAnnotationConstructor<T> {
             @Override
             public BlockProperties[] properties() { return new BlockProperties[0]; }
             @Override
-            public String tabGroup() { return null; }
+            public String tabGroup() { return ""; }
         };
-        this.annotationFieldUpdater.withNewValue(BlockProvider.class, blockProvider);
-        return this;
     }
 
-    public ElementAnnotationConstructor<T> withItemProvider(final String providerName) {
-        final ItemProvider itemProvider = new ItemProvider(){
+    public static ItemProvider createItemProvider(final String providerName) {
+        return new ItemProvider(){
             @Override
             public Class<? extends Annotation> annotationType() { return ItemProvider.class; }
             @Override
             public String name() { return providerName; }
         };
-        this.annotationFieldUpdater.withNewValue(ItemProvider.class, itemProvider);
-        return this;
     }
 
-    public ElementAnnotationConstructor<T> withFluidProvider(final String providerName) {
-        final FluidProvider fluidProvider = new FluidProvider(){
+    public static FluidProvider createFluidProvider(final String providerName) {
+        return new FluidProvider(){
             @Override
             public Class<? extends Annotation> annotationType() { return ItemProvider.class; }
             @Override
@@ -106,11 +96,5 @@ public class ElementAnnotationConstructor<T> {
             @Override
             public BlockProperties[] blockProperties() { return new BlockProperties[0]; }
         };
-        this.annotationFieldUpdater.withNewValue(FluidProvider.class, fluidProvider);
-        return this;
-    }
-
-    public void applyAnnotations() {
-        this.annotationFieldUpdater.performUpdates();
     }
 }

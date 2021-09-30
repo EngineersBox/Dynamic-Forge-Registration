@@ -113,6 +113,9 @@ dependencies {
     ajc group: 'org.aspectj', name: 'aspectjtools', version: "1.9.7"
     // Hook weaver agent into classloading
     runtimeAgent group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.7'
+    // BuddyBuddy bytecode generation
+    implementation group: 'net.bytebuddy', name: 'byte-buddy', version: '1.11.18'
+
 }
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))

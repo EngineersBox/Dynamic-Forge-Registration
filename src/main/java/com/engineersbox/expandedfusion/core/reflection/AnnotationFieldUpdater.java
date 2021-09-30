@@ -49,14 +49,6 @@ public class AnnotationFieldUpdater<T> {
         final Field annotations = getAnnotationsField(annotationData);
         annotations.setAccessible(true);
         final Map<Class<? extends Annotation>, Annotation> mappedAnnotationInstances = retrieveMappedAnnotationInstances(annotations, annotationData);
-//        final Annotation annotationInstance = mappedAnnotationInstances.get(annotationClass);
-//        if (annotationInstance == null) {
-//            throw new AnnotationFieldValueUpdateException(String.format(
-//                    "No such annotation %s present on instance %s",
-//                    annotationClass.getName(),
-//                    this.instance.getClass().getName()
-//            ));
-//        }
         mappedAnnotationInstances.put(annotationClass, annotation);
     }
 

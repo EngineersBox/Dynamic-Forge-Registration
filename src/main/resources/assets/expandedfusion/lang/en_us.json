@@ -8,7 +8,6 @@
   "block.expandedfusion.niobium_tin_coil": "Nobium-Tin Coil",
   "block.expandedfusion.niobium_titanium_coil": "Nobium-Titanium Coil",
   "block.expandedfusion.tin_block": "Tin Block",
-  "block.expandedfusion.titanium_block": "Titanium Block",
   "block.expandedfusion.fusion_control_computer": "Fusion Control Computer",
   "container.expandedfusion.fusion_control_computer": "Fusion Control Computer",
   "item.expandedfusion.empty_canister": "Empty Canister",
@@ -18,5 +17,6 @@
   "fluid.expandedfusion.oil": "Oil",
   "fluid.expandedfusion.flowing_oil": "Flowing Oil",
   "item.expandedfusion.oil_bucket": "Oil Bucket",
-  "block.expandedfusion.aluminium_block": "Titanium Block"
+  "block.expandedfusion.aluminium_block": "Aluminium Block",
+  "block.expandedfusion.lead_block": "Lead Block"
 }
