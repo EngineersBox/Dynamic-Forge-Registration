@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang;
+package com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang;
 
 import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.lang.MissingRequiredVMArgument;
 import com.google.gson.Gson;

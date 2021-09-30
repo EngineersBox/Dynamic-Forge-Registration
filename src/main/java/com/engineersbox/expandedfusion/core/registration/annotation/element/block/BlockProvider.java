@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface BlockProvider {
     String name();
-    BlockImplType type();
+    BlockImplType type() default BlockImplType.STATIC;
     boolean noItem() default false;
     BlockProperties[] properties() default {};
     String tabGroup() default "";

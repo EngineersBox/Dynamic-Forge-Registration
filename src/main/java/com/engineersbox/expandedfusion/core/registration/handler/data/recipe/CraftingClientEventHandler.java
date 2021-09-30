@@ -15,6 +15,8 @@ import com.engineersbox.expandedfusion.core.registration.provider.grouping.data.
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.BlockRegistryObject;
 import com.engineersbox.expandedfusion.core.registration.registryObject.element.ItemRegistryObject;
 import com.engineersbox.expandedfusion.core.util.math.MathUtils;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import net.minecraft.advancements.criterion.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -46,10 +48,17 @@ import java.util.stream.Stream;
 public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
     private static final Logger LOGGER = LogManager.getLogger(CraftingClientEventHandler.class);
+    private final String modId;
+
+    @Inject
+    public CraftingClientEventHandler(@Named("modId") final String modId) {
+        this.modId = modId;
+    }
 
     @Subscriber
     public void registerRecipes(final GatherDataEvent gatherEvent) {
         gatherEvent.getGenerator().addProvider(new RecipeProvider(gatherEvent.getGenerator()) {
+
             @Override
             protected void registerRecipes(final Consumer<IFinishedRecipe> consumer) {
                 Map<String, CraftingRecipeImplGrouping> toRegister = RegistryObjectContext.getCraftingRecipesToBeRegistered();
@@ -59,6 +68,11 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
                             .map((final CraftingRecipe recipe) -> registerRecipe(name, group, recipe))
                             .forEach((final ShapedRecipeBuilder builder) -> builder.build(consumer));
                 });
+            }
+
+            @Override
+            public String getName() {
+                return String.format("[Mod ID: %s] Recipes", modId);
             }
         });
     }

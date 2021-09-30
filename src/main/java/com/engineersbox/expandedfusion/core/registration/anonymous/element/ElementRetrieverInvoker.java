@@ -10,20 +10,20 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.Set;
 
-public class ElementRetrieverInvoker {
+public class ElementRetrieverInvoker<T extends Enum<T>> {
 
-    private final Class<Enum<?>> clazz;
+    private final Class<T> clazz;
     private final Optional<Field> field;
     private final Optional<Method> method;
 
-    public ElementRetrieverInvoker(final Class<Enum<?>> clazz) {
+    public ElementRetrieverInvoker(final Class<T> clazz) {
         this.clazz = clazz;
         this.field = resolveField(clazz);
         this.method = resolveMethod(clazz);
     }
 
     @SuppressWarnings("unchecked")
-    private Optional<Field> resolveField(final Class<Enum<?>> clazz) {
+    private Optional<Field> resolveField(final Class<T> clazz) {
         final Set<Field> retrieverField = ReflectionUtils.getFields(
                 clazz,
                 ReflectionUtils.withAnnotation(ElementRetriever.class),
@@ -33,7 +33,7 @@ public class ElementRetrieverInvoker {
     }
 
     @SuppressWarnings("unchecked")
-    private Optional<Method> resolveMethod(final Class<Enum<?>> clazz) {
+    private Optional<Method> resolveMethod(final Class<T> clazz) {
         final Set<Method> retrieverField = ReflectionUtils.getMethods(
                 clazz,
                 ReflectionUtils.withAnnotation(ElementRetriever.class),

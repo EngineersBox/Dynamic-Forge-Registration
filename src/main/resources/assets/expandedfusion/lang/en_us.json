@@ -17,5 +17,6 @@
   "misc.expandedfusion.energyWithMax": "Energy",
   "fluid.expandedfusion.oil": "Oil",
   "fluid.expandedfusion.flowing_oil": "Flowing Oil",
-  "item.expandedfusion.oil_bucket": "Oil Bucket"
+  "item.expandedfusion.oil_bucket": "Oil Bucket",
+  "block.expandedfusion.aluminium_block": "Titanium Block"
 }

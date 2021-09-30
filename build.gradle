@@ -92,8 +92,10 @@ dependencies {
     implementation group: 'com.google.inject', name: 'guice', version: '5.0.1'
     // Reflections
     implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
-    // SLF4J
+    // SLF4J API
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
+    // SLF4J simple static bindings
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
     // Auto Service
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0'
@@ -138,9 +140,6 @@ minecraft {
         data {
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'expandedfusion', '--reports', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
-
-        lang {
             property 'langmetadata.elements_to_gen', project.lang_elements
             property 'langmetadata.resource_out', project.lang_out_dir
             property 'langmetadata.package_name', project.lang_package_name
@@ -156,10 +155,7 @@ def jvmProperties = [
         "org.aspectj.weaver.showWeaveInfo": "true"
 ]
 
-minecraft.runs.findAll {
-    RunConfig config ->
-        config.name != "lang"
-} .each {
+minecraft.runs.each {
     RunConfig config ->
         config.workingDirectory project.file('run')
         jvmProperties.each {

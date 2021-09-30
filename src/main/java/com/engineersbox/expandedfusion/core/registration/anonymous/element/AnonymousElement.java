@@ -3,14 +3,13 @@ package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 import com.engineersbox.expandedfusion.core.reflection.AnnotationFieldUpdater;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.block.LangMappedBlock;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.block.NoDefaultLootTableBlock;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.fluid.LangMappedFlowingFluid;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.fluid.LangMappedSourceFluid;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.item.LangMappedItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
-import com.engineersbox.expandedfusion.elements.block.machine.fusionControlComputer.FusionControlComputer;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.FlowingFluid;
@@ -113,7 +112,10 @@ public class AnonymousElement {
                              final String group,
                              final AbstractBlock.Properties props) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -126,7 +128,10 @@ public class AnonymousElement {
                                                final String group,
                                                final AbstractBlock.Properties props) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock);
         }
         public Builder block(final String providerName,
@@ -141,7 +146,10 @@ public class AnonymousElement {
                              final AbstractBlock.Properties props,
                              final ITag.INamedTag<Block> tag) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tag);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -156,7 +164,10 @@ public class AnonymousElement {
                                                final AbstractBlock.Properties props,
                                                final ITag.INamedTag<Block> tag) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tag);
         }
         public Builder block(final String providerName,
@@ -173,7 +184,10 @@ public class AnonymousElement {
                              final ITag.INamedTag<Block> tag,
                              final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tag, itemTagToMirrorBlockTagTo);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -190,7 +204,10 @@ public class AnonymousElement {
                                                final ITag.INamedTag<Block> tag,
                                                final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tag, itemTagToMirrorBlockTagTo);
         }
         public Builder block(final String providerName,
@@ -207,7 +224,10 @@ public class AnonymousElement {
                              final ITag.INamedTag<Block> tag,
                              final ResourceLocation mirroredTagResource) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tag, mirroredTagResource);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -224,7 +244,10 @@ public class AnonymousElement {
                                                final ITag.INamedTag<Block> tag,
                                                final ResourceLocation mirroredTagResource) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tag, mirroredTagResource);
         }
         public Builder block(final String providerName,
@@ -239,7 +262,10 @@ public class AnonymousElement {
                              final AbstractBlock.Properties props,
                              final ResourceLocation tagResource) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tagResource);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -254,7 +280,10 @@ public class AnonymousElement {
                                                final AbstractBlock.Properties props,
                                                final ResourceLocation tagResource) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tagResource);
         }
         public Builder block(final String providerName,
@@ -271,7 +300,10 @@ public class AnonymousElement {
                              final ResourceLocation tagResource,
                              final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tagResource, itemTagToMirrorBlockTagTo);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -288,7 +320,10 @@ public class AnonymousElement {
                                                final ResourceLocation tagResource,
                                                final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tagResource, itemTagToMirrorBlockTagTo);
         }
         public Builder block(final String providerName,
@@ -305,7 +340,10 @@ public class AnonymousElement {
                              final ResourceLocation tagResource,
                              final ResourceLocation mirroredTagResource) {
             final LangMappedBlock langMappedBlock = new LangMappedBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tagResource, mirroredTagResource);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
@@ -322,7 +360,10 @@ public class AnonymousElement {
                                                final ResourceLocation tagResource,
                                                final ResourceLocation mirroredTagResource) {
             final NoDefaultLootTableBlock langMappedBlock = new NoDefaultLootTableBlock(props);
-            updateInstanceLangMapping(langMappedBlock, langMapping);
+            new ElementAnnotationConstructor<>(langMappedBlock)
+                    .withLangMapping(langMapping)
+                    .withBlockProvider(providerName)
+                    .applyAnnotations();
             return block(providerName, group, () -> langMappedBlock, tagResource, mirroredTagResource);
         }
 
@@ -352,7 +393,10 @@ public class AnonymousElement {
                             final Map<LangKey, String> langMapping,
                             final Item.Properties props) {
             final LangMappedItem langMappedItem = new LangMappedItem(props);
-            updateInstanceLangMapping(langMappedItem, langMapping);
+            new ElementAnnotationConstructor<>(langMappedItem)
+                    .withLangMapping(langMapping)
+                    .withItemProvider(providerName)
+                    .applyAnnotations();
             return item(providerName, () -> langMappedItem);
         }
         public Builder item(final String providerName,
@@ -365,7 +409,10 @@ public class AnonymousElement {
                             final Item.Properties props,
                             final ITag.INamedTag<Item> tag) {
             final LangMappedItem langMappedItem = new LangMappedItem(props);
-            updateInstanceLangMapping(langMappedItem, langMapping);
+            new ElementAnnotationConstructor<>(langMappedItem)
+                    .withLangMapping(langMapping)
+                    .withItemProvider(providerName)
+                    .applyAnnotations();
             return item(providerName, () -> langMappedItem, tag);
         }
         public Builder item(final String providerName,
@@ -378,7 +425,10 @@ public class AnonymousElement {
                             final Item.Properties props,
                             final ResourceLocation tagResource) {
             final LangMappedItem langMappedItem = new LangMappedItem(props);
-            updateInstanceLangMapping(langMappedItem, langMapping);
+            new ElementAnnotationConstructor<>(langMappedItem)
+                    .withLangMapping(langMapping)
+                    .withItemProvider(providerName)
+                    .applyAnnotations();
             return item(providerName, () -> langMappedItem, tagResource);
         }
 
@@ -391,7 +441,10 @@ public class AnonymousElement {
                             final Map<LangKey, String> langMapping,
                             final String group) {
             final LangMappedItem langMappedItem = new LangMappedItem(new Item.Properties().group(Registration.getTabGroup(group)));
-            updateInstanceLangMapping(langMappedItem, langMapping);
+            new ElementAnnotationConstructor<>(langMappedItem)
+                    .withLangMapping(langMapping)
+                    .withItemProvider(providerName)
+                    .applyAnnotations();
             return item(providerName, () -> langMappedItem);
         }
         public Builder item(final String providerName,
@@ -404,7 +457,10 @@ public class AnonymousElement {
                             final String group,
                             final ITag.INamedTag<Item> tag) {
             final LangMappedItem langMappedItem = new LangMappedItem(new Item.Properties().group(Registration.getTabGroup(group)));
-            updateInstanceLangMapping(langMappedItem, langMapping);
+            new ElementAnnotationConstructor<>(langMappedItem)
+                    .withLangMapping(langMapping)
+                    .withItemProvider(providerName)
+                    .applyAnnotations();
             return item(providerName, () -> langMappedItem, tag);
         }
         public Builder item(final String providerName,
@@ -417,7 +473,10 @@ public class AnonymousElement {
                             final String group,
                             final ResourceLocation tagResource) {
             final LangMappedItem langMappedItem = new LangMappedItem(new Item.Properties().group(Registration.getTabGroup(group)));
-            updateInstanceLangMapping(langMappedItem, langMapping);
+            new ElementAnnotationConstructor<>(langMappedItem)
+                    .withLangMapping(langMapping)
+                    .withItemProvider(providerName)
+                    .applyAnnotations();
             return item(providerName, () -> langMappedItem, tagResource);
         }
 
@@ -448,7 +507,10 @@ public class AnonymousElement {
                                    final Map<LangKey, String> langMapping,
                                    final ForgeFlowingFluid.Properties props) {
             final LangMappedSourceFluid sourceFluid = new LangMappedSourceFluid(props);
-            updateInstanceLangMapping(sourceFluid, langMapping);
+            new ElementAnnotationConstructor<>(sourceFluid)
+                    .withLangMapping(langMapping)
+                    .withFluidProvider(providerName)
+                    .applyAnnotations();
             return sourceFluid(providerName, () -> sourceFluid);
         }
         public Builder sourceFluid(final String providerName,
@@ -462,7 +524,10 @@ public class AnonymousElement {
                                    final ForgeFlowingFluid.Properties props,
                                    final ITag.INamedTag<Fluid> tag) {
             final LangMappedSourceFluid sourceFluid = new LangMappedSourceFluid(props);
-            updateInstanceLangMapping(sourceFluid, langMapping);
+            new ElementAnnotationConstructor<>(sourceFluid)
+                    .withLangMapping(langMapping)
+                    .withFluidProvider(providerName)
+                    .applyAnnotations();
             return sourceFluid(providerName, () -> sourceFluid, tag);
         }
         public Builder sourceFluid(final String providerName,
@@ -476,7 +541,10 @@ public class AnonymousElement {
                                    final ForgeFlowingFluid.Properties props,
                                    final ResourceLocation tagResource) {
             final LangMappedSourceFluid sourceFluid = new LangMappedSourceFluid(props);
-            updateInstanceLangMapping(sourceFluid, langMapping);
+            new ElementAnnotationConstructor<>(sourceFluid)
+                    .withLangMapping(langMapping)
+                    .withFluidProvider(providerName)
+                    .applyAnnotations();
             return sourceFluid(providerName, () -> sourceFluid, tagResource);
         }
 
@@ -507,7 +575,10 @@ public class AnonymousElement {
                                     final Map<LangKey, String> langMapping,
                                     final ForgeFlowingFluid.Properties props) {
             final LangMappedFlowingFluid flowingFluid = new LangMappedFlowingFluid(props);
-            updateInstanceLangMapping(flowingFluid, langMapping);
+            new ElementAnnotationConstructor<>(flowingFluid)
+                    .withLangMapping(langMapping)
+                    .withFluidProvider(providerName)
+                    .applyAnnotations();
             return sourceFluid(providerName, () -> flowingFluid);
         }
         public Builder flowingFluid(final String providerName,
@@ -521,7 +592,10 @@ public class AnonymousElement {
                                     final ForgeFlowingFluid.Properties props,
                                     final ITag.INamedTag<Fluid> tag) {
             final LangMappedFlowingFluid flowingFluid = new LangMappedFlowingFluid(props);
-            updateInstanceLangMapping(flowingFluid, langMapping);
+            new ElementAnnotationConstructor<>(flowingFluid)
+                    .withLangMapping(langMapping)
+                    .withFluidProvider(providerName)
+                    .applyAnnotations();
             return sourceFluid(providerName, () -> flowingFluid, tag);
         }
         public Builder flowingFluid(final String providerName,
@@ -535,48 +609,11 @@ public class AnonymousElement {
                                     final ForgeFlowingFluid.Properties props,
                                     final ResourceLocation tagResource) {
             final LangMappedFlowingFluid flowingFluid = new LangMappedFlowingFluid(props);
-            updateInstanceLangMapping(flowingFluid, langMapping);
+            new ElementAnnotationConstructor<>(flowingFluid)
+                    .withLangMapping(langMapping)
+                    .withFluidProvider(providerName)
+                    .applyAnnotations();
             return sourceFluid(providerName, () -> flowingFluid, tagResource);
-        }
-
-        private <T> void updateInstanceLangMapping(final T instance,
-                                                   final Map<LangKey, String> langMapping) {
-            final LocaleEntry[] locales = new LocaleEntry[langMapping.size()];
-            final List<Map.Entry<LangKey, String>> indexableLangEntries = new ArrayList<>(langMapping.entrySet());
-            for (int i = 0; i < langMapping.size(); i++) {
-                final Map.Entry<LangKey, String> entryAtIdx = indexableLangEntries.get(i);
-                final LocaleEntry localeEntry = new LocaleEntry(){
-                    @Override
-                    public Class<? extends Annotation> annotationType() {
-                        return LocaleEntry.class;
-                    }
-
-                    @Override
-                    public LangKey key() {
-                        return entryAtIdx.getKey();
-                    }
-
-                    @Override
-                    public String mapping() {
-                        return entryAtIdx.getValue();
-                    }
-                };
-                locales[i] = localeEntry;
-            }
-            final LangMetadata langMetadata = new LangMetadata(){
-                @Override
-                public Class<? extends Annotation> annotationType() {
-                    return LangMetadata.class;
-                }
-
-                @Override
-                public LocaleEntry[] locales() {
-                    return locales;
-                }
-            };
-            new AnnotationFieldUpdater<>(instance)
-                    .withNewValue(LangMetadata.class, langMetadata)
-                    .performUpdates();
         }
 
         public AnonymousElement build() {

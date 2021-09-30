@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.elements;
+package com.engineersbox.expandedfusion.core.registration.handler.data.meta.elements;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;

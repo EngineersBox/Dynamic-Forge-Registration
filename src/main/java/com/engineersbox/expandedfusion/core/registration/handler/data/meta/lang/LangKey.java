@@ -1,4 +1,4 @@
-package com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang;
+package com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang;
 
 public enum LangKey {
     AF_ZA,

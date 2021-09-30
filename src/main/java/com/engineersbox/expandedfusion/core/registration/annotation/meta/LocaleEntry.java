@@ -1,6 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.annotation.meta;
 
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

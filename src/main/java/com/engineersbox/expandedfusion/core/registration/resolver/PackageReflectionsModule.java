@@ -36,6 +36,7 @@ public final class PackageReflectionsModule extends AbstractModule {
         bind(Reflections.class)
                 .annotatedWith(Names.named("packageReflections"))
                 .toInstance(this.reflections);
+
     }
 
 }

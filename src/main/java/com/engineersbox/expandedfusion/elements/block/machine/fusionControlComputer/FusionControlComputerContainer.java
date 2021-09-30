@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.core.elements.machine.container.AbstractM
 import com.engineersbox.expandedfusion.core.elements.machine.tileentity.AbstractMachineTileEntity;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.util.InventoryUtils;
 import com.engineersbox.expandedfusion.core.util.SlotOutputOnly;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.ContainerProvider;

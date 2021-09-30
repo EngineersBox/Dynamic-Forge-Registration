@@ -3,7 +3,7 @@ package com.engineersbox.expandedfusion.elements.block.structure;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.element.block.BlockImplType;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

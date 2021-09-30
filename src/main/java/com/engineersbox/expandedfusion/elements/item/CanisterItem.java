@@ -4,7 +4,7 @@ import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.elements.fluid.IFluidContainer;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
-import com.engineersbox.expandedfusion.core.registration.annotation.processors.meta.lang.LangKey;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.util.TextUtil;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
