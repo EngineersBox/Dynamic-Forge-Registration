@@ -18,5 +18,6 @@
   "fluid.expandedfusion.flowing_oil": "Flowing Oil",
   "item.expandedfusion.oil_bucket": "Oil Bucket",
   "block.expandedfusion.aluminium_block": "Aluminium Block",
-  "block.expandedfusion.lead_block": "Lead Block"
+  "block.expandedfusion.lead_block": "Lead Block",
+  "block.expandedfusion.orchallium_block": "Orchallium Block"
 }

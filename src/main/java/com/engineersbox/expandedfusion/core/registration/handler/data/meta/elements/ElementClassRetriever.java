@@ -76,11 +76,11 @@ public class ElementClassRetriever {
     private <T, E> Set<MetadataProvider<? extends Annotation>> constructMetadataProviders(final Map<String, AttributedSupplier<T, E>> suppliers) {
         return suppliers.entrySet()
                 .stream()
-                .filter((final Map.Entry<String, AttributedSupplier<T, E>> entry) -> isLangMetadataAnnotationPresent(entry.getValue().getSupplier().get().getClass(), ElementProvider.ANONYMOUS))
                 .flatMap((final Map.Entry<String, AttributedSupplier<T, E>> entry) -> {
                     final Class<?> supplierElementClass = entry.getValue().getSupplier().get().getClass();
                     final Optional<ElementProvider> anonymousAttachedProvider = ElementProvider.fromSupplierClass(supplierElementClass);
-                    if (!anonymousAttachedProvider.isPresent()) {
+                    final LangMetadata langMetadata = entry.getValue().getLangMetadata();
+                    if (!anonymousAttachedProvider.isPresent() && langMetadata == null) {
                         LOGGER.warn(
                                 "No provider annotation present on supplier class {} for provider {}, skipping",
                                 supplierElementClass.getName(),
@@ -88,12 +88,22 @@ public class ElementClassRetriever {
                         );
                         return Stream.empty();
                     }
-                    final LangMetadata langMetadata = entry.getValue().getLangMetadata();
-                    final ElementProvider elementProviderType = entry.getValue().getElementProvider();
+                    ElementProvider elementProviderType = entry.getValue().getElementProvider();
+                    if (anonymousAttachedProvider.isPresent() && (langMetadata == null || elementProviderType == null)) {
+                        elementProviderType = anonymousAttachedProvider.get();
+                    }
+                    if (elementProviderType == null) {
+                        LOGGER.warn(
+                                "No element provider type matches supplier class {} for provider {}, skipping",
+                                supplierElementClass.getName(),
+                                entry.getKey()
+                        );
+                        return Stream.empty();
+                    }
                     return Stream.of(new MetadataProvider<>(
                             langMetadata != null ? langMetadata : getLangMetadata(supplierElementClass, ElementProvider.ANONYMOUS),
                             entry.getKey(),
-                            getTypeName(langMetadata != null && elementProviderType != null ? elementProviderType : anonymousAttachedProvider.get())
+                            getTypeName(elementProviderType)
                     ));
                 })
                 .collect(Collectors.toSet());

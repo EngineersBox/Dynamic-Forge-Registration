@@ -7,6 +7,7 @@ import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +38,20 @@ public enum Metals {
                     AbstractBlock.Properties.create(Material.IRON)
                             .hardnessAndResistance(4, 20)
                             .sound(SoundType.METAL)
+            ).build()
+    ),
+    ORCHALLIUM(new AnonymousElement.Builder()
+            .block(
+                    "orchallium_block",
+                    ImmutableMap.of(
+                            LangKey.EN_US, "Orchallium Block"
+                    ),
+                    ExpandedFusion.MOD_ID,
+                    () -> new Block(
+                            AbstractBlock.Properties.create(Material.IRON)
+                                .hardnessAndResistance(4, 20)
+                                .sound(SoundType.METAL)
+                    )
             ).build()
     );
 
