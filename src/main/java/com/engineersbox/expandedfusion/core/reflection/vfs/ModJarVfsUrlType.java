@@ -26,18 +26,5 @@ public class ModJarVfsUrlType implements Vfs.UrlType {
     @Override
     public Vfs.Dir createDir(URL url) throws UnsupportedModJarVfsTypeException {
         throw new UnsupportedModJarVfsTypeException();
-//        url = new URL("jar", url.getHost(), url.getDefaultPort(), url.getFile());
-//        try {
-//            final URLConnection urlConnection = url.openConnection();
-//            if (urlConnection instanceof JarURLConnection) {
-//                urlConnection.setUseCaches(false);
-//                return new ZipDir(((JarURLConnection) urlConnection).getJarFile());
-//            }
-//        } catch (final Throwable e) { /*fallback*/ }
-//        final File file = Vfs.getFile(url);
-//        if (file != null) {
-//            return new ZipDir(new JarFile(file));
-//        }
-//        return null;
     }
 }

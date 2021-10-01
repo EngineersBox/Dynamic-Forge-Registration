@@ -282,7 +282,6 @@ public class JITRegistrationResolver extends JITResolver {
                             new TypeAnnotationsScanner()
                     );
 
-            // TODO: Fix errors thrown for reflections: "could not create Vfs.Dir from url"
             final Reflections externalReflections = new Reflections(configBuilder);
             final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = filterEventSubscriptionHandlers(
                     externalReflections,

@@ -14,8 +14,5 @@ import java.lang.annotation.Target;
 public @interface FluidProvider {
     String name();
     boolean gaseous() default false;
-    // TODO: Allow users to specify K,V pairs of the form "<METHOD NAME>:<ARG VALUE>" to set fluid block properties
-    //       These can be reflectively retrieved from the AbstractBlock class, get any method that returns
-    //       AbstractBlock.Properties and isn't create(...) or from(...)
     BlockProperties[] blockProperties() default {};
 }
