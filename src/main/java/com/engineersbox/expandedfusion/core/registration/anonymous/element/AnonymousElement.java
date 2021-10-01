@@ -53,6 +53,8 @@ public class AnonymousElement {
             anonymousElement = new AnonymousElement();
         }
 
+        // TODO: Implement ability to supply recipes
+
         public Builder block(final String providerName,
                              final String group,
                              final Supplier<Block> supplier) {

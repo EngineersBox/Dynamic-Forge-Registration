@@ -1,5 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
+import com.engineersbox.expandedfusion.core.reflection.vfs.ModJarVfsUrlType;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import org.reflections.Reflections;
@@ -21,7 +22,7 @@ public final class PackageReflectionsModule extends AbstractModule {
 
     public PackageReflectionsModule build() {
         this.reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(this.packageName))
+                .setUrls(new ModJarVfsUrlType().filterOutFromURLs(ClasspathHelper.forPackage(this.packageName)))
                 .setScanners(
                         new TypeElementsScanner(),
                         new SubTypesScanner(),

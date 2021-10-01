@@ -15,6 +15,7 @@ import com.engineersbox.expandedfusion.core.reflection.PackageInspector;
 import com.engineersbox.expandedfusion.core.reflection.ProxyUtils;
 import com.engineersbox.expandedfusion.core.reflection.ReflectionClassFilter;
 import com.engineersbox.expandedfusion.core.reflection.annotation.TargetedInjection;
+import com.engineersbox.expandedfusion.core.reflection.vfs.ModJarVfsUrlType;
 import com.engineersbox.expandedfusion.core.registration.annotation.resolver.RegistrationPhaseHandler;
 import com.engineersbox.expandedfusion.core.registration.contexts.ProviderModule;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
@@ -41,9 +42,11 @@ import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.scanners.TypeElementsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.vfs.Vfs;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -71,7 +74,7 @@ public class JITRegistrationResolver extends JITResolver {
     @TargetedInjection
     public Map<ResolverPhase, Set<Class<? extends RegistrationResolver>>> retrieveResolvers(@Named("packageReflections") final Reflections externalReflections) {
         final Reflections internalReflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE))
+                .setUrls(new ModJarVfsUrlType().filterOutFromURLs(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)))
                 .setScanners(
                         new TypeElementsScanner(),
                         new SubTypesScanner(),
@@ -266,14 +269,20 @@ public class JITRegistrationResolver extends JITResolver {
             if (clientHandlers != null) {
                 filteredAnnotations.addAll(clientHandlers);
             }
+            final Set<URL> modJarVfsTypeFilteredURLs = new ModJarVfsUrlType().filterOutFromURLs(
+                    this.packageName != null
+                            ? ClasspathHelper.forPackage(this.packageName)
+                            : ClasspathHelper.forJavaClassPath()
+            );
             final ConfigurationBuilder configBuilder = new ConfigurationBuilder()
-                    .setUrls(this.packageName != null ? ClasspathHelper.forPackage(this.packageName) : ClasspathHelper.forJavaClassPath())
+                    .setUrls(modJarVfsTypeFilteredURLs)
                     .setScanners(
                             new TypeElementsScanner(),
                             new SubTypesScanner(),
                             new TypeAnnotationsScanner()
                     );
 
+            // TODO: Fix errors thrown for reflections: "could not create Vfs.Dir from url"
             final Reflections externalReflections = new Reflections(configBuilder);
             final Stream<Class<? extends EventSubscriptionHandler>> nonInternalClasses = filterEventSubscriptionHandlers(
                     externalReflections,
@@ -281,7 +290,9 @@ public class JITRegistrationResolver extends JITResolver {
                     (final Class<?> clazz) -> !clazz.isAnnotationPresent(InternalEventHandler.class)
             );
 
-            final Reflections internalReflections = new Reflections(configBuilder.setUrls(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)));
+            modJarVfsTypeFilteredURLs.clear();
+            modJarVfsTypeFilteredURLs.addAll(new ModJarVfsUrlType().filterOutFromURLs(ClasspathHelper.forPackage(JITRegistrationResolver.INTERNAL_CORE_PACKAGE)));
+            final Reflections internalReflections = new Reflections(configBuilder.setUrls(modJarVfsTypeFilteredURLs));
             final Stream<Class<? extends EventSubscriptionHandler>> internalClasses = filterEventSubscriptionHandlers(
                     internalReflections,
                     filteredAnnotations,
