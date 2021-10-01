@@ -6,6 +6,7 @@ import com.engineersbox.expandedfusion.core.registration.anonymous.element.annot
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.fluid.LangMappedSourceFluid;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.item.LangMappedItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.resolver.PackageReflectionsModule;
 import com.google.inject.Guice;
@@ -55,14 +56,29 @@ public class AnonymousElement {
         public Builder block(final String providerName,
                              final String group,
                              final Supplier<Block> supplier) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group));
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).langMappings(langMapping));
             return this;
         }
         public Builder block(final String providerName,
                              final String group,
                              final Supplier<Block> supplier,
                              final ITag.INamedTag<Block> tag) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group).tag(tag));
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tag(tag));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier,
+                             final ITag.INamedTag<Block> tag) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tag(tag).langMappings(langMapping));
             return this;
         }
         public Builder block(final String providerName,
@@ -70,7 +86,16 @@ public class AnonymousElement {
                              final Supplier<Block> supplier,
                              final ITag.INamedTag<Block> tag,
                              final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group).tag(tag).mirroredTag(itemTagToMirrorBlockTagTo));
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tag(tag).mirroredTag(itemTagToMirrorBlockTagTo));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier,
+                             final ITag.INamedTag<Block> tag,
+                             final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tag(tag).mirroredTag(itemTagToMirrorBlockTagTo).langMappings(langMapping));
             return this;
         }
         public Builder block(final String providerName,
@@ -78,14 +103,31 @@ public class AnonymousElement {
                              final Supplier<Block> supplier,
                              final ITag.INamedTag<Block> tag,
                              final ResourceLocation itemResourceToMirrorBlockTagTo) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group).tag(tag).mirroredTagResource(itemResourceToMirrorBlockTagTo));
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tag(tag).mirroredTagResource(itemResourceToMirrorBlockTagTo));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier,
+                             final ITag.INamedTag<Block> tag,
+                             final ResourceLocation itemResourceToMirrorBlockTagTo) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tag(tag).mirroredTagResource(itemResourceToMirrorBlockTagTo).langMappings(langMapping));
             return this;
         }
         public Builder block(final String providerName,
                              final String group,
                              final Supplier<Block> supplier,
                              final ResourceLocation tagResource) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group).tagResource(tagResource));
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tagResource(tagResource));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier,
+                             final ResourceLocation tagResource) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tagResource(tagResource).langMappings(langMapping));
             return this;
         }
         public Builder block(final String providerName,
@@ -93,15 +135,33 @@ public class AnonymousElement {
                              final Supplier<Block> supplier,
                              final ResourceLocation tagResource,
                              final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group).tagResource(tagResource).mirroredTag(itemTagToMirrorBlockTagTo));
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tagResource(tagResource).mirroredTag(itemTagToMirrorBlockTagTo));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier,
+                             final ResourceLocation tagResource,
+                             final ITag.INamedTag<Item> itemTagToMirrorBlockTagTo) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tagResource(tagResource).mirroredTag(itemTagToMirrorBlockTagTo).langMappings(langMapping));
             return this;
         }
         public Builder block(final String providerName,
                              final String group,
                              final Supplier<Block> supplier,
                              final ResourceLocation tagResource,
-                             final ResourceLocation mirroredTagResource) {
-            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>().supplier(supplier).tabGroup(group).tagResource(tagResource).mirroredTagResource(mirroredTagResource));
+                             final ResourceLocation itemResourceToMirrorBlockTagTo) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tagResource(tagResource).mirroredTagResource(itemResourceToMirrorBlockTagTo));
+            return this;
+        }
+        public Builder block(final String providerName,
+                             final Map<LangKey, String> langMapping,
+                             final String group,
+                             final Supplier<Block> supplier,
+                             final ResourceLocation tagResource,
+                             final ResourceLocation itemResourceToMirrorBlockTagTo) {
+            this.anonymousElement.blockSuppliers.put(providerName, new AttributedSupplier<Block, Block>(ElementProvider.BLOCK).supplier(supplier).tabGroup(group).tagResource(tagResource).mirroredTagResource(itemResourceToMirrorBlockTagTo).langMappings(langMapping));
             return this;
         }
 
@@ -351,60 +411,80 @@ public class AnonymousElement {
                              final String group,
                              final AbstractBlock.Properties props,
                              final ResourceLocation tagResource,
-                             final ResourceLocation mirroredTagResource) {
-            return block(providerName, group, () -> new LangMappedBlock(props), tagResource, mirroredTagResource);
+                             final ResourceLocation itemResourceToMirrorBlockTagTo) {
+            return block(providerName, group, () -> new LangMappedBlock(props), tagResource, itemResourceToMirrorBlockTagTo);
         }
         public Builder block(final String providerName,
                              final Map<LangKey, String> langMapping,
                              final String group,
                              final AbstractBlock.Properties props,
                              final ResourceLocation tagResource,
-                             final ResourceLocation mirroredTagResource) {
+                             final ResourceLocation itemResourceToMirrorBlockTagTo) {
             final LangMappedBlock langMappedBlock = createLangMappedBlock(
                     LangMappedBlock.class,
                     providerName,
                     langMapping,
                     props
             );
-            return block(providerName, group, () -> langMappedBlock, tagResource, mirroredTagResource);
+            return block(providerName, group, () -> langMappedBlock, tagResource, itemResourceToMirrorBlockTagTo);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
                                                final String group,
                                                final AbstractBlock.Properties props,
                                                final ResourceLocation tagResource,
-                                               final ResourceLocation mirroredTagResource) {
-            return block(providerName, group, () -> new NoDefaultLootTableBlock(props), tagResource, mirroredTagResource);
+                                               final ResourceLocation itemResourceToMirrorBlockTagTo) {
+            return block(providerName, group, () -> new NoDefaultLootTableBlock(props), tagResource, itemResourceToMirrorBlockTagTo);
         }
         public Builder noDefaultLootTableBlock(final String providerName,
                                                final Map<LangKey, String> langMapping,
                                                final String group,
                                                final AbstractBlock.Properties props,
                                                final ResourceLocation tagResource,
-                                               final ResourceLocation mirroredTagResource) {
+                                               final ResourceLocation itemResourceToMirrorBlockTagTo) {
             final NoDefaultLootTableBlock langMappedBlock = createLangMappedBlock(
                     NoDefaultLootTableBlock.class,
                     providerName,
                     langMapping,
                     props
             );
-            return block(providerName, group, () -> langMappedBlock, tagResource, mirroredTagResource);
+            return block(providerName, group, () -> langMappedBlock, tagResource, itemResourceToMirrorBlockTagTo);
         }
 
         public Builder item(final String providerName,
                             final Supplier<Item> supplier) {
-            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>().supplier(supplier));
+            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>(ElementProvider.ITEM).supplier(supplier));
+            return this;
+        }
+        public Builder item(final String providerName,
+                            final Map<LangKey, String> langMapping,
+                            final Supplier<Item> supplier) {
+            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>(ElementProvider.ITEM).supplier(supplier).langMappings(langMapping));
             return this;
         }
         public Builder item(final String providerName,
                             final Supplier<Item> supplier,
                             final ITag.INamedTag<Item> tag) {
-            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>().supplier(supplier).tag(tag));
+            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>(ElementProvider.ITEM).supplier(supplier).tag(tag));
+            return this;
+        }
+        public Builder item(final String providerName,
+                            final Map<LangKey, String> langMapping,
+                            final Supplier<Item> supplier,
+                            final ITag.INamedTag<Item> tag) {
+            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>(ElementProvider.ITEM).supplier(supplier).tag(tag).langMappings(langMapping));
             return this;
         }
         public Builder item(final String providerName,
                             final Supplier<Item> supplier,
                             final ResourceLocation tagResource) {
-            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>().supplier(supplier).tagResource(tagResource));
+            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>(ElementProvider.ITEM).supplier(supplier).tagResource(tagResource));
+            return this;
+        }
+        public Builder item(final String providerName,
+                            final Map<LangKey, String> langMapping,
+                            final Supplier<Item> supplier,
+                            final ResourceLocation tagResource) {
+            this.anonymousElement.itemSuppliers.put(providerName, new AttributedSupplier<Item, Item>(ElementProvider.ITEM).supplier(supplier).tagResource(tagResource).langMappings(langMapping));
             return this;
         }
 
@@ -505,19 +585,39 @@ public class AnonymousElement {
 
         public Builder sourceFluid(final String providerName,
                                    final Supplier<Fluid> supplier) {
-            this.anonymousElement.sourceFluidSuppliers.put(providerName, new AttributedSupplier<Fluid, Fluid>().supplier(supplier));
+            this.anonymousElement.sourceFluidSuppliers.put(providerName, new AttributedSupplier<Fluid, Fluid>(ElementProvider.FLUID).supplier(supplier));
+            return this;
+        }
+        public Builder sourceFluid(final String providerName,
+                                   final Map<LangKey, String> langMapping,
+                                   final Supplier<Fluid> supplier) {
+            this.anonymousElement.sourceFluidSuppliers.put(providerName, new AttributedSupplier<Fluid, Fluid>(ElementProvider.FLUID).supplier(supplier).langMappings(langMapping));
             return this;
         }
         public Builder sourceFluid(final String providerName,
                                    final Supplier<Fluid> supplier,
                                    final ITag.INamedTag<Fluid> tag) {
-            this.anonymousElement.sourceFluidSuppliers.put(providerName, new AttributedSupplier<Fluid, Fluid>().supplier(supplier).tag(tag));
+            this.anonymousElement.sourceFluidSuppliers.put(providerName, new AttributedSupplier<Fluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tag(tag));
+            return this;
+        }
+        public Builder sourceFluid(final String providerName,
+                                   final Map<LangKey, String> langMapping,
+                                   final Supplier<Fluid> supplier,
+                                   final ITag.INamedTag<Fluid> tag) {
+            this.anonymousElement.sourceFluidSuppliers.put(providerName, new AttributedSupplier<Fluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tag(tag).langMappings(langMapping));
             return this;
         }
         public Builder sourceFluid(final String providerName,
                                    final Supplier<Fluid> supplier,
                                    final ResourceLocation tagResource) {
-            this.anonymousElement.sourceFluidSuppliers.put(providerName,new AttributedSupplier<Fluid, Fluid>().supplier(supplier).tagResource(tagResource));
+            this.anonymousElement.sourceFluidSuppliers.put(providerName,new AttributedSupplier<Fluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tagResource(tagResource));
+            return this;
+        }
+        public Builder sourceFluid(final String providerName,
+                                   final Map<LangKey, String> langMapping,
+                                   final Supplier<Fluid> supplier,
+                                   final ResourceLocation tagResource) {
+            this.anonymousElement.sourceFluidSuppliers.put(providerName,new AttributedSupplier<Fluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tagResource(tagResource).langMappings(langMapping));
             return this;
         }
 
@@ -576,19 +676,39 @@ public class AnonymousElement {
 
         public Builder flowingFluid(final String providerName,
                                     final Supplier<FlowingFluid> supplier) {
-            this.anonymousElement.flowingFluidSuppliers.put(providerName, new AttributedSupplier<FlowingFluid, Fluid>().supplier(supplier));
+            this.anonymousElement.flowingFluidSuppliers.put(providerName, new AttributedSupplier<FlowingFluid, Fluid>(ElementProvider.FLUID).supplier(supplier));
+            return this;
+        }
+        public Builder flowingFluid(final String providerName,
+                                    final Map<LangKey, String> langMapping,
+                                    final Supplier<FlowingFluid> supplier) {
+            this.anonymousElement.flowingFluidSuppliers.put(providerName, new AttributedSupplier<FlowingFluid, Fluid>(ElementProvider.FLUID).supplier(supplier).langMappings(langMapping));
             return this;
         }
         public Builder flowingFluid(final String providerName,
                                     final Supplier<FlowingFluid> supplier,
                                     final ITag.INamedTag<Fluid> tag) {
-            this.anonymousElement.flowingFluidSuppliers.put(providerName, new AttributedSupplier<FlowingFluid, Fluid>().supplier(supplier).tag(tag));
+            this.anonymousElement.flowingFluidSuppliers.put(providerName, new AttributedSupplier<FlowingFluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tag(tag));
+            return this;
+        }
+        public Builder flowingFluid(final String providerName,
+                                    final Map<LangKey, String> langMapping,
+                                    final Supplier<FlowingFluid> supplier,
+                                    final ITag.INamedTag<Fluid> tag) {
+            this.anonymousElement.flowingFluidSuppliers.put(providerName, new AttributedSupplier<FlowingFluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tag(tag).langMappings(langMapping));
             return this;
         }
         public Builder flowingFluid(final String providerName,
                                     final Supplier<FlowingFluid> supplier,
                                     final ResourceLocation tagResource) {
-            this.anonymousElement.flowingFluidSuppliers.put(providerName,new AttributedSupplier<FlowingFluid, Fluid>().supplier(supplier).tagResource(tagResource));
+            this.anonymousElement.flowingFluidSuppliers.put(providerName,new AttributedSupplier<FlowingFluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tagResource(tagResource));
+            return this;
+        }
+        public Builder flowingFluid(final String providerName,
+                                    final Map<LangKey, String> langMapping,
+                                    final Supplier<FlowingFluid> supplier,
+                                    final ResourceLocation tagResource) {
+            this.anonymousElement.flowingFluidSuppliers.put(providerName,new AttributedSupplier<FlowingFluid, Fluid>(ElementProvider.FLUID).supplier(supplier).tagResource(tagResource).langMappings(langMapping));
             return this;
         }
 

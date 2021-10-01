@@ -1,11 +1,12 @@
 package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 
+import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -14,12 +15,12 @@ public class AttributedSupplier<T, E> {
     private Supplier<T> elementSupplier;
     private String elementTabGroup;
     private final TagBinding<E> tagBinding;
-    private final Map<LangKey, String> langMappings;
+    private LangMetadata langMetadata;
+    private final ElementProvider elementProvider;
 
-
-    public AttributedSupplier() {
+    public AttributedSupplier(final ElementProvider elementProvider) {
         this.tagBinding = new TagBinding<>();
-        this.langMappings = new EnumMap<>(LangKey.class);
+        this.elementProvider = elementProvider;
     }
 
     public AttributedSupplier<T,E> supplier(final Supplier<T> supplier) {
@@ -53,7 +54,7 @@ public class AttributedSupplier<T, E> {
     }
 
     public AttributedSupplier<T,E> langMappings(final Map<LangKey, String> langMappings) {
-        this.langMappings.putAll(langMappings);
+        this.langMetadata = ElementAnnotationConstructor.createLangMetadata(langMappings);
         return this;
     }
 
@@ -69,7 +70,11 @@ public class AttributedSupplier<T, E> {
         return tagBinding;
     }
 
-    public Map<LangKey, String> getLangMappings() {
-        return this.langMappings;
+    public LangMetadata getLangMetadata() {
+        return this.langMetadata;
+    }
+
+    public ElementProvider getElementProvider() {
+        return this.elementProvider;
     }
 }

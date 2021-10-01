@@ -1,6 +1,8 @@
 package com.engineersbox.expandedfusion.core.reflection;
 
 import com.engineersbox.expandedfusion.core.reflection.exception.AnnotationFieldValueUpdateException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -11,6 +13,7 @@ import java.util.Map;
 
 public class AnnotationFieldUpdater<T> {
 
+    private static final Logger LOGGER = LogManager.getLogger(AnnotationFieldUpdater.class);
     private static final String ANNOTATIONS_FIELD_KEY = "annotations";
     private static final String ANNOTATION_DATA_METHOD_KEY = "annotationData";
 
@@ -38,7 +41,7 @@ public class AnnotationFieldUpdater<T> {
         final Method method = getAnnotationDataMethod();
         final Object annotationData;
         try {
-            annotationData = method.invoke(instance.getClass());
+            annotationData = method.invoke(this.instance.getClass());
         } catch (final InvocationTargetException | IllegalAccessException e) {
             throw new AnnotationFieldValueUpdateException(String.format(
                     "Could not invoke method %s on instance %s",
@@ -49,6 +52,13 @@ public class AnnotationFieldUpdater<T> {
         final Field annotations = getAnnotationsField(annotationData);
         annotations.setAccessible(true);
         final Map<Class<? extends Annotation>, Annotation> mappedAnnotationInstances = retrieveMappedAnnotationInstances(annotations, annotationData);
+        if (mappedAnnotationInstances.containsKey(annotationClass)) {
+            LOGGER.warn(
+                    "Class {} already has bound annotation {}, overwriting previous binding",
+                    this.instance.getClass().getName(),
+                    annotationClass.getName()
+            );
+        }
         mappedAnnotationInstances.put(annotationClass, annotation);
     }
 

@@ -64,6 +64,13 @@ public class ElementDynamicClassGenerator<T> {
     }
 
     public ElementDynamicClassGenerator<T> loadClass() {
+        /**
+         * Class loader used here needs to be the same as as the base class context since
+         * {@link ClassLoader#getSystemClassLoader()} will be a different loader than the
+         * one used for parameters that will eventually be used to construct a class
+         * instanced from the loaded class. In order to ensure they are they same
+         * this will be loaded from the baseClass class loader
+         */
         this.loadedClass = this.unloadedClass.load(this.baseClass.getClassLoader()).getLoaded();
         return this;
     }

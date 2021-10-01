@@ -2,8 +2,11 @@ package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProperties;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProviderImpl;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.fluid.FluidProviderImpl;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProvider;
+import com.engineersbox.expandedfusion.core.registration.annotation.element.item.ItemProviderImpl;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
@@ -60,41 +63,24 @@ public class ElementAnnotationConstructor {
     }
 
     public static BlockProvider createBlockProvider(final String providerName) {
-        return new BlockProvider(){
-            @Override
-            public Class<? extends Annotation> annotationType() { return BlockProvider.class; }
-            @Override
-            public String name() { return providerName; }
-            @Override
-            public BlockImplType type() { return BlockImplType.STATIC; }
-            @Override
-            public boolean noItem() { return false; }
-            @Override
-            public BlockProperties[] properties() { return new BlockProperties[0]; }
-            @Override
-            public String tabGroup() { return ""; }
-        };
+        return new BlockProviderImpl(
+                providerName,
+                BlockImplType.STATIC,
+                false,
+                new BlockProperties[0],
+                ""
+        );
     }
 
     public static ItemProvider createItemProvider(final String providerName) {
-        return new ItemProvider(){
-            @Override
-            public Class<? extends Annotation> annotationType() { return ItemProvider.class; }
-            @Override
-            public String name() { return providerName; }
-        };
+        return new ItemProviderImpl(providerName);
     }
 
     public static FluidProvider createFluidProvider(final String providerName) {
-        return new FluidProvider(){
-            @Override
-            public Class<? extends Annotation> annotationType() { return ItemProvider.class; }
-            @Override
-            public String name() { return providerName; }
-            @Override
-            public boolean gaseous() { return false; }
-            @Override
-            public BlockProperties[] blockProperties() { return new BlockProperties[0]; }
-        };
+        return new FluidProviderImpl(
+                providerName,
+                false,
+                new BlockProperties[0]
+        );
     }
 }

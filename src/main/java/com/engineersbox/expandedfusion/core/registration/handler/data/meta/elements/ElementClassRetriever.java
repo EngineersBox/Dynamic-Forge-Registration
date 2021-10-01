@@ -9,6 +9,7 @@ import com.engineersbox.expandedfusion.core.registration.anonymous.element.Anony
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AttributedSupplier;
 import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.elements.InvalidMetadataDeclaration;
 import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.lang.LangMetadataAnnotationRetrievalException;
+import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplClassGrouping;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplGrouping;
@@ -87,10 +88,12 @@ public class ElementClassRetriever {
                         );
                         return Stream.empty();
                     }
+                    final LangMetadata langMetadata = entry.getValue().getLangMetadata();
+                    final ElementProvider elementProviderType = entry.getValue().getElementProvider();
                     return Stream.of(new MetadataProvider<>(
-                            getLangMetadata(supplierElementClass, ElementProvider.ANONYMOUS),
+                            langMetadata != null ? langMetadata : getLangMetadata(supplierElementClass, ElementProvider.ANONYMOUS),
                             entry.getKey(),
-                            getTypeName(anonymousAttachedProvider.get())
+                            getTypeName(langMetadata != null && elementProviderType != null ? elementProviderType : anonymousAttachedProvider.get())
                     ));
                 })
                 .collect(Collectors.toSet());
