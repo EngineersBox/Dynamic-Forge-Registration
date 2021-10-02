@@ -6,6 +6,7 @@ import com.engineersbox.expandedfusion.core.registration.anonymous.element.annot
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.fluid.LangMappedSourceFluid;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.annotated.item.LangMappedItem;
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
+import com.engineersbox.expandedfusion.core.registration.exception.anonymous.UninitialisedRuntimeClassPackageNameException;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.google.inject.Inject;
@@ -40,9 +41,11 @@ public class AnonymousElement {
 
     public static class Builder {
 
+        private static final String UNINITIALISED_PACKAGE_NAME = "UNINITIALISED";
+
         @Inject
         @Named("packageName")
-        private static String PACKAGE_NAME = "UNINITIALISED";
+        private static String PACKAGE_NAME = UNINITIALISED_PACKAGE_NAME;
 
         private static final String DYNAMIC_BLOCK_CLASS_SUFFIX = "_DYN_BLOCK";
         private static final String DYNAMIC_ITEM_CLASS_SUFFIX = "_DYN_ITEM";
@@ -53,7 +56,6 @@ public class AnonymousElement {
 
         public Builder() {
             anonymousElement = new AnonymousElement();
-            // TODO: Get package name after resolution with JITRegistrationResolver
         }
 
         // TODO: Implement ability to supply recipes
@@ -770,16 +772,18 @@ public class AnonymousElement {
             return sourceFluid(providerName, () -> flowingFluid, tagResource);
         }
 
+        private static final String DYNAMIC_CLASS_IDENTIFIER_FORMAT = "%s.%s.%s";
         private <T extends LangMappedBlock> T createLangMappedBlock(final Class<T> baseClass,
                                                                     final String providerName,
                                                                     final Map<LangKey, String> langMapping,
                                                                     final AbstractBlock.Properties props) {
+            this.checkPackageNameInitialised();
             return new ElementDynamicClassGenerator<>(baseClass)
                     .retrieveDeclaredConstructor(AbstractBlock.Properties.class)
                     .withAnnotation(ElementAnnotationConstructor.createLangMetadata(langMapping))
                     .withAnnotation(ElementAnnotationConstructor.createBlockProvider(providerName))
                     .createUnloadedClass(String.format(
-                            "%s.%s.%s",
+                            DYNAMIC_CLASS_IDENTIFIER_FORMAT,
                             PACKAGE_NAME,
                             providerName,
                             DYNAMIC_BLOCK_CLASS_SUFFIX
@@ -791,12 +795,13 @@ public class AnonymousElement {
         private LangMappedItem createLangMappedItem(final String providerName,
                                                     final Map<LangKey, String> langMapping,
                                                     final Item.Properties props) {
+            this.checkPackageNameInitialised();
             return new ElementDynamicClassGenerator<>(LangMappedItem.class)
                     .retrieveDeclaredConstructor(Item.Properties.class)
                     .withAnnotation(ElementAnnotationConstructor.createLangMetadata(langMapping))
                     .withAnnotation(ElementAnnotationConstructor.createItemProvider(providerName))
                     .createUnloadedClass(String.format(
-                            "%s.%s.%s",
+                            DYNAMIC_CLASS_IDENTIFIER_FORMAT,
                             PACKAGE_NAME,
                             providerName,
                             DYNAMIC_ITEM_CLASS_SUFFIX
@@ -809,18 +814,25 @@ public class AnonymousElement {
                                             final String providerName,
                                             final Map<LangKey, String> langMapping,
                                             final ForgeFlowingFluid.Properties props) {
+            this.checkPackageNameInitialised();
             return new ElementDynamicClassGenerator<>(baseClass)
                     .retrieveDeclaredConstructor(ForgeFlowingFluid.Properties.class)
                     .withAnnotation(ElementAnnotationConstructor.createLangMetadata(langMapping))
                     .withAnnotation(ElementAnnotationConstructor.createFluidProvider(providerName))
                     .createUnloadedClass(String.format(
-                            "%s.%s.%s",
+                            DYNAMIC_CLASS_IDENTIFIER_FORMAT,
                             PACKAGE_NAME,
                             providerName,
                             ForgeFlowingFluid.Source.class.isAssignableFrom(baseClass) ? DYNAMIC_SOURCE_FLUID_CLASS_SUFFIX : DYNAMIC_FLOWING_FLUID_CLASS_SUFFIX
                     ))
                     .loadClass()
                     .getInstance(props);
+        }
+
+        private void checkPackageNameInitialised() {
+            if (PACKAGE_NAME.equals(UNINITIALISED_PACKAGE_NAME)) {
+                throw new UninitialisedRuntimeClassPackageNameException("Package name for class generation was not instantiated via static injection. Did the context change?");
+            }
         }
 
         public AnonymousElement build() {
