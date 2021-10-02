@@ -8,8 +8,6 @@ import com.engineersbox.expandedfusion.core.registration.anonymous.element.annot
 import com.engineersbox.expandedfusion.core.registration.contexts.Registration;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
-import com.engineersbox.expandedfusion.core.registration.resolver.PackageReflectionsModule;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.minecraft.block.AbstractBlock;
@@ -42,6 +40,10 @@ public class AnonymousElement {
 
     public static class Builder {
 
+        @Inject
+        @Named("packageName")
+        private static String PACKAGE_NAME = "UNINITIALISED";
+
         private static final String DYNAMIC_BLOCK_CLASS_SUFFIX = "_DYN_BLOCK";
         private static final String DYNAMIC_ITEM_CLASS_SUFFIX = "_DYN_ITEM";
         private static final String DYNAMIC_SOURCE_FLUID_CLASS_SUFFIX = "_DYN_SOURCE_FLUID";
@@ -51,6 +53,7 @@ public class AnonymousElement {
 
         public Builder() {
             anonymousElement = new AnonymousElement();
+            // TODO: Get package name after resolution with JITRegistrationResolver
         }
 
         // TODO: Implement ability to supply recipes
@@ -775,7 +778,12 @@ public class AnonymousElement {
                     .retrieveDeclaredConstructor(AbstractBlock.Properties.class)
                     .withAnnotation(ElementAnnotationConstructor.createLangMetadata(langMapping))
                     .withAnnotation(ElementAnnotationConstructor.createBlockProvider(providerName))
-                    .createUnloadedClass(providerName + DYNAMIC_BLOCK_CLASS_SUFFIX) // TODO: Fix the suffix to be a FQPN based on the user provided package name
+                    .createUnloadedClass(String.format(
+                            "%s.%s.%s",
+                            PACKAGE_NAME,
+                            providerName,
+                            DYNAMIC_BLOCK_CLASS_SUFFIX
+                    ))
                     .loadClass()
                     .getInstance(props);
         }
@@ -787,7 +795,12 @@ public class AnonymousElement {
                     .retrieveDeclaredConstructor(Item.Properties.class)
                     .withAnnotation(ElementAnnotationConstructor.createLangMetadata(langMapping))
                     .withAnnotation(ElementAnnotationConstructor.createItemProvider(providerName))
-                    .createUnloadedClass(providerName + DYNAMIC_ITEM_CLASS_SUFFIX)
+                    .createUnloadedClass(String.format(
+                            "%s.%s.%s",
+                            PACKAGE_NAME,
+                            providerName,
+                            DYNAMIC_ITEM_CLASS_SUFFIX
+                    ))
                     .loadClass()
                     .getInstance(props);
         }
@@ -800,7 +813,12 @@ public class AnonymousElement {
                     .retrieveDeclaredConstructor(ForgeFlowingFluid.Properties.class)
                     .withAnnotation(ElementAnnotationConstructor.createLangMetadata(langMapping))
                     .withAnnotation(ElementAnnotationConstructor.createFluidProvider(providerName))
-                    .createUnloadedClass(providerName + (ForgeFlowingFluid.Source.class.isAssignableFrom(baseClass) ? DYNAMIC_SOURCE_FLUID_CLASS_SUFFIX : DYNAMIC_FLOWING_FLUID_CLASS_SUFFIX))
+                    .createUnloadedClass(String.format(
+                            "%s.%s.%s",
+                            PACKAGE_NAME,
+                            providerName,
+                            ForgeFlowingFluid.Source.class.isAssignableFrom(baseClass) ? DYNAMIC_SOURCE_FLUID_CLASS_SUFFIX : DYNAMIC_FLOWING_FLUID_CLASS_SUFFIX
+                    ))
                     .loadClass()
                     .getInstance(props);
         }

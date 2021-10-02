@@ -253,6 +253,7 @@ public class JITRegistrationResolver extends JITResolver {
                     .collect(Collectors.toSet());
         }
 
+        @SuppressWarnings("java:S2112")
         @SafeVarargs
         private final EventBroker createBrokerAndReflectivelyAddHandlers(final Injector injector, final Class<? extends Annotation>... distAnnotations) {
             final EventBroker eventBroker = new EventBroker();
@@ -335,7 +336,7 @@ public class JITRegistrationResolver extends JITResolver {
                             Mod.class.getName().equals(annotation.annotationType().getName())).findFirst())
                     .filter(Optional::isPresent)
                     /* The classes in topLevelClasses are actually loaded as proxies at runtime with
-                     * Class$loadClass() to avoid potentially causing issues with annotation presence and metadata
+                     * Class#loadClass() to avoid potentially causing issues with annotation presence and metadata
                      * retention with the internal GenericDeclaration class used to invoke
                      * GenericDeclaration.super.isAnnotationPresent(Class<?>). As such the class metadata is
                      * wrapped with java.lang.reflect.Proxy, so we need to reflectively unwrap this in order to make

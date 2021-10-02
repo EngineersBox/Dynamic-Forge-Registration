@@ -107,13 +107,15 @@ public class CheckedInstantiator<T> {
                         break;
                     }
                 }
-                LOGGER.debug(
-                        "Multiple ({}) constructors found for {} and preferVarArgs was set, using closest match at index {}",
-                        constructorsList.size(),
-                        this.implementation.getName(),
-                        desiredConstructorIndex
-                );
-            } else {
+                if (this.constructors.size() > 1) {
+                    LOGGER.debug(
+                            "Multiple ({}) constructors found for {} and preferVarArgs was set, using closest match at index {}",
+                            constructorsList.size(),
+                            this.implementation.getName(),
+                            desiredConstructorIndex
+                    );
+                }
+            } else if (this.constructors.size() > 1) {
                 LOGGER.debug(
                         "Multiple ({}) constructors found for {}, defaulting to first available at index 0",
                         constructorsList.size(),
