@@ -772,7 +772,7 @@ public class AnonymousElement {
             return sourceFluid(providerName, () -> flowingFluid, tagResource);
         }
 
-        private static final String DYNAMIC_CLASS_IDENTIFIER_FORMAT = "%s.%s.%s";
+        private static final String DYNAMIC_CLASS_IDENTIFIER_FORMAT = "%s.%s%s";
         private <T extends LangMappedBlock> T createLangMappedBlock(final Class<T> baseClass,
                                                                     final String providerName,
                                                                     final Map<LangKey, String> langMapping,
