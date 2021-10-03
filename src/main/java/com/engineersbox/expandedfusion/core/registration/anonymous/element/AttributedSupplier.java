@@ -3,11 +3,13 @@ package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
+import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class AttributedSupplier<T, E> {
@@ -15,8 +17,9 @@ public class AttributedSupplier<T, E> {
     private Supplier<T> elementSupplier;
     private String elementTabGroup;
     private final TagBinding<E> tagBinding;
-    private LangMetadata langMetadata;
+    private Map<LangKey, String> langMapping;
     private final ElementProvider elementProvider;
+    private Consumer<Consumer<IFinishedRecipe>> recipeConsumer;
 
     public AttributedSupplier(final ElementProvider elementProvider) {
         this.tagBinding = new TagBinding<>();
@@ -54,7 +57,12 @@ public class AttributedSupplier<T, E> {
     }
 
     public AttributedSupplier<T,E> langMappings(final Map<LangKey, String> langMappings) {
-        this.langMetadata = ElementAnnotationConstructor.createLangMetadata(langMappings);
+        this.langMapping = langMappings;
+        return this;
+    }
+
+    public AttributedSupplier<T,E> recipe(final Consumer<Consumer<IFinishedRecipe>> recipeConsumer) {
+        this.recipeConsumer = recipeConsumer;
         return this;
     }
 
@@ -71,10 +79,18 @@ public class AttributedSupplier<T, E> {
     }
 
     public LangMetadata getLangMetadata() {
-        return this.langMetadata;
+        return this.langMapping == null ? null : ElementAnnotationConstructor.createLangMetadata(this.langMapping);
+    }
+
+    public Map<LangKey, String> getLangMappings() {
+        return this.langMapping;
     }
 
     public ElementProvider getElementProvider() {
         return this.elementProvider;
+    }
+
+    public Consumer<Consumer<IFinishedRecipe>> getRecipeConsumer() {
+        return this.recipeConsumer;
     }
 }

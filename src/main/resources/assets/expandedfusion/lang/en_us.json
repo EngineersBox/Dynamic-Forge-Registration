@@ -4,7 +4,7 @@
   "block.expandedfusion.copper_block": "Copper Block",
   "block.expandedfusion.cryostat_pressure_chamber_wall": "Cryostat Pressure Chamber Wall",
   "block.expandedfusion.divertor_cassette_assembly": "Divertor Cassette Assembly",
-  "block.expandedfusion.niobium_block": "Nobium Block",
+  "block.expandedfusion.niobium_block": "Niobium Block",
   "block.expandedfusion.niobium_tin_coil": "Nobium-Tin Coil",
   "block.expandedfusion.niobium_titanium_coil": "Nobium-Titanium Coil",
   "block.expandedfusion.tin_block": "Tin Block",
@@ -17,7 +17,7 @@
   "fluid.expandedfusion.oil": "Oil",
   "fluid.expandedfusion.flowing_oil": "Flowing Oil",
   "item.expandedfusion.oil_bucket": "Oil Bucket",
+  "block.expandedfusion.orchallium_block": "Orchallium Block",
   "block.expandedfusion.aluminium_block": "Aluminium Block",
-  "block.expandedfusion.lead_block": "Lead Block",
-  "block.expandedfusion.orchallium_block": "Orchallium Block"
+  "block.expandedfusion.lead_block": "Lead Block"
 }

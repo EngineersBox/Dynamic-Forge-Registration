@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.core.registration.exception.anonymous.Run
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.modifier.Visibility;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.implementation.MethodCall;
 import org.apache.logging.log4j.LogManager;
@@ -69,7 +70,7 @@ public class ElementDynamicClassGenerator<T> {
          * {@link ClassLoader#getSystemClassLoader()} will be a different loader than the
          * one used for parameters that will eventually be used to construct a class
          * instanced from the loaded class. In order to ensure they are they same
-         * this will be loaded from the baseClass class loader
+         * this will be loaded from the {@code this.baseClass.getClassLoader()} class loader
          */
         this.loadedClass = this.unloadedClass.load(this.baseClass.getClassLoader()).getLoaded();
         return this;
