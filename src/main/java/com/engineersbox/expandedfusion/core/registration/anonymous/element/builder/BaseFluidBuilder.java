@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 import java.util.Map;
 
-public abstract class BaseFluidBuilder<E, F> extends AnonymousBuilder<E, F> {
+public abstract class BaseFluidBuilder<E, F> extends AnonymousElementBuilder<E, F> {
 
     public <T> T createLangMappedFluid(final Class<T> baseClass,
                                        final String providerName,

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class ItemBuilder extends AnonymousBuilder<Item, Item> {
+public class ItemBuilder extends AnonymousElementBuilder<Item, Item> {
 
     private final AnonymousElement.Builder baseBuilderInstance;
     private final AttributedSupplier<Item, Item> supplier;

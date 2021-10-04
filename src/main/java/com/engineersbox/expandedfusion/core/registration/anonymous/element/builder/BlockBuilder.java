@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class BlockBuilder extends AnonymousBuilder<Block, Block> {
+public class BlockBuilder extends AnonymousElementBuilder<Block, Block> {
 
     private final AnonymousElement.Builder baseBuilderInstance;
     private final AttributedSupplier<Block, Block> supplier;
@@ -121,10 +121,10 @@ public class BlockBuilder extends AnonymousBuilder<Block, Block> {
                 .withAnnotation(this.supplier.getLangMetadata())
                 .withAnnotation(ElementAnnotationConstructor.createBlockProvider(providerName))
                 .createUnloadedClass(String.format(
-                        AnonymousBuilder.DYNAMIC_CLASS_IDENTIFIER_FORMAT,
-                        AnonymousBuilder.PACKAGE_NAME,
+                        AnonymousElementBuilder.DYNAMIC_CLASS_IDENTIFIER_FORMAT,
+                        AnonymousElementBuilder.PACKAGE_NAME,
                         providerName,
-                        AnonymousBuilder.DYNAMIC_BLOCK_CLASS_SUFFIX
+                        AnonymousElementBuilder.DYNAMIC_BLOCK_CLASS_SUFFIX
                 ))
                 .loadClass()
                 .getInstance(props);

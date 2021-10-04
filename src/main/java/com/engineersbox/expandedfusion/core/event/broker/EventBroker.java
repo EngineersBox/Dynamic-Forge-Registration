@@ -14,6 +14,9 @@ public class EventBroker {
     private static final Logger LOGGER = LogManager.getLogger(EventBroker.class);
     private final Map<Class<?>, List<SubscriberInfo<? super EventSubscriptionHandler>>> consumers = new LinkedHashMap<>();
 
+    public static final int MAX_PRIORITY = Integer.MAX_VALUE / 2;
+    public static final int MIN_PRIORITY = Integer.MIN_VALUE / 2;
+
     public <T extends EventSubscriptionHandler> void addConsumer(final T eventConsumer) {
         final Class<? extends EventSubscriptionHandler> consumerClass = eventConsumer.getClass();
         for (final Method method : consumerClass.getDeclaredMethods()) {

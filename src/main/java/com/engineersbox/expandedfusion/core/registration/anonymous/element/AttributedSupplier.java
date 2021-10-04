@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
+import com.engineersbox.expandedfusion.core.registration.anonymous.element.builder.AnonymousBuilder;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.ElementProvider;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import net.minecraft.data.IFinishedRecipe;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class AttributedSupplier<T, E> {
+public class AttributedSupplier<T, E> implements AnonymousBuilder<T, E> {
 
     private Supplier<T> elementSupplier;
     private String elementTabGroup;
@@ -26,41 +27,49 @@ public class AttributedSupplier<T, E> {
         this.elementProvider = elementProvider;
     }
 
+    @Override
     public AttributedSupplier<T,E> supplier(final Supplier<T> supplier) {
         this.elementSupplier = supplier;
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> tabGroup(final String tabGroup) {
         this.elementTabGroup = tabGroup;
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> tagResource(final ResourceLocation tagResource) {
         this.tagBinding.setTagResource(tagResource);
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> tag(final ITag.INamedTag<E> tag) {
         this.tagBinding.setTag(tag);
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> mirroredTagResource(final ResourceLocation mirroredTagResource) {
         this.tagBinding.setMirroredTagResource(mirroredTagResource);
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> mirroredTag(final ITag.INamedTag<Item> mirroredTag) {
         this.tagBinding.setMirroredTag(mirroredTag);
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> langMappings(final Map<LangKey, String> langMappings) {
         this.langMapping = langMappings;
         return this;
     }
 
+    @Override
     public AttributedSupplier<T,E> recipe(final Consumer<Consumer<IFinishedRecipe>> recipeConsumer) {
         this.recipeConsumer = recipeConsumer;
         return this;

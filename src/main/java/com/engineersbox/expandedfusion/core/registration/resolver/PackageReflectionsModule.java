@@ -1,7 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
 import com.engineersbox.expandedfusion.core.reflection.vfs.ModJarVfsUrlType;
-import com.engineersbox.expandedfusion.core.registration.anonymous.element.builder.AnonymousBuilder;
+import com.engineersbox.expandedfusion.core.registration.anonymous.element.builder.AnonymousElementBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import org.reflections.Reflections;
@@ -41,7 +41,7 @@ public final class PackageReflectionsModule extends AbstractModule {
         bind(String.class)
                 .annotatedWith(Names.named("packageName"))
                 .toInstance(this.packageName);
-        requestStaticInjection(AnonymousBuilder.class);
+        requestStaticInjection(AnonymousElementBuilder.class);
     }
 
 }

@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 public abstract class RegistryObjectContext {
 
     private RegistryObjectContext() {
-        throw new IllegalStateException("Utility Class");
+        throw new IllegalStateException("Static context Class");
     }
 
     private static final Injector INJECTOR = Guice.createInjector(new ProviderModule());
