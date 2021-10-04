@@ -3,13 +3,20 @@ package com.engineersbox.expandedfusion.elements.block;
 import com.engineersbox.expandedfusion.ExpandedFusion;
 import com.engineersbox.expandedfusion.core.registration.annotation.anonymous.AnonymousElementRegistrant;
 import com.engineersbox.expandedfusion.core.registration.annotation.anonymous.ElementRetriever;
+import com.engineersbox.expandedfusion.core.registration.anonymous.element.recipe.CriterionCondition;
+import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.LangKey;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.Tags;
+
+import java.util.function.Consumer;
 
 @AnonymousElementRegistrant
 public enum Metals {
@@ -24,6 +31,15 @@ public enum Metals {
                             false
                     ).tagResource(new ResourceLocation("forge", "testblock/tag"))
                     .mirroredTagResource(new ResourceLocation("forge", "testitem/tag"))
+                    .recipe((final Consumer<IFinishedRecipe> recipe) -> ShapedRecipeBuilder.shapedRecipe(RegistryObjectContext.getBlockRegistryObject("aluminium_block").asBlock())
+                            .patternLine("III")
+                            .patternLine("IBI")
+                            .patternLine("III")
+                            .key('I', Tags.Items.INGOTS_IRON)
+                            .key('B', Tags.Items.STORAGE_BLOCKS_IRON)
+                            .addCriterion("has_iron", CriterionCondition.hasItem(Tags.Items.INGOTS_IRON))
+                            .build(recipe)
+                    )
                     .construct()
             .build()
     ),

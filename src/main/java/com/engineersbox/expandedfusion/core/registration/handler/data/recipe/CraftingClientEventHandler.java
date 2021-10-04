@@ -8,6 +8,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.PatternKey;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.PatternLine;
 import com.engineersbox.expandedfusion.core.registration.annotation.data.recipe.crafting.UnlockCriterion;
+import com.engineersbox.expandedfusion.core.registration.anonymous.element.recipe.CriterionCondition;
 import com.engineersbox.expandedfusion.core.registration.contexts.RegistryObjectContext;
 import com.engineersbox.expandedfusion.core.registration.exception.contexts.RegistryObjectRetrievalException;
 import com.engineersbox.expandedfusion.core.registration.exception.handler.data.recipe.InvalidCraftingPatternException;
@@ -110,19 +111,19 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
             case HAS_TAG:
                 final Optional<ITag.INamedTag<Item>> tagMatch = getKeyAsINamedTag(criterion.ingredient());
                 if (tagMatch.isPresent()) {
-                    return builder.addCriterion(criterion.key(), hasItem(tagMatch.get()));
+                    return builder.addCriterion(criterion.key(), CriterionCondition.hasItem(tagMatch.get()));
                 }
                 throw new InvalidCraftingPatternException("No ingredient could be found for tag " + criterion.ingredient());
             case HAS_ITEM:
                 final Optional<IItemProvider> itemProvider = getItemProvider(criterion.ingredient());
                 if (itemProvider.isPresent()) {
-                    return builder.addCriterion(criterion.key(), hasItem(itemProvider.get()));
+                    return builder.addCriterion(criterion.key(), CriterionCondition.hasItem(itemProvider.get()));
                 }
                 throw new InvalidCraftingPatternException("No ingredient could be found for item " + criterion.ingredient());
             case ENTERED_BLOCK:
                 final Optional<Block> block = getBlock(criterion.ingredient());
                 if (block.isPresent()) {
-                    return builder.addCriterion(criterion.key(), enteredBlock(block.get()));
+                    return builder.addCriterion(criterion.key(), CriterionCondition.enteredBlock(block.get()));
                 }
                 throw new InvalidCraftingPatternException("No block could be found for name " + criterion.ingredient());
         }
@@ -285,33 +286,5 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
                 .distinct()
                 .collect(Collectors.toList());
         return availableTags.isEmpty() ? Optional.empty() : Optional.of(availableTags.get(0));
-    }
-
-    /**
-     * Creates a new {@link EnterBlockTrigger} for use with recipe unlock criteria.
-     */
-    protected static EnterBlockTrigger.Instance enteredBlock(Block block) {
-        return new EnterBlockTrigger.Instance(EntityPredicate.AndPredicate.ANY_AND, block, StatePropertiesPredicate.EMPTY);
-    }
-
-    /**
-     * Creates a new {@link InventoryChangeTrigger} that checks for a player having a certain item.
-     */
-    protected static InventoryChangeTrigger.Instance hasItem(IItemProvider item) {
-        return hasItem(ItemPredicate.Builder.create().item(item).build());
-    }
-
-    /**
-     * Creates a new {@link InventoryChangeTrigger} that checks for a player having an item within the given tag.
-     */
-    protected static InventoryChangeTrigger.Instance hasItem(ITag<Item> tag) {
-        return hasItem(ItemPredicate.Builder.create().tag(tag).build());
-    }
-
-    /**
-     * Creates a new {@link InventoryChangeTrigger} that checks for a player having a certain item.
-     */
-    protected static InventoryChangeTrigger.Instance hasItem(ItemPredicate... predicate) {
-        return new InventoryChangeTrigger.Instance(EntityPredicate.AndPredicate.ANY_AND, MinMaxBounds.IntBound.UNBOUNDED, MinMaxBounds.IntBound.UNBOUNDED, MinMaxBounds.IntBound.UNBOUNDED, predicate);
     }
 }
