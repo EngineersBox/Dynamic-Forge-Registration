@@ -4,6 +4,7 @@ import com.engineersbox.expandedfusion.core.registration.annotation.resolver.Reg
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AttributedSupplier;
 import com.engineersbox.expandedfusion.core.registration.contexts.provider.ElementRegistryProvider;
+import com.engineersbox.expandedfusion.core.registration.contexts.provider.RecipeRegistryProvider;
 import com.engineersbox.expandedfusion.core.registration.provider.RegistrationResolver;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.ImplClassGroupings;
 import com.engineersbox.expandedfusion.core.registration.provider.grouping.anonymous.AnonymousElementImplClassGrouping;
@@ -14,6 +15,7 @@ import com.engineersbox.expandedfusion.core.registration.provider.service.elemen
 import com.engineersbox.expandedfusion.core.registration.resolver.ResolverPhase;
 import com.google.inject.Inject;
 import net.minecraft.block.Block;
+import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -21,6 +23,7 @@ import net.minecraft.tags.ITag;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 @RegistrationPhaseHandler(ResolverPhase.ANONYMOUS_ELEMENT)
 public class AnonymousElementProviderRegistrationResolver implements RegistrationResolver {
@@ -31,15 +34,18 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
     private final FluidDeferredRegistryService fluidDeferredRegistryService;
     private final TagDeferredRegistryService tagDeferredRegistryService;
     private final ElementRegistryProvider elementRegistryProvider;
+    private final RecipeRegistryProvider recipeRegistryProvider;
 
     @Inject
     public AnonymousElementProviderRegistrationResolver(final ElementRegistryProvider elementRegistryProvider,
+                                                        final RecipeRegistryProvider recipeRegistryProvider,
                                                         final ImplClassGroupings<AnonymousElementImplGrouping> implClassGroupings,
                                                         final RegistryService<Block> blockDeferredRegistryService,
                                                         final RegistryService<Item> itemDeferredRegistryService,
                                                         final RegistryService<Fluid> fluidDeferredRegistryService,
                                                         final RegistryService<ITag.INamedTag<?>> tagDeferredRegistryService) {
         this.elementRegistryProvider = elementRegistryProvider;
+        this.recipeRegistryProvider = recipeRegistryProvider;
         this.implClassGroupings = (AnonymousElementImplClassGrouping) implClassGroupings;
         this.blockDeferredRegistryService = (BlockDeferredRegistryService) blockDeferredRegistryService;
         this.itemDeferredRegistryService = (ItemDeferredRegistryService) itemDeferredRegistryService;
@@ -78,6 +84,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
                     providerName,
                     this.blockDeferredRegistryService.register(providerName, attributedSupplier.getSupplier(), attributedSupplier.getTabGroup())
             );
+            registerRecipe(attributedSupplier.getRecipeConsumer());
         });
     }
 
@@ -88,6 +95,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
                     providerName,
                     this.itemDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
             );
+            registerRecipe(attributedSupplier.getRecipeConsumer());
         });
     }
 
@@ -98,6 +106,7 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
                     providerName,
                     this.fluidDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
             );
+            registerRecipe(attributedSupplier.getRecipeConsumer());
         });
     }
 
@@ -108,6 +117,13 @@ public class AnonymousElementProviderRegistrationResolver implements Registratio
                     providerName,
                     this.fluidDeferredRegistryService.register(providerName, attributedSupplier.getSupplier())
             );
+            registerRecipe(attributedSupplier.getRecipeConsumer());
         });
+    }
+
+    private void registerRecipe(final Consumer<Consumer<IFinishedRecipe>> recipeConsumer) {
+        if (recipeConsumer != null) {
+            this.recipeRegistryProvider.anonymousCraftingRecipesToBeRegistered.add(recipeConsumer);
+        }
     }
 }

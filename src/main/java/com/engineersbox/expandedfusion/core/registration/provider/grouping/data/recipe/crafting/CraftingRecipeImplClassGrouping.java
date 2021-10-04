@@ -39,11 +39,7 @@ public class CraftingRecipeImplClassGrouping extends ImplClassGroupings<Crafting
             if (recipeProviders.length == 0) {
                 continue;
             }
-            if (itemProvider != null) {
-                addIfNotExists(itemProvider.name(), c);
-            } else {
-                addIfNotExists(blockProvider.name(), c);
-            }
+            addIfNotExists(itemProvider != null ? itemProvider.name() : blockProvider.name(), c);
         }
     }
 

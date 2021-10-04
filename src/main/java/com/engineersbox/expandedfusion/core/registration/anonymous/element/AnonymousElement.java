@@ -35,11 +35,6 @@ public class AnonymousElement {
             anonymousElement = new AnonymousElement();
         }
 
-        /*
-         * TODO: Implement ability to supply recipes via a consumer:
-         *       Consumer<Consumer<IFinishedRecipe>> as ShapedRecipeBuilder or ShapelessRecipeBuilder
-         */
-
         public void addBlockSupplier(final String providerName,
                                      final AttributedSupplier<Block, Block> supplier) {
             this.anonymousElement.blockSuppliers.put(providerName, supplier);

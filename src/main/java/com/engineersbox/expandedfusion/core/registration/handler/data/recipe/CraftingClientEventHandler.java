@@ -61,13 +61,15 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
             @Override
             protected void registerRecipes(final Consumer<IFinishedRecipe> consumer) {
-                Map<String, CraftingRecipeImplGrouping> toRegister = RegistryObjectContext.getCraftingRecipesToBeRegistered();
-                toRegister.forEach((final String name, final CraftingRecipeImplGrouping group) -> {
+                final Map<String, CraftingRecipeImplGrouping> annotatedRecipesToRegister = RegistryObjectContext.getCraftingRecipesToBeRegistered();
+                annotatedRecipesToRegister.forEach((final String name, final CraftingRecipeImplGrouping group) -> {
                     final CraftingRecipe[] recipes = group.getCraftingRecipeAnnotations();
                     Arrays.stream(recipes)
                             .map((final CraftingRecipe recipe) -> registerRecipe(name, group, recipe))
                             .forEach((final ShapedRecipeBuilder builder) -> builder.build(consumer));
                 });
+                final List<Consumer<Consumer<IFinishedRecipe>>> anonymousRecipesToRegister = RegistryObjectContext.getAnonymousRecipesToBeRegistered();
+                anonymousRecipesToRegister.forEach((final Consumer<Consumer<IFinishedRecipe>> recipe) -> recipe.accept(consumer));
             }
 
             @Override

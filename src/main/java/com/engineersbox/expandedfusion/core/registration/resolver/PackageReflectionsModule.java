@@ -1,7 +1,6 @@
 package com.engineersbox.expandedfusion.core.registration.resolver;
 
 import com.engineersbox.expandedfusion.core.reflection.vfs.ModJarVfsUrlType;
-import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.builder.AnonymousBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;

@@ -42,7 +42,6 @@ import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.scanners.TypeElementsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
-import org.reflections.vfs.Vfs;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;

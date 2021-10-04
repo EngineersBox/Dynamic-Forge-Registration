@@ -7,7 +7,6 @@ import com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang.
 import com.engineersbox.expandedfusion.core.registration.anonymous.element.AnonymousElement;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +16,7 @@ public enum Metals {
     ALUMINUM(new AnonymousElement.Builder()
             .block("aluminium_block")
                     .tabGroup(ExpandedFusion.MOD_ID)
-                    .langMappings(ImmutableMap.of( LangKey.EN_US, "Aluminium Block"))
+                    .langMappings(ImmutableMap.of(LangKey.EN_US, "Aluminium Block"))
                     .properties(
                             AbstractBlock.Properties.create(Material.IRON)
                                     .hardnessAndResistance(4, 20)
@@ -31,7 +30,7 @@ public enum Metals {
     LEAD(new AnonymousElement.Builder()
             .block("lead_block")
                     .tabGroup(ExpandedFusion.MOD_ID)
-                    .langMappings(ImmutableMap.of( LangKey.EN_US, "Lead Block"))
+                    .langMappings(ImmutableMap.of(LangKey.EN_US, "Lead Block"))
                     .properties(
                             AbstractBlock.Properties.create(Material.IRON)
                                     .hardnessAndResistance(4, 20)
@@ -43,7 +42,7 @@ public enum Metals {
     ORCHALLIUM(new AnonymousElement.Builder()
             .block("orchallium_block")
                     .tabGroup(ExpandedFusion.MOD_ID)
-                    .langMappings(ImmutableMap.of( LangKey.EN_US, "Orchallium Block"))
+                    .langMappings(ImmutableMap.of(LangKey.EN_US, "Orchallium Block"))
                     .properties(
                             AbstractBlock.Properties.create(Material.IRON)
                                     .hardnessAndResistance(4, 20)

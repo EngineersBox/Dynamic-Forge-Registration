@@ -10,6 +10,7 @@ import com.engineersbox.expandedfusion.core.registration.registryObject.element.
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.minecraft.block.Block;
+import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.Container;
@@ -18,8 +19,10 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class RegistryObjectContext {
 
@@ -80,6 +83,10 @@ public abstract class RegistryObjectContext {
 
     public static Map<String, CraftingRecipeImplGrouping> getCraftingRecipesToBeRegistered() {
         return RECIPE_REGISTRY_PROVIDER.craftingRecipesToBeRegistered;
+    }
+
+    public static List<Consumer<Consumer<IFinishedRecipe>>> getAnonymousRecipesToBeRegistered() {
+        return RECIPE_REGISTRY_PROVIDER.anonymousCraftingRecipesToBeRegistered;
     }
 
     public static Map<ITag.INamedTag<Block>, Pair<Set<String>, Boolean>> getBlockTagsToBeRegistered() {

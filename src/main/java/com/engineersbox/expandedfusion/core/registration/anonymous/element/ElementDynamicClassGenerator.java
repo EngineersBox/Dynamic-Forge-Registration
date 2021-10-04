@@ -2,13 +2,8 @@ package com.engineersbox.expandedfusion.core.registration.anonymous.element;
 
 import com.engineersbox.expandedfusion.core.registration.exception.anonymous.RuntimeElementClassGenerationException;
 import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.modifier.Visibility;
 import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
-import net.bytebuddy.implementation.MethodCall;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -16,13 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class ElementDynamicClassGenerator<T> {
-
-    private static final Logger LOGGER = LogManager.getLogger(ElementDynamicClassGenerator.class);
 
     private final Class<? extends T> baseClass;
     private Constructor<? extends T> declaredConstructor;
