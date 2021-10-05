@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
         },
         keys = {
                 @PatternKey(symbol = 'I', ingredient = "ingots/iron", type = IngredientType.TAG),
-                @PatternKey(symbol = 'N', ingredient = NiobiumTitaniumCoil.PROVIDER_NAME, type = IngredientType.ITEM),
+                @PatternKey(symbol = 'N', ingredient = "blocks/" + NiobiumTitaniumCoil.PROVIDER_NAME, type = IngredientType.TAG),
                 @PatternKey(symbol = 'S', ingredient = CopperBerylliumBondedShielding.PROVIDER_NAME, type = IngredientType.ITEM)
         },
         criteria = @UnlockCriterion(

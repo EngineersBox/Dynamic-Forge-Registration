@@ -310,7 +310,7 @@ public class JITRegistrationResolver extends JITResolver {
                     .flatMap(Set::stream)
                     .filter(handlerPredicate)
                     .filter(EventSubscriptionHandler.class::isAssignableFrom)
-                    .map((final Class<?> consumer) -> (Class<? extends EventSubscriptionHandler>) consumer);
+                    .map(Class.class::cast);
         }
 
         private BrokerManager<DistEvent> createBrokerManager(final Injector injector) {

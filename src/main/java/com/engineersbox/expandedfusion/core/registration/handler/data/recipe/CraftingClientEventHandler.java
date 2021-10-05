@@ -131,8 +131,10 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
     }
 
     private Optional<Block> getBlock(final String key) {
+        try {
+            return Optional.of(RegistryObjectContext.getBlockRegistryObject(key).asBlock());
+        } catch (final RegistryObjectRetrievalException ignored) {}
         final Stream<Field> mergedStream = createdMergedFieldStream(key, Blocks.class);
-        // TODO: Add stream for blocks created in this project to mergedStream
         return filterFields(mergedStream);
     }
 
@@ -232,7 +234,6 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
 
     private Optional<ITag.INamedTag<Item>> getTagViaReflection(final String key) {
         final Stream<Field> mergedStream = createdMergedFieldStream(key, ItemTags.class, Tags.Items.class);
-        // TODO: Add stream for tags created in this project to mergedStream
         return filterFields(mergedStream);
     }
 

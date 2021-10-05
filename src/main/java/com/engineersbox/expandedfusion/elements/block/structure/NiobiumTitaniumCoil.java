@@ -1,5 +1,7 @@
 package com.engineersbox.expandedfusion.elements.block.structure;
 
+import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tag;
+import com.engineersbox.expandedfusion.core.registration.annotation.data.tag.Tags;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LangMetadata;
 import com.engineersbox.expandedfusion.core.registration.annotation.element.block.BlockProvider;
 import com.engineersbox.expandedfusion.core.registration.annotation.meta.LocaleEntry;
@@ -13,6 +15,10 @@ import net.minecraft.block.material.Material;
 @BlockProvider(
         name = NiobiumTitaniumCoil.PROVIDER_NAME,
         type = BlockImplType.STATIC
+)
+@Tag(
+        path = "blocks/" + NiobiumTitaniumCoil.PROVIDER_NAME,
+        mirroredItemTagPath = "blocks/" + NiobiumTitaniumCoil.PROVIDER_NAME
 )
 public class NiobiumTitaniumCoil extends Block {
     public static final String PROVIDER_NAME = "niobium_titanium_coil";

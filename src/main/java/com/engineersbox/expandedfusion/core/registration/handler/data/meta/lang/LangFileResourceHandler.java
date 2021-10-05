@@ -1,6 +1,7 @@
 package com.engineersbox.expandedfusion.core.registration.handler.data.meta.lang;
 
 import com.engineersbox.expandedfusion.core.registration.exception.annotation.processors.meta.lang.MissingRequiredVMArgument;
+import com.engineersbox.expandedfusion.core.registration.exception.handler.data.meta.lang.LangFileExportException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -88,10 +89,10 @@ public class LangFileResourceHandler {
         try(final BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFormattedFilePath()), StandardCharsets.UTF_8))) {
             br.write(jsonContent);
         } catch (final IOException e) {
-            throw new RuntimeException(String.format(
+            throw new LangFileExportException(String.format(
                     "Could not write JSON content to file: %s",
                     getFormattedFilePath()
-            ), e); // TODO: Implement an exception for this
+            ), e);
         }
     }
 
