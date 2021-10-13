@@ -209,14 +209,14 @@ public class CraftingClientEventHandler implements EventSubscriptionHandler {
     private Optional<ITag.INamedTag<Item>> getKeyAsINamedTag(final String key) {
         final Pair<String, String> resLocPair = convertStringToResLocPair(key);
         final Optional<ITag.INamedTag<Item>> tag = ItemTags.getAllTags().stream()
-                .filter(t -> {
-                    final ResourceLocation resLoc = t.getName();
+                .filter((final ITag.INamedTag<Item> namedTag) -> {
+                    final ResourceLocation resLoc = namedTag.getName();
                     if (resLocPair.getLeft() != null && !resLoc.getNamespace().equals(resLocPair.getLeft())) {
                         return false;
                     }
                     return resLoc.getPath().equals(resLocPair.getRight());
                 })
-                .map(t -> (ITag.INamedTag<Item>) t)
+                .map((final ITag.INamedTag<Item> namedTag) -> namedTag)
                 .findFirst();
         if (tag.isPresent()) {
             return tag;
